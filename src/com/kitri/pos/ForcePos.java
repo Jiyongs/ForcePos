@@ -14,13 +14,16 @@ import java.awt.event.ActionEvent;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.BevelBorder;
 
-public class ForcePos extends JFrame {
+public class ForcePos extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	private JTextField userTf;
 	private JTextField passTf;
 	private RoundedButton rb_1;
-
+	private JButton exitB;
+	private JButton loginB;
+	private MainFrame main;
+	private boolean loginCheck;
 	/*
 	 * private String img;
 	 * 
@@ -90,7 +93,7 @@ public class ForcePos extends JFrame {
 		Forcepos.setFont(new Font("맑은 고딕", Font.BOLD, 70));
 		title.add(Forcepos, BorderLayout.CENTER);
 
-		// 로그인 화면 패널 설정 
+		// 로그인 화면 패널 설정
 		JPanel user = new JPanel() {
 			@Override
 			protected void paintComponent(Graphics g) {
@@ -105,22 +108,23 @@ public class ForcePos extends JFrame {
 		user.setBounds(328, 176, 153, 165);
 		background.add(user);
 
-		//유저 패널
+		// 유저 패널
 		JPanel userP = new JPanel();
 		userP.setOpaque(false);
 		userP.setBounds(497, 176, 475, 165);
 		background.add(userP);
 		userP.setLayout(new BorderLayout(0, 0));
-		
-		//유저 텍스트필드
+
+		// 유저 텍스트필드
 		userTf = new JTextField();
 		userTf.setHorizontalAlignment(SwingConstants.CENTER);
 		userTf.setFont(new Font("맑은 고딕", Font.ITALIC, 40));
+		// 아이디를 입력받는
 		userTf.setText("USER");
 		userP.add(userTf, BorderLayout.CENTER);
 		userTf.setColumns(10);
 
-		//패스워드 패널 설정 
+		// 패스워드 패널 설정
 		JPanel pass = new JPanel() {
 			@Override
 			protected void paintComponent(Graphics g) {
@@ -136,34 +140,35 @@ public class ForcePos extends JFrame {
 		pass.setBounds(328, 368, 153, 156);
 		background.add(pass);
 
-		//패스워드 패널
+		// 패스워드 패널
 		JPanel passP = new JPanel();
 		passP.setBounds(497, 368, 475, 156);
 		background.add(passP);
 		passP.setLayout(new BorderLayout(0, 0));
-		
-		//비밀번호텍스트필드
-		passTf = new JTextField();
+
+		// 비밀번호텍스트필드
+		passTf = new JPasswordField();
 		passTf.setHorizontalAlignment(SwingConstants.CENTER);
 		passTf.setFont(new Font("맑은 고딕", Font.ITALIC, 40));
+		// 비밀번호를 입력받는
 		passTf.setText("****");
 		passP.add(passTf, BorderLayout.CENTER);
 		passTf.setColumns(10);
 
-		//버튼 두개
+		// 버튼 두개
 		JPanel SouthButt = new JPanel();
 		SouthButt.setOpaque(false);
 		SouthButt.setBounds(407, 584, 515, 111);
 		background.add(SouthButt);
-		SouthButt.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		SouthButt.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 0));
 
-		//로그인 버튼
-		//둥글게 만드는 버튼 클래스 객체 생성후 대입 
-		JButton loginB = new JButton("\uB85C\uADF8\uC778 ");
+		// 로그인 버튼
+		// 둥글게 만드는 버튼 클래스 객체 생성후 대입
+		loginB = new JButton("\uB85C\uADF8\uC778 ");
 		RoundedButton rb = new RoundedButton("로그인");
 		rb.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
 		loginB = rb;
-		
+
 		loginB.setForeground(new Color(240, 248, 255));
 		loginB.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		loginB.setSize(new Dimension(10, 10));
@@ -176,14 +181,13 @@ public class ForcePos extends JFrame {
 		loginB.setFont(new Font("맑은 고딕", Font.PLAIN, 50));
 		SouthButt.add(loginB);
 
-		//종료 버튼
-		//둥글게 만드는 버튼 클래스 객체 생성후 대입 
-		JButton exitB = new JButton("\uC885\uB8CC");
+		// 종료 버튼
+		// 둥글게 만드는 버튼 클래스 객체 생성후 대입
+		exitB = new JButton("\uC885\uB8CC");
 		rb_1 = new RoundedButton("종   료");
 		rb_1.setBorder(new EtchedBorder(EtchedBorder.RAISED, new Color(255, 127, 80), new Color(255, 127, 80)));
 		exitB = rb_1;
-		
-		
+
 		exitB.setBackground(new Color(255, 99, 71));
 		exitB.setForeground(new Color(240, 248, 255));
 		exitB.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -192,10 +196,54 @@ public class ForcePos extends JFrame {
 		exitB.setMaximumSize(new Dimension(73, 23));
 		exitB.setFont(new Font("맑은 고딕", Font.PLAIN, 50));
 		SouthButt.add(exitB);
-
 //		inputIcon();
 		setResizable(false);
+
+		// 리스너 등록
+		userTf.addActionListener(this);
+		loginB.addActionListener(this);
+		exitB.addActionListener(this);
+		passTf.addActionListener(this);
+
 	}
+
+	//로그인 성공 / 실패 판단 메소드
+	public boolean isLogin() {
+		return loginCheck;
+	}
+
+	// 아이디 비밀번호 유효성 검사
+	public void isLoginCheck() {
+//		userTf.setText("");
+//		
+		if (userTf.getText().equals("test") && new String(passTf.getText()).equals("1234")) {
+		
+			JOptionPane.showMessageDialog(null, "로그인 되었습니다.");
+			loginCheck = true;
+		
+		}
+		
+		
+		if(isLogin()) {
+			showFrameTest();
+		} else {
+			JOptionPane.showMessageDialog(null, "로그인이 되지 않았습니다.");
+		}
+	}
+	
+	public void showFrameTest() {
+		main = new MainFrame();
+		main.setVisible(true);
+		
+//		dispose();
+	}
+	
+	
+	// 로그인 창에서 메인프레임으로 연결 메소드
+		public void setMain(MainFrame main) {
+			this.main = main;
+		}
+		
 
 	// 실행
 	public static void main(String[] args) {
@@ -203,13 +251,39 @@ public class ForcePos extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					MainFrame main = new MainFrame(); // 메인프레임 객체생성
 					ForcePos frame = new ForcePos();
 					frame.setVisible(true);
+					main.frame.setMain(main);
+					main.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
+
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Object ob = e.getSource();
+		
+		//TODO 텍스트필드에서 마우스클릭 시 필드 초기화 진행해야함 
+//		if(ob == userTf) {
+//			isLoginCheck();
+//		}
+
+		if (ob == loginB) {
+			isLoginCheck();
+		}
+		
+//		if(ob == passTf) {
+//			isLoginCheck();
+//		}
+
+		if (ob == exitB) {
+			System.exit(0);
+		}
 
 	}
 }
