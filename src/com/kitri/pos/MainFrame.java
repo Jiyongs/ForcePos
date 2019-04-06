@@ -30,7 +30,8 @@ public class MainFrame extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField notice;
-
+	ForcePos frame;
+	MainFrame frame1;
 	/**
 	 * Launch the application.
 	 */
@@ -38,8 +39,8 @@ public class MainFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainFrame frame = new MainFrame();
-					frame.setVisible(true);
+					MainFrame frame1 = new MainFrame();
+					frame1.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -50,6 +51,13 @@ public class MainFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	
+	public void showFrameTest() {
+		frame1.setVisible(true);
+		frame.dispose();
+	}
+	
+	
 	public MainFrame() {
 		setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 20));
 		setTitle("Force.pos");
