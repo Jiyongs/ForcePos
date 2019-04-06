@@ -2,28 +2,22 @@ package com.kitri.pos;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-
-import com.sun.corba.se.spi.orbutil.fsm.Input;
-
-import sun.security.krb5.internal.LoginOptions;
-
-import java.awt.event.ActionListener;
-import java.io.File;
 import java.awt.*;
-import java.awt.event.ActionEvent;
+import java.awt.event.*;
 import javax.swing.border.EtchedBorder;
-import javax.swing.border.BevelBorder;
 
-public class ForcePos extends JFrame implements ActionListener {
+public class ForcePos extends JFrame implements ActionListener, TextListener {
 
 	private JPanel contentPane;
-	private JTextField userTf;
-	private JTextField passTf;
+	final JTextField userTf;
+	final JTextField passTf;
 	private RoundedButton rb_1;
 	private JButton exitB;
 	private JButton loginB;
-	private MainFrame main;
-	private boolean loginCheck;
+	private MainFrame main; // 메인 프레임
+	private boolean loginCheck; // 아이디와 패스워드가 일치하는지 확인해주는 필드
+//	int count = 0;
+
 	/*
 	 * private String img;
 	 * 
@@ -76,6 +70,7 @@ public class ForcePos extends JFrame implements ActionListener {
 
 			}
 		};
+
 		background.setBounds(12, 10, 1326, 753);
 		contentPane.add(background);
 		background.setLayout(null);
@@ -116,9 +111,10 @@ public class ForcePos extends JFrame implements ActionListener {
 		userP.setLayout(new BorderLayout(0, 0));
 
 		// 유저 텍스트필드
-		userTf = new JTextField();
+		userTf = new JTextField(6);
 		userTf.setHorizontalAlignment(SwingConstants.CENTER);
 		userTf.setFont(new Font("맑은 고딕", Font.ITALIC, 40));
+
 		// 아이디를 입력받는
 		userTf.setText("USER");
 		userP.add(userTf, BorderLayout.CENTER);
@@ -147,9 +143,10 @@ public class ForcePos extends JFrame implements ActionListener {
 		passP.setLayout(new BorderLayout(0, 0));
 
 		// 비밀번호텍스트필드
-		passTf = new JPasswordField();
+		passTf = new JPasswordField(6);
 		passTf.setHorizontalAlignment(SwingConstants.CENTER);
 		passTf.setFont(new Font("맑은 고딕", Font.ITALIC, 40));
+
 		// 비밀번호를 입력받는
 		passTf.setText("****");
 		passP.add(passTf, BorderLayout.CENTER);
@@ -207,7 +204,7 @@ public class ForcePos extends JFrame implements ActionListener {
 
 	}
 
-	//로그인 성공 / 실패 판단 메소드
+	// 로그인 성공 / 실패 판단 메소드
 	public boolean isLogin() {
 		return loginCheck;
 	}
@@ -215,47 +212,43 @@ public class ForcePos extends JFrame implements ActionListener {
 	// 아이디 비밀번호 유효성 검사
 	public void isLoginCheck() {
 //		userTf.setText("");
-//		
 		if (userTf.getText().equals("test") && new String(passTf.getText()).equals("1234")) {
-		
+
 			JOptionPane.showMessageDialog(null, "로그인 되었습니다.");
 			loginCheck = true;
-		
+
 		}
-		
-		
-		if(isLogin()) {
+
+		if (isLogin()) {
 			showFrameTest();
 		} else {
 			JOptionPane.showMessageDialog(null, "로그인이 되지 않았습니다.");
 		}
 	}
-	
+
 	public void showFrameTest() {
 		main = new MainFrame();
 		main.setVisible(true);
-		
+
 //		dispose();
 	}
-	
-	
+
 	// 로그인 창에서 메인프레임으로 연결 메소드
-		public void setMain(MainFrame main) {
-			this.main = main;
-		}
-		
+	public void setMain(MainFrame main) {
+		this.main = main;
+		main.frame.setMain(main);
+	}
 
 	// 실행
 	public static void main(String[] args) {
+		ForcePos frame = new ForcePos();
+//		main.setVisible(true);
 
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					MainFrame main = new MainFrame(); // 메인프레임 객체생성
-					ForcePos frame = new ForcePos();
 					frame.setVisible(true);
-					main.frame.setMain(main);
-					main.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -267,23 +260,39 @@ public class ForcePos extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object ob = e.getSource();
-		
-		//TODO 텍스트필드에서 마우스클릭 시 필드 초기화 진행해야함 
-//		if(ob == userTf) {
-//			isLoginCheck();
-//		}
+
+		// TODO 텍스트필드에서 마우스클릭 시 필드 초기화 진행해야함
+
+		if (ob == userTf) {
+			userTf.setText("올바른 아이디 입력 바람.");
+
+			if (userTf.getText() != null) {
+				isLoginCheck();
+//				passTf.requestFocus();	
+			}
+//			
+		}
 
 		if (ob == loginB) {
 			isLoginCheck();
 		}
-		
-//		if(ob == passTf) {
-//			isLoginCheck();
-//		}
+
+		if (ob == passTf) {
+			isLoginCheck();
+		}
 
 		if (ob == exitB) {
 			System.exit(0);
 		}
 
+	}
+
+	@Override
+	public void textValueChanged(TextEvent e) {
+//		
+//		count += 1;
+//		if(count == 6) {
+//			passTf.requestFocus();
+//		}
 	}
 }
