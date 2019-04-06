@@ -214,7 +214,7 @@ public class Calc extends JFrame {
 		pCashstate.setBounds(12, 10, 533, 515);
 		pCalc.add(pCashstate);
 		
-		String[] headings = new String[] {"궍종", "매수", "금액"};
+		String[] headings = new String[] {"권종", "매수", "금액"};
 		Object[][] data = new Object[][] {
 			{50000, 0, 0},
 			{10000, "0", 0},
@@ -344,15 +344,18 @@ public class Calc extends JFrame {
 		pcalcState.add(panel_2, BorderLayout.CENTER);
 		panel_2.setLayout(new GridLayout(0, 1, 0, 10));
 		
-		tfCashState = new JTextField();
+		tfCashState = new JTextField("300000");
+		tfCashState.setEnabled(false);
 		panel_2.add(tfCashState);
 		tfCashState.setColumns(10);
 		
-		tfCashCheck = new JTextField();
+		tfCashCheck = new JTextField("250000");
+		tfCashCheck.setEnabled(false);
 		panel_2.add(tfCashCheck);
 		tfCashCheck.setColumns(10);
 		
-		tfCalcResult = new JTextField();
+		tfCalcResult = new JTextField(String.valueOf((Integer.parseInt(tfCashState.getText()) - Integer.parseInt(tfCashCheck.getText()))));	//	'-'부호가 뜨질 않음
+		tfCalcResult.setEnabled(false);
 		panel_2.add(tfCalcResult);
 		tfCalcResult.setColumns(10);
 	}
