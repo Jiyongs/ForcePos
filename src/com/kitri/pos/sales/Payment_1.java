@@ -18,12 +18,12 @@ public class Payment_1 extends JFrame {
 	private final JPanel payment_1 = new JPanel();
 	private JTextField tfP1SM;
 	private JTextField tfP1BeforePrice;
-	private JTextField tfDiscountPercent;
+	private JTextField tfP1DiscountPercent;
 	private JTextField tfP1Afterprice;
 	private JButton btnP1Before;
 	private JButton btnP1Next;
 	private JLabel lbP1Afterprice;
-	private JLabel lbDiscountpercent;
+	private JLabel lbP1Discountpercent;
 	
 
 	/**
@@ -33,7 +33,7 @@ public class Payment_1 extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Payment_1 frame = new Payment_1();
+					Payment_2 frame = new Payment_2();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -61,23 +61,23 @@ public class Payment_1 extends JFrame {
 		payment_1.add(tfP1SM);
 		tfP1SM.setColumns(10);
 		
-		JComboBox cbCooperation = new JComboBox();
-		cbCooperation.setBounds(100, 100, 200, 50);
-		payment_1.add(cbCooperation);
+		JComboBox cbP1Cooperation = new JComboBox();
+		cbP1Cooperation.setBounds(100, 100, 200, 50);
+		payment_1.add(cbP1Cooperation);
 		
-		JButton btnNewButton = new JButton("\uC801\uC6A9");
-		btnNewButton.setBounds(350, 100, 150, 50);
-		payment_1.add(btnNewButton);
+		JButton btnP1Apply = new JButton("\uC801\uC6A9");
+		btnP1Apply.setBounds(350, 100, 150, 50);
+		payment_1.add(btnP1Apply);
 		
 		tfP1BeforePrice = new JTextField();
 		tfP1BeforePrice.setBounds(100, 220, 150, 50);
 		payment_1.add(tfP1BeforePrice);
 		tfP1BeforePrice.setColumns(10);
 		
-		tfDiscountPercent = new JTextField();
-		tfDiscountPercent.setBounds(265, 220, 70, 50);
-		payment_1.add(tfDiscountPercent);
-		tfDiscountPercent.setColumns(10);
+		tfP1DiscountPercent = new JTextField();
+		tfP1DiscountPercent.setBounds(265, 220, 70, 50);
+		payment_1.add(tfP1DiscountPercent);
+		tfP1DiscountPercent.setColumns(10);
 		
 		tfP1Afterprice = new JTextField();
 		tfP1Afterprice.setColumns(10);
@@ -92,19 +92,19 @@ public class Payment_1 extends JFrame {
 		btnP1Next.setBounds(350, 310, 150, 50);
 		payment_1.add(btnP1Next);
 		
-		JLabel lbBeforeprice = new JLabel("\uD560\uC778\uC801\uC6A9 \uC804 \uAC00\uACA9");
-		lbBeforeprice.setHorizontalAlignment(SwingConstants.CENTER);
-		lbBeforeprice.setBounds(100, 160, 150, 50);
-		payment_1.add(lbBeforeprice);
+		JLabel lbP1Beforeprice = new JLabel("\uD560\uC778\uC801\uC6A9 \uC804 \uAC00\uACA9");
+		lbP1Beforeprice.setHorizontalAlignment(SwingConstants.CENTER);
+		lbP1Beforeprice.setBounds(100, 160, 150, 50);
+		payment_1.add(lbP1Beforeprice);
 		
 		lbP1Afterprice = new JLabel("\uD560\uC778\uC801\uC6A9 \uD6C4 \uAC00\uACA9");
 		lbP1Afterprice.setHorizontalAlignment(SwingConstants.CENTER);
 		lbP1Afterprice.setBounds(350, 160, 150, 50);
 		payment_1.add(lbP1Afterprice);
 		
-		lbDiscountpercent = new JLabel("\uD560\uC778\uC728");
-		lbDiscountpercent.setHorizontalAlignment(SwingConstants.CENTER);
-		lbDiscountpercent.setBounds(265, 160, 70, 50);
-		payment_1.add(lbDiscountpercent);
+		lbP1Discountpercent = new JLabel("\uD560\uC778\uC728");
+		lbP1Discountpercent.setHorizontalAlignment(SwingConstants.CENTER);
+		lbP1Discountpercent.setBounds(265, 160, 70, 50);
+		payment_1.add(lbP1Discountpercent);
 	}
 }
