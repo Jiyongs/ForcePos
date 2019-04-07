@@ -1,0 +1,110 @@
+package com.kitri.pos.sales;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JTextField;
+import javax.swing.JComboBox;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+
+public class Payment_1 extends JFrame {
+
+	private JPanel contentPane;
+	private final JPanel payment_1 = new JPanel();
+	private JTextField tfP1SM;
+	private JTextField tfP1BeforePrice;
+	private JTextField tfDiscountPercent;
+	private JTextField tfP1Afterprice;
+	private JButton btnP1Before;
+	private JButton btnP1Next;
+	private JLabel lbP1Afterprice;
+	private JLabel lbDiscountpercent;
+	
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Payment_1 frame = new Payment_1();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public Payment_1() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 600, 450);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setLayout(new BorderLayout(0, 0));
+		setContentPane(contentPane);
+		contentPane.add(payment_1, BorderLayout.CENTER);
+		payment_1.setLayout(null);
+		
+		tfP1SM = new JTextField();
+		tfP1SM.setText("\uD560\uC778\uC801\uC6A9\uB418\uC5C8\uC2B5\uB2C8\uB2E4.");
+		tfP1SM.setBounds(150, 20, 300, 30);
+		payment_1.add(tfP1SM);
+		tfP1SM.setColumns(10);
+		
+		JComboBox cbCooperation = new JComboBox();
+		cbCooperation.setBounds(100, 100, 200, 50);
+		payment_1.add(cbCooperation);
+		
+		JButton btnNewButton = new JButton("\uC801\uC6A9");
+		btnNewButton.setBounds(350, 100, 150, 50);
+		payment_1.add(btnNewButton);
+		
+		tfP1BeforePrice = new JTextField();
+		tfP1BeforePrice.setBounds(100, 220, 150, 50);
+		payment_1.add(tfP1BeforePrice);
+		tfP1BeforePrice.setColumns(10);
+		
+		tfDiscountPercent = new JTextField();
+		tfDiscountPercent.setBounds(265, 220, 70, 50);
+		payment_1.add(tfDiscountPercent);
+		tfDiscountPercent.setColumns(10);
+		
+		tfP1Afterprice = new JTextField();
+		tfP1Afterprice.setColumns(10);
+		tfP1Afterprice.setBounds(350, 220, 150, 50);
+		payment_1.add(tfP1Afterprice);
+		
+		btnP1Before = new JButton("\uAC70\uB798\uCDE8\uC18C");
+		btnP1Before.setBounds(100, 310, 150, 50);
+		payment_1.add(btnP1Before);
+		
+		btnP1Next = new JButton("\uB2E4\uC74C\uC73C\uB85C");
+		btnP1Next.setBounds(350, 310, 150, 50);
+		payment_1.add(btnP1Next);
+		
+		JLabel lbBeforeprice = new JLabel("\uD560\uC778\uC801\uC6A9 \uC804 \uAC00\uACA9");
+		lbBeforeprice.setHorizontalAlignment(SwingConstants.CENTER);
+		lbBeforeprice.setBounds(100, 160, 150, 50);
+		payment_1.add(lbBeforeprice);
+		
+		lbP1Afterprice = new JLabel("\uD560\uC778\uC801\uC6A9 \uD6C4 \uAC00\uACA9");
+		lbP1Afterprice.setHorizontalAlignment(SwingConstants.CENTER);
+		lbP1Afterprice.setBounds(350, 160, 150, 50);
+		payment_1.add(lbP1Afterprice);
+		
+		lbDiscountpercent = new JLabel("\uD560\uC778\uC728");
+		lbDiscountpercent.setHorizontalAlignment(SwingConstants.CENTER);
+		lbDiscountpercent.setBounds(265, 160, 70, 50);
+		payment_1.add(lbDiscountpercent);
+	}
+}
