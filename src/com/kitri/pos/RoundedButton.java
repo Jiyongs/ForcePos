@@ -4,6 +4,7 @@ import java.awt.*;
 
 import javax.swing.*;
 
+//버튼둥글게 만들어주는 클래스 
 public class RoundedButton extends JButton {
 
 	public RoundedButton() {
