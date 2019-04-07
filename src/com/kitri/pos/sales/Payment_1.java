@@ -33,7 +33,7 @@ public class Payment_1 extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Payment_2 frame = new Payment_2();
+					Payment_1 frame = new Payment_1();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
