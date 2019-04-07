@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.border.EtchedBorder;
 
-public class ForcePos extends JFrame implements ActionListener, TextListener {
+public class ForcePos extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	final JTextField userTf;
@@ -71,6 +71,7 @@ public class ForcePos extends JFrame implements ActionListener, TextListener {
 			}
 		};
 
+		
 		background.setBounds(12, 10, 1326, 753);
 		contentPane.add(background);
 		background.setLayout(null);
@@ -116,7 +117,7 @@ public class ForcePos extends JFrame implements ActionListener, TextListener {
 		userTf.setFont(new Font("맑은 고딕", Font.ITALIC, 40));
 
 		// 아이디를 입력받는
-		userTf.setText("USER");
+		userTf.setText("");
 		userP.add(userTf, BorderLayout.CENTER);
 		userTf.setColumns(10);
 
@@ -148,7 +149,7 @@ public class ForcePos extends JFrame implements ActionListener, TextListener {
 		passTf.setFont(new Font("맑은 고딕", Font.ITALIC, 40));
 
 		// 비밀번호를 입력받는
-		passTf.setText("****");
+		passTf.setText("");
 		passP.add(passTf, BorderLayout.CENTER);
 		passTf.setColumns(10);
 
@@ -209,27 +210,29 @@ public class ForcePos extends JFrame implements ActionListener, TextListener {
 		return loginCheck;
 	}
 
-	// 아이디 비밀번호 유효성 검사
+// 아이디 비밀번호 유효성 검사
+// userTf.setText("");
+//관리자,직원의 번호를 미리 설정한 후 입력받게 함.
+
 	public void isLoginCheck() {
-//		userTf.setText("");
-		if (userTf.getText().equals("test") && new String(passTf.getText()).equals("1234")) {
 
-			JOptionPane.showMessageDialog(null, "로그인 되었습니다.");
+		if (userTf.getText().equals("개나리") && new String(passTf.getText()).equals("1234")) {
+			String str = userTf.getText();
+			JOptionPane.showMessageDialog(null, str + "님이 로그인 되었습니다.");
 			loginCheck = true;
+			if (isLogin()) {
+				showFrameTest();
+			}
 
-		}
-
-		if (isLogin()) {
-			showFrameTest();
 		} else {
 			JOptionPane.showMessageDialog(null, "로그인이 되지 않았습니다.");
 		}
+
 	}
 
 	public void showFrameTest() {
 		main = new MainFrame();
 		main.setVisible(true);
-
 //		dispose();
 	}
 
@@ -257,20 +260,25 @@ public class ForcePos extends JFrame implements ActionListener, TextListener {
 
 	}
 
+	public boolean isId() {
+		userTf.getText().equals("개나리");
+		return true;
+	}
+	
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object ob = e.getSource();
-
+		boolean id = userTf.getText().equals("개나리");
+		
+		
 		// TODO 텍스트필드에서 마우스클릭 시 필드 초기화 진행해야함
-
-		if (ob == userTf) {
-			userTf.setText("올바른 아이디 입력 바람.");
-
-			if (userTf.getText() != null) {
-				isLoginCheck();
-//				passTf.requestFocus();	
-			}
-//			
+//		if () {
+//			isLoginCheck();
+//			passTf.requestFocus();	
+//		}
+		if (id) {
+			passTf.requestFocus();
 		}
 
 		if (ob == loginB) {
@@ -285,14 +293,5 @@ public class ForcePos extends JFrame implements ActionListener, TextListener {
 			System.exit(0);
 		}
 
-	}
-
-	@Override
-	public void textValueChanged(TextEvent e) {
-//		
-//		count += 1;
-//		if(count == 6) {
-//			passTf.requestFocus();
-//		}
 	}
 }
