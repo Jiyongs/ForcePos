@@ -37,7 +37,7 @@ public class Payment_2 extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Payment_1 frame = new Payment_1();
+					Payment_2 frame = new Payment_2();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -58,6 +58,7 @@ public class Payment_2 extends JFrame {
 		setContentPane(contentPane);
 		contentPane.add(payment_2, BorderLayout.CENTER);
 		payment_2.setLayout(null);
+		
 		
 		tfP2SM = new JTextField();
 		tfP2SM.setText("\uD560\uC778\uC801\uC6A9\uB418\uC5C8\uC2B5\uB2C8\uB2E4.");
