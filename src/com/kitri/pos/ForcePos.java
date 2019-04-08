@@ -63,15 +63,15 @@ public class ForcePos extends JFrame implements ActionListener {
 			@Override
 			public void paintComponent(Graphics g) {
 				Dimension d = getSize(); // 패널의 크기를 얻어옴
-				ImageIcon image = new ImageIcon("D:\\Workspace\\Project\\src\\image\\Background.png"); // 이미지얻어옴.
+				ImageIcon image = new ImageIcon("E:\\javadata\\Workspace\\javase\\pos\\src\\image\\Background.png"); // 이미지얻어옴.
 				g.drawImage(image.getImage(), 0, 0, d.width, d.height, null); // Jpanel의 크기에 맞게 이미지를 그린다.
 				setOpaque(false); // 배경을 투명하게 설정해줌
 				super.paintComponent(g);
 
 			}
 		};
+		background.setOpaque(false);
 
-		
 		background.setBounds(12, 10, 1326, 753);
 		contentPane.add(background);
 		background.setLayout(null);
@@ -84,9 +84,9 @@ public class ForcePos extends JFrame implements ActionListener {
 
 		JLabel Forcepos = new JLabel("Forcepos");
 		Forcepos.setHorizontalTextPosition(SwingConstants.CENTER);
-		Forcepos.setForeground(new Color(138, 43, 226));
+		Forcepos.setForeground(new Color(255, 0, 0));
 		Forcepos.setHorizontalAlignment(SwingConstants.CENTER);
-		Forcepos.setFont(new Font("맑은 고딕", Font.BOLD, 70));
+		Forcepos.setFont(new Font("돋움체", Font.BOLD, 70));
 		title.add(Forcepos, BorderLayout.CENTER);
 
 		// 로그인 화면 패널 설정
@@ -94,13 +94,12 @@ public class ForcePos extends JFrame implements ActionListener {
 			@Override
 			protected void paintComponent(Graphics g) {
 				Dimension d = getSize();
-				ImageIcon image = new ImageIcon("D:\\Workspace\\Project\\src\\image\\Usericon.png");
+				ImageIcon image = new ImageIcon("E:\\javadata\\Workspace\\javase\\pos\\src\\image\\Usericon.png");
 				g.drawImage(image.getImage(), 0, 0, d.width, d.height, null);
 				setOpaque(false);
 				super.paintComponent(g);
 			}
 		};
-		user.setOpaque(false);
 		user.setBounds(328, 176, 153, 165);
 		background.add(user);
 
@@ -126,7 +125,7 @@ public class ForcePos extends JFrame implements ActionListener {
 			@Override
 			protected void paintComponent(Graphics g) {
 				Dimension d = getSize();
-				ImageIcon image = new ImageIcon("D:\\Workspace\\Project\\src\\image\\KEY.png");
+				ImageIcon image = new ImageIcon("E:\\javadata\\Workspace\\javase\\pos\\src\\image\\KEY.png");
 				g.drawImage(image.getImage(), 0, 0, d.width, d.height, null);
 				setOpaque(false);
 				super.paintComponent(g);
@@ -264,14 +263,12 @@ public class ForcePos extends JFrame implements ActionListener {
 		userTf.getText().equals("개나리");
 		return true;
 	}
-	
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object ob = e.getSource();
 		boolean id = userTf.getText().equals("개나리");
-		
-		
+
 		// TODO 텍스트필드에서 마우스클릭 시 필드 초기화 진행해야함
 //		if () {
 //			isLoginCheck();

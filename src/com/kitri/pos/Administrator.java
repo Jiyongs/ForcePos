@@ -1,49 +1,33 @@
 package com.kitri.pos;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.*;
 import javax.swing.border.EmptyBorder;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import java.awt.Font;
-import javax.swing.SwingConstants;
-import java.awt.Color;
-import javax.swing.JButton;
-import java.awt.CardLayout;
 import java.awt.event.ActionListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 
-public class MainFrame extends JFrame implements ActionListener {
+public class Administrator extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	private JTextField notice;
-	
-	ForcePos frame;
-	MainFrame frame1;
-	Administrator frame2 = new Administrator();
+	ForcePos frame = new ForcePos();
+	private DefaultTableModel tm;
+	private JTable table;
+	Administrator administrator;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainFrame frame1 = new MainFrame();
-					frame1.setVisible(true);
-//					Administrator frame2 = new Administrator();
-//					frame2.setVisible(true);
+					Administrator administrator = new Administrator();
+					administrator.setVisible(true);
+					ForcePos forcepos = new ForcePos();
+					forcepos.setVisible(true);
+					
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -51,17 +35,36 @@ public class MainFrame extends JFrame implements ActionListener {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
-
-	public void showFrameTest() {
+//	public void showFrameTest() {
 //		frame1.setVisible(true);
 //		frame.dispose();
-		frame2.setVisible(true);
-	}
+//	}
+	public static void tableCellCenter(JTable table) {
+		DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer(); // 디폴트테이블셀렌더러를 생성
+		dtcr.setHorizontalAlignment(SwingConstants.CENTER); // 렌더러의 가로정렬을 CENTER로
 
-	public MainFrame() {
+		TableColumnModel tcm = table.getColumnModel(); // 정렬할 테이블의 컬럼모델을 가져옴
+
+		// 전체 열에 지정
+		for (int i = 0; i < tcm.getColumnCount(); i++) {
+			tcm.getColumn(i).setCellRenderer(dtcr);
+		}
+	}
+	
+	public boolean showFrame() {
+		boolean viewFrame = true;
+		frame.setVisible(showFrame());
+		return viewFrame;		
+//		this.frame = frame;
+//		administrator.setVisible(false);
+	}
+	
+// 전역변수의 테이블
+//	public Administrator(JTable table) {
+//		this.table = table;
+//	}
+
+	public Administrator() {
 		setFont(new Font("맑은 고딕", Font.BOLD, 20));
 		setTitle("Force.pos");
 		setAlwaysOnTop(true);
@@ -93,6 +96,10 @@ public class MainFrame extends JFrame implements ActionListener {
 		notice.setBounds(258, 8, 726, 31);
 		pStatusBar.add(notice);
 		notice.setColumns(10);
+
+		String colName[] = { "유저코드", "유저이름", "분류" };
+		Object data[][] = { { "1", "개나리", "주간1" }, { "2", "노오란", "야간1" }, { "3", "꽃그늘", "주간2" },
+				{ "4", "최아래", "야간2" } };
 
 		JLabel dateLabel = new JLabel("2019-04-01 \uC624\uD6C4 5:01");
 		dateLabel.setBackground(new Color(0, 0, 128));
@@ -156,65 +163,100 @@ public class MainFrame extends JFrame implements ActionListener {
 		contentPane.add(pSellFunction);
 		pSellFunction.setLayout(null);
 
-		JButton sBtnCustomer = new JButton("\uC7AC\uACE0\uC870\uD68C");
-		sBtnCustomer.setForeground(new Color(255, 255, 255));
-		sBtnCustomer.setBackground(new Color(0, 0, 128));
-		sBtnCustomer.setFont(new Font("맑은 고딕", Font.BOLD, 20));
-		sBtnCustomer.setBounds(0, 0, 164, 120);
-		pSellFunction.add(sBtnCustomer);
+		JButton userInsert = new JButton("\uC720\uC800\uB4F1\uB85D");
+		userInsert.setForeground(new Color(255, 255, 255));
+		userInsert.setBackground(new Color(0, 0, 128));
+		userInsert.setFont(new Font("맑은 고딕", Font.BOLD, 20));
+		userInsert.setBounds(0, 0, 164, 120);
+		pSellFunction.add(userInsert);
 
-		JButton sBtnDisuse = new JButton("\uC785\uCD9C\uACE0");
-		sBtnDisuse.setBackground(new Color(100, 149, 237));
-		sBtnDisuse.setForeground(new Color(255, 255, 255));
-		sBtnDisuse.setFont(new Font("맑은 고딕", Font.BOLD, 20));
-		sBtnDisuse.setBounds(0, 130, 164, 120);
-		pSellFunction.add(sBtnDisuse);
-
-		JButton sBtnPdInput = new JButton("\uC7AC\uACE0\uB4F1\uB85D");
-		sBtnPdInput.addActionListener(new ActionListener() {
+		JButton userUpdate = new JButton("\uC720\uC800\uC218\uC815");
+		userUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		sBtnPdInput.setBackground(new Color(0, 0, 128));
-		sBtnPdInput.setForeground(new Color(255, 255, 255));
-		sBtnPdInput.setFont(new Font("맑은 고딕", Font.BOLD, 20));
-		sBtnPdInput.setBounds(0, 260, 164, 120);
-		pSellFunction.add(sBtnPdInput);
+		userUpdate.setBackground(new Color(100, 149, 237));
+		userUpdate.setForeground(new Color(255, 255, 255));
+		userUpdate.setFont(new Font("맑은 고딕", Font.BOLD, 20));
+		userUpdate.setBounds(0, 130, 164, 120);
+		pSellFunction.add(userUpdate);
 
-		JButton sBtnPdChange = new JButton("\uC7AC\uACE0\uC218\uC815");
+		JButton userDelete = new JButton("\uC720\uC800\uC0AD\uC81C");
+		userDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		userDelete.setBackground(new Color(0, 0, 128));
+		userDelete.setForeground(new Color(255, 255, 255));
+		userDelete.setFont(new Font("맑은 고딕", Font.BOLD, 20));
+		userDelete.setBounds(0, 260, 164, 120);
+		pSellFunction.add(userDelete);
+
+		JButton sBtnPdChange = new JButton("\uCD9C\uACB0");
 		sBtnPdChange.setBackground(new Color(100, 149, 237));
 		sBtnPdChange.setForeground(new Color(255, 255, 255));
 		sBtnPdChange.setFont(new Font("맑은 고딕", Font.BOLD, 20));
 		sBtnPdChange.setBounds(0, 390, 164, 120);
 		pSellFunction.add(sBtnPdChange);
 
-		JButton sBtnPdCancel = new JButton("\uC7AC\uACE0\uC0AD\uC81C");
-		sBtnPdCancel.addActionListener(new ActionListener() {
+		JButton logout = new JButton("\uB85C\uADF8\uC544\uC6C3");
+		logout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		sBtnPdCancel.setBackground(new Color(0, 0, 128));
-		sBtnPdCancel.setForeground(new Color(255, 255, 255));
-		sBtnPdCancel.setFont(new Font("맑은 고딕", Font.BOLD, 20));
-		sBtnPdCancel.setBounds(0, 520, 164, 120);
-		pSellFunction.add(sBtnPdCancel);
+		logout.setBackground(new Color(255, 69, 0));
+		logout.setForeground(new Color(255, 255, 255));
+		logout.setFont(new Font("맑은 고딕", Font.BOLD, 20));
+		logout.setBounds(0, 520, 164, 120);
+		pSellFunction.add(logout);
 
 		JPanel pMonitor = new JPanel();
+		pMonitor.setSize(new Dimension(1144, 533));
 		pMonitor.setBackground(new Color(255, 255, 255));
-		pMonitor.setBounds(0, 50, 1144, 535);
+		pMonitor.setBounds(0, 50, 1144, 533);
 		contentPane.add(pMonitor);
 		pMonitor.setLayout(new CardLayout(0, 0));
+
+		tm = new DefaultTableModel(data, colName);
+		table = new JTable(tm);
 		
-		
-		mBtnAccount.addActionListener(this);
+		table.setRowHeight(60);
+		tableCellCenter(table);
+		table.getColumn("유저코드").setPreferredWidth(5);
+		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane.setBounds(0, 0, 1144, 533);
+		pMonitor.add(scrollPane, "name_6176959994573");
+
+		userDelete.addActionListener(this);
+		logout.addActionListener(this);
+		userInsert.addActionListener(this);
+//		DefaultTableCellRenderer celAlignCenter = new DefaultTableCellRenderer();
+//		celAlignCenter.setHorizontalAlignment(table);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object ob = e.getActionCommand();
+		
+		if(ob.equals("유저등록")) {
+			DefaultTableModel tm = (DefaultTableModel) table.getModel();
+			String add[] = {"1", "김의연", "주간"};
+			tm.addRow(add);
+		}
+		
+		if (ob.equals("유저삭제")) {
+			// 테이블에서 내가 선택한 행번호
+			int number = table.getSelectedRow();
+//			System.out.println(number);
+			DefaultTableModel tm = (DefaultTableModel) table.getModel();
+				if(number >= 0 && number < table.getRowCount()) {
+					tm.removeRow(number);
+				}
+			if (ob.equals("로그아웃")) {
+				showFrame();
+				
+			}
 
-		if (ob.equals("계정")) {
-			showFrameTest();
 		}
 
 	}
