@@ -30,8 +30,7 @@ public class MainFrame extends JFrame implements ActionListener {
 	private JTextField notice;
 	
 	ForcePos frame;
-	MainFrame frame1;
-	Administrator frame2 = new Administrator();
+	Administrator adframe = new Administrator();
 
 	/**
 	 * Launch the application.
@@ -58,7 +57,8 @@ public class MainFrame extends JFrame implements ActionListener {
 	public void showFrameTest() {
 //		frame1.setVisible(true);
 //		frame.dispose();
-		frame2.setVisible(true);
+		this.setVisible(false);
+		adframe.setVisible(true);
 	}
 
 	public MainFrame() {
