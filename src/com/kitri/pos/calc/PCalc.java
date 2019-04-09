@@ -7,16 +7,15 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.ListSelectionModel;
 
-public class PCalc extends JPanel {
+public class pCalc extends JPanel {
 
 	private JTable cashTable;
 	private JTextField tfCashState;
@@ -26,32 +25,36 @@ public class PCalc extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public PCalc() {
+	public pCalc() {
 
-		setBackground(new Color(255, 255, 255));
-		setBounds(0, 50, 1144, 535);
-		setLayout(null);
+		JPanel pMonitor = new JPanel();
+		pMonitor.setBackground(new Color(255, 255, 255));
+		pMonitor.setBounds(0, 50, 1144, 535);
+//		contentPane.add(pMonitor);
+		pMonitor.setLayout(new CardLayout(0, 0));
+
+		JPanel pCalc = new JPanel();
+		pMonitor.add(pCalc, "name_51446151219700");
+		pCalc.setLayout(null);
 
 		JPanel pCashstate = new JPanel();
 		pCashstate.setBounds(12, 10, 533, 515);
-		add(pCashstate);
+		pCalc.add(pCashstate);
 
-		String[] header = new String[] { "권종", "매수", "금액" };
+		String[] headings = new String[] { "권종", "매수", "금액" };
 		Object[][] data = new Object[][] { { 50000, 0, 0 }, { 10000, "0", 0 }, { 5000, "0", 0 }, { 1000, "0", 0 },
 				{ 500, "0", 0 }, { 100, "0", 0 }, { 50, "0", 0 }, { 10, "0", 0 } };
 
-		DefaultTableModel calcModel = new DefaultTableModel(data, header);
-		cashTable = new JTable(calcModel);
-		cashTable.setRowHeight(64);
-		cashTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		cashTable = new JTable(data, headings);
 		cashTable.setFont(new Font("굴림", Font.PLAIN, 20));
 		pCashstate.add(cashTable);
 		cashTable.setPreferredSize(new Dimension(533, 515));
 		cashTable.setFillsViewportHeight(true);
+//		cashTable.setBounds(0,0,533,515);
 
 		JPanel pcalcmain = new JPanel();
 		pcalcmain.setBounds(557, 10, 575, 515);
-		add(pcalcmain);
+		pCalc.add(pcalcmain);
 		pcalcmain.setLayout(null);
 
 		JPanel pNum = new JPanel();
@@ -171,13 +174,12 @@ public class PCalc extends JPanel {
 		tfCashCheck.setColumns(10);
 
 		tfCalcResult = new JTextField(
-				String.valueOf(Integer.parseInt(tfCashCheck.getText())- (Integer.parseInt(tfCashState.getText())))); // '-'부호가
+				String.valueOf((Integer.parseInt(tfCashState.getText()) - Integer.parseInt(tfCashCheck.getText())))); // '-'부호가
 																														// 뜨질
 																														// 않음
 		tfCalcResult.setEnabled(false);
 		panel_2.add(tfCalcResult);
 		tfCalcResult.setColumns(10);
-
 	}
 
 }

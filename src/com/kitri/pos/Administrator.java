@@ -17,6 +17,7 @@ public class Administrator extends JFrame implements ActionListener {
 	private DefaultTableModel tm;
 	private JTable table;
 	Administrator administrator;
+	PosDto posdto;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -226,6 +227,10 @@ public class Administrator extends JFrame implements ActionListener {
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(0, 0, 1144, 533);
 		pMonitor.add(scrollPane, "name_6176959994573");
+		
+		JPanel panel = new JPanel();
+		pMonitor.add(panel, "name_39053666565740");
+		panel.setLayout(null);
 
 		userDelete.addActionListener(this);
 		logout.addActionListener(this);
@@ -239,9 +244,13 @@ public class Administrator extends JFrame implements ActionListener {
 		Object ob = e.getActionCommand();
 		
 		if(ob.equals("유저등록")) {
-			DefaultTableModel tm = (DefaultTableModel) table.getModel();
-			String add[] = {"1", "김의연", "주간"};
-			tm.addRow(add);
+//			DefaultTableModel tm = (DefaultTableModel) table.getModel();
+//			String add[] = {"1", "김의연", "주간"};
+//			tm.addRow(add);
+			
+			UserDao userdao = new UserDao();
+			userdao.register(posdto);
+			
 		}
 		
 		if (ob.equals("유저삭제")) {

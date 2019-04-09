@@ -1,4 +1,3 @@
-//test
 package com.kitri.pos.calc;
 
 import java.awt.BorderLayout;
@@ -41,8 +40,7 @@ public class Calc extends JFrame {
 	private JTextField tfCashState;
 	private JTextField tfCashCheck;
 	private JTextField tfCalcResult;
-	
-	
+
 	/**
 	 * Launch the application.
 	 */

@@ -55,7 +55,6 @@ public class Payment_1 extends JFrame {
 		contentPane.add(payment_1, BorderLayout.CENTER);
 		payment_1.setLayout(null);
 		
-		
 		tfP1SM = new JTextField();
 		tfP1SM.setText("\uD560\uC778\uC801\uC6A9\uB418\uC5C8\uC2B5\uB2C8\uB2E4.");
 		tfP1SM.setBounds(150, 20, 300, 30);

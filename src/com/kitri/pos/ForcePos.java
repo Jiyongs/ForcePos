@@ -232,6 +232,7 @@ public class ForcePos extends JFrame implements ActionListener {
 	public void showFrameTest() {
 		main = new MainFrame();
 		main.setVisible(true);
+		this.setVisible(false);
 //		dispose();
 	}
 
@@ -259,15 +260,17 @@ public class ForcePos extends JFrame implements ActionListener {
 
 	}
 
-	public boolean isId() {
-		userTf.getText().equals("개나리");
-		return true;
-	}
+//	public boolean isId() {
+//		userTf.getText().equals("개나리");
+//		return true;
+//	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object ob = e.getSource();
+		
 		boolean id = userTf.getText().equals("개나리");
+		boolean pass = passTf.getText().equals("1234");
 
 		// TODO 텍스트필드에서 마우스클릭 시 필드 초기화 진행해야함
 //		if () {
@@ -282,7 +285,7 @@ public class ForcePos extends JFrame implements ActionListener {
 			isLoginCheck();
 		}
 
-		if (ob == passTf) {
+		if (pass) {
 			isLoginCheck();
 		}
 
