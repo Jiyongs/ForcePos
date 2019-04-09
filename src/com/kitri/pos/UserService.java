@@ -1,5 +1,10 @@
 package com.kitri.pos;
 
-public class UserService {
+public interface UserService {
 
+	
+	
+	
+	
+	
 }
