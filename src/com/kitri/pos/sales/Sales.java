@@ -17,7 +17,7 @@ public class Sales extends JFrame implements ActionListener{
 	ViewSalesInput viewSalesInput = new ViewSalesInput();
 	ViewSalesChange viewSalesChange = new ViewSalesChange();
 	DealCancel dealCancel = new DealCancel();
-
+	Payment_1 payment_1 = new Payment_1();
 //	카드레이아웃 다른 클래스에서 쓰기 위해 전역 변수로 지정
 	CardLayout cardLayout = new CardLayout();
 //	카드레이아웃에 사용할 버튼 전역 변수 지정
@@ -53,7 +53,7 @@ public class Sales extends JFrame implements ActionListener{
 	public Sales() {
 		setFont(new Font("맑은 고딕", Font.BOLD, 20));
 		setTitle("Force.pos");
-		setAlwaysOnTop(true);
+		setAlwaysOnTop(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1326, 753);
 		contentPane = new JPanel();
@@ -254,8 +254,11 @@ public class Sales extends JFrame implements ActionListener{
 			cardLayout.show(pMonitor, "ViewSalesChange");
 		} else if (ob == sBtnCancel) {
 			dealCancel.setVisible(true);
-		}
+		} else if (ob == sBtnPay) {
+			payment_1.setVisible(true);
 
 	}
 
+}
+	
 }
