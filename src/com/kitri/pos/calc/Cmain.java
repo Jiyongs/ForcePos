@@ -227,7 +227,8 @@ public class Cmain extends JFrame implements ActionListener {
 		Object ob = e.getSource();
 		if(ob == mBtnCalc) {
 			card.show(pMonitor,"calc");
-			System.out.println("¿Ã∞«µ ");
+			
+			
 		}
 	}
 }
