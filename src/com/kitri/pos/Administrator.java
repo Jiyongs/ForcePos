@@ -3,11 +3,15 @@ package com.kitri.pos;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.*;
+
+import com.sun.org.apache.bcel.internal.classfile.PMGClass;
+
 import javax.swing.border.EmptyBorder;
 
 import java.awt.event.ActionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import javax.swing.border.LineBorder;
 
 public class Administrator extends JFrame implements ActionListener {
 
@@ -18,6 +22,11 @@ public class Administrator extends JFrame implements ActionListener {
 	private JTable table;
 	Administrator administrator;
 	PosDto posdto;
+	private JTextField userTf;
+	private JPasswordField passTf;
+	private JTextField nameTf;
+	JPanel pMonitor;
+	
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -168,7 +177,7 @@ public class Administrator extends JFrame implements ActionListener {
 		userInsert.setForeground(new Color(255, 255, 255));
 		userInsert.setBackground(new Color(0, 0, 128));
 		userInsert.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 20));
-		userInsert.setBounds(0, 0, 164, 120);
+		userInsert.setBounds(0, 10, 164, 120);
 		pSellFunction.add(userInsert);
 
 		JButton userUpdate = new JButton("\uC720\uC800\uC218\uC815");
@@ -211,7 +220,7 @@ public class Administrator extends JFrame implements ActionListener {
 		logout.setBounds(0, 520, 164, 120);
 		pSellFunction.add(logout);
 
-		JPanel pMonitor = new JPanel();
+		pMonitor = new JPanel();
 		pMonitor.setSize(new Dimension(1144, 533));
 		pMonitor.setBackground(new Color(255, 255, 255));
 		pMonitor.setBounds(0, 50, 1144, 533);
@@ -229,8 +238,49 @@ public class Administrator extends JFrame implements ActionListener {
 		pMonitor.add(scrollPane, "name_6176959994573");
 		
 		JPanel panel = new JPanel();
+		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		pMonitor.add(panel, "name_39053666565740");
 		panel.setLayout(null);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panel_1.setBounds(306, 23, 540, 477);
+		panel.add(panel_1);
+		panel_1.setLayout(new GridLayout(8, 1, 0, 0));
+		
+		JLabel userIdLabel = new JLabel("\uC720\uC800ID");
+		userIdLabel.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
+		panel_1.add(userIdLabel);
+		
+		userTf = new JTextField();
+		panel_1.add(userTf);
+		userTf.setColumns(10);
+		
+		JLabel passWLabel_1 = new JLabel("\uD328\uC2A4\uC6CC\uB4DC");
+		passWLabel_1.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
+		panel_1.add(passWLabel_1);
+		
+		passTf = new JPasswordField();
+		panel_1.add(passTf);
+		passTf.setColumns(10);
+		
+		JLabel lblNewLabel_2 = new JLabel("\uC774\uB984");
+		lblNewLabel_2.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
+		panel_1.add(lblNewLabel_2);
+		
+		nameTf = new JTextField();
+		panel_1.add(nameTf);
+		nameTf.setColumns(10);
+		
+		JLabel lblNewLabel_3 = new JLabel("\uAD8C\uD55C");
+		lblNewLabel_3.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
+		panel_1.add(lblNewLabel_3);
+		
+		
+//		String authority [] = {"°ü¸®ÀÚ", "Á÷¿ø"};
+		JComboBox<String> jComboBox = new JComboBox<String>();
+		//±ÇÇÑ¹è¿­ 
+		panel_1.add(jComboBox);
 
 		userDelete.addActionListener(this);
 		logout.addActionListener(this);
@@ -247,9 +297,10 @@ public class Administrator extends JFrame implements ActionListener {
 //			DefaultTableModel tm = (DefaultTableModel) table.getModel();
 //			String add[] = {"1", "±èÀÇ¿¬", "ÁÖ°£"};
 //			tm.addRow(add);
-			
 			UserDao userdao = new UserDao();
-			userdao.register(posdto);
+			userdao.registerMenu();
+//			userdao.register(posdto);	
+			
 			
 		}
 		

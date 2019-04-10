@@ -4,9 +4,8 @@ public class PosDto {
 
 	// 필드 선언
 
-	private int userCode; // 유저코드
+	private int USER_CODE; // 유저코드
 	private String name; // 이름
-
 	private String attendCode; // 출결코드
 	private String loginTime; // 출근시간
 	private String logoutTime; // 퇴근시간
@@ -56,11 +55,11 @@ public class PosDto {
 	}
 
 	public int getUserCode() {
-		return userCode;
+		return USER_CODE;
 	}
 
-	public void setUserCode(int userCode) {
-		this.userCode = userCode;
+	public void setUserCode(int USER_CODE) {
+		this.USER_CODE = USER_CODE;
 	}
 
 	public String getAttendCode() {
