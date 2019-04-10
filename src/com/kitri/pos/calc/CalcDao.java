@@ -2,13 +2,15 @@ package com.kitri.pos.calc;
 
 import java.sql.*;
 
-public class CalcDao {
-//	DB¿¬°á»óÅÂ¸¦ ´ãÀº °´Ã¼
+public class CalcDao  {
+	
+	PCalc pCalc = new PCalc();
+//	DBï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼
 	Connection conn = null;
-//	Äõ¸®¹® »ç¿ëÇÏ´Â state°´Ã¼
+//	ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ stateï¿½ï¿½Ã¼
 	Statement st = null;
 	ResultSet rs = null;
-//	Äõ¸®¹®¿¡ º¯¼ö ³ÖÀ» ¶§ »ç¿ëÇÏ´Â state°´Ã¼
+//	ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ stateï¿½ï¿½Ã¼
 	PreparedStatement pstm = null;
 
 	public CalcDao() {
@@ -21,10 +23,10 @@ public class CalcDao {
 		
 		try {
 			conn = getConnection();
-			String query = "select sum(cash_price) from history where to_char(sell_date,'yyyy.mm') = to_char(sysdate, 'yyyy.mm')";
+			String query = "select sum(cash_price)  from history where to_char(sell_date,'yyyy.mm.dd') = to_char(sysdate, 'yyyy.mm.dd')";
 			st = conn.createStatement();
 			rs = st.executeQuery(query);
-			tfCashState = rs;
+			pCalc.tfCashState.setText(rs.getString("sum(cash_price)"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -44,9 +46,9 @@ public class CalcDao {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			conn =DriverManager.getConnection(url, user, pw);
 			
-			System.out.println("Database¿¡ ¿¬°áµÇ¾ú½À´Ï´Ù.\n");
+			System.out.println("Databaseï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.\n");
 		} catch (ClassNotFoundException e) {
-			System.out.print("DB µå¶óÀÌ¹ö ·Îµù ½ÇÆÐ : ");
+			System.out.print("DB ï¿½ï¿½ï¿½ï¿½Ì¹ï¿½ ï¿½Îµï¿½ ï¿½ï¿½ï¿½ï¿½ : ");
 			e.printStackTrace();
 		} catch (SQLException e) {
 			System.out.println("Unkonwn error");

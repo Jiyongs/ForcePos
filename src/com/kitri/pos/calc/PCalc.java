@@ -6,7 +6,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -14,47 +14,58 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
 
-public class pCalc extends JPanel {
+public class PCalc extends JPanel {
 
+//	Vector<String> type = new Vector<String>();
+	DefaultTableModel model;
+//	Vector<String> cnt;
+//	Vector<String> total;
+	
+	
+	static String[][] data;
 	private JTable cashTable;
-	private JTextField tfCashState;
+	public JTextField tfCashState;
 	private JTextField tfCashCheck;
 	private JTextField tfCalcResult;
+
+
+	JButton btnCalc_Input;
 
 	/**
 	 * Create the panel.
 	 */
-	public pCalc() {
+	public PCalc() {
 
-		JPanel pMonitor = new JPanel();
-		pMonitor.setBackground(new Color(255, 255, 255));
-		pMonitor.setBounds(0, 50, 1144, 535);
-//		contentPane.add(pMonitor);
-		pMonitor.setLayout(new CardLayout(0, 0));
+		setBackground(new Color(255, 255, 255));
+		setBounds(0, 50, 1144, 535);
 
-		JPanel pCalc = new JPanel();
-		pMonitor.add(pCalc, "name_51446151219700");
-		pCalc.setLayout(null);
-
+		String[] header = new String[] { "ê¶Œì¢…", "ìˆ˜ëŸ‰", "ê¸ˆì•¡" };
+		
+		data = new String[][] { { "50000", "", "0" }, { "10000", "", "0" }, { "5000", "", "0" }, { "1000", "", "0" }, { "500", "", "0" },
+				{ "100", "", "0" }, { "50", "", "0" }, { "10", "", "0" } };
+		
+				
+		
+		
+		setLayout(null);
 		JPanel pCashstate = new JPanel();
 		pCashstate.setBounds(12, 10, 533, 515);
-		pCalc.add(pCashstate);
-
-		String[] headings = new String[] { "±ÇÁ¾", "¸Å¼ö", "±Ý¾×" };
-		Object[][] data = new Object[][] { { 50000, 0, 0 }, { 10000, "0", 0 }, { 5000, "0", 0 }, { 1000, "0", 0 },
-				{ 500, "0", 0 }, { 100, "0", 0 }, { 50, "0", 0 }, { 10, "0", 0 } };
-
-		cashTable = new JTable(data, headings);
-		cashTable.setFont(new Font("±¼¸²", Font.PLAIN, 20));
+		add(pCashstate);
+		
+	
+		model = new DefaultTableModel(data,header);
+		cashTable = new JTable(model);
+		cashTable.setFont(new Font("ï¿½ï¿½ï¿½ï¿½", Font.PLAIN, 20));
 		pCashstate.add(cashTable);
 		cashTable.setPreferredSize(new Dimension(533, 515));
 		cashTable.setFillsViewportHeight(true);
-//		cashTable.setBounds(0,0,533,515);
+		 cashTable.setBounds(0,0,533,515);
 
 		JPanel pcalcmain = new JPanel();
 		pcalcmain.setBounds(557, 10, 575, 515);
-		pCalc.add(pcalcmain);
+		add(pcalcmain);
 		pcalcmain.setLayout(null);
 
 		JPanel pNum = new JPanel();
@@ -174,9 +185,9 @@ public class pCalc extends JPanel {
 		tfCashCheck.setColumns(10);
 
 		tfCalcResult = new JTextField(
-				String.valueOf((Integer.parseInt(tfCashState.getText()) - Integer.parseInt(tfCashCheck.getText())))); // '-'ºÎÈ£°¡
-																														// ¶ßÁú
-																														// ¾ÊÀ½
+				String.valueOf((Integer.parseInt(tfCashState.getText()) - Integer.parseInt(tfCashCheck.getText())))); // '-'ï¿½ï¿½È£ï¿½ï¿½
+		// ï¿½ï¿½ï¿½ï¿½
+		// ï¿½ï¿½ï¿½ï¿½
 		tfCalcResult.setEnabled(false);
 		panel_2.add(tfCalcResult);
 		tfCalcResult.setColumns(10);
