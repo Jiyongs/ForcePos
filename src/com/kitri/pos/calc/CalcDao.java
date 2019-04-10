@@ -2,8 +2,8 @@ package com.kitri.pos.calc;
 
 import java.sql.*;
 
-public class CalcDao  {
-	
+public class CalcDao {
+
 	PCalc pCalc = new PCalc();
 //	DB������¸� ���� ��ü
 	Connection conn = null;
@@ -14,13 +14,12 @@ public class CalcDao  {
 	PreparedStatement pstm = null;
 
 	public CalcDao() {
-	super();
-	
+		super();
+
 	}
-	
+
 	public void inputComs_Calc() {
-		
-		
+
 		try {
 			conn = getConnection();
 			String query = "select sum(cash_price)  from history where to_char(sell_date,'yyyy.mm.dd') = to_char(sysdate, 'yyyy.mm.dd')";
@@ -30,23 +29,40 @@ public class CalcDao  {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		
+
+		finally {
+
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (st != null) {
+					st.close();
+				}
+				if (conn != null) {
+				}
+				conn.close();
+
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
+
+		}
+
 	}
-	
-	
-	
+
 	public Connection getConnection() {
-	
+
 		String user = "kitri";
 		String pw = "kitri";
 		String url = "jdbc:oracle:thin:@localhost:1521:orcl";
-		
+
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn =DriverManager.getConnection(url, user, pw);
-			
-			System.out.println("Database�� ����Ǿ����ϴ�.\n");
+			conn = DriverManager.getConnection(url, user, pw);
+
+			System.out.println("Database가 연결되었습니다..\n");
 		} catch (ClassNotFoundException e) {
 			System.out.print("DB ����̹� �ε� ���� : ");
 			e.printStackTrace();
@@ -54,20 +70,9 @@ public class CalcDao  {
 			System.out.println("Unkonwn error");
 			e.printStackTrace();
 		}
-		
-		
-		return conn;
-			
-			
-		}
-		
-	
-}
-	
-	
-	
-	
-	
-	
-	
 
+		return conn;
+
+	}
+
+}
