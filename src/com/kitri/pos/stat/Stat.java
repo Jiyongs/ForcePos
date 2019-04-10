@@ -1,41 +1,27 @@
 package com.kitri.pos.stat;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import java.awt.Font;
-import javax.swing.SwingConstants;
-import java.awt.Color;
-import javax.swing.JButton;
-import java.awt.CardLayout;
-import java.awt.event.ActionListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
+/*
+	Stat : 통계 임시 메인 프레임
+*/
 
 public class Stat extends JFrame implements ActionListener{
-
 
 	private JPanel contentPane;
 	private JTextField notice;
 	private JPanel pMonitor;
 	
 	// 카드레이아웃 패널에 붙일 다른 클래스의 패널 4개 생성
-	ViewStatProduct v1 = new ViewStatProduct();
-	ViewStatYear v2 = new ViewStatYear();
-	ViewStatMonth v3 = new ViewStatMonth();
-	ViewStatDay v4 = new ViewStatDay();
+	ViewStatProduct v1 = new ViewStatProduct();    //상품별 패널
+	ViewStatYear v2 = new ViewStatYear();             //연도별 패널
+	ViewStatMonth v3 = new ViewStatMonth();       //월별 패널
+	ViewStatDay v4 = new ViewStatDay();               //일별 패널
 		
 	// 카드레이아웃의 화면 전환 메소드를 다른 클래스에서 쓰기 위해, 전역으로 생성
 	CardLayout card = new CardLayout();
@@ -197,7 +183,7 @@ public class Stat extends JFrame implements ActionListener{
 		pMonitor.setBounds(0, 50, 1144, 535);
 		contentPane.add(pMonitor);
 		
-		/////////////////////////////////////////////
+		/////////////////////////////////////////////////////////////////////////////////
 		// 패널의 레이아웃을 카드레이아웃으로 설정하기
 		pMonitor.setLayout(card);
 		// 패널에 v1~v4를 붙이면서 각자에 이름 지정
@@ -206,10 +192,10 @@ public class Stat extends JFrame implements ActionListener{
 		pMonitor.add("viewStatMonth", v3);
 		pMonitor.add("viewStatDay", v4);
 		
-		// 패널에 처음 보여줄 패널 지정해보기 (상품별 통계)
+		// 처음 보여줄 디폴트 패널 지정 (상품별 통계)
 		card.show(pMonitor, "viewStatProduct");
 		
-		//버튼1,2의 이벤트 등록
+		//오른쪽 버튼들의 이벤트 등록
 		sBtnProduct.addActionListener(this);
 		sBtnYear.addActionListener(this);
 		sBtnMonth.addActionListener(this);

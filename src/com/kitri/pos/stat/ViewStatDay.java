@@ -1,17 +1,17 @@
 package com.kitri.pos.stat;
 
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
 import java.awt.Font;
-import javax.swing.JTable;
+import java.util.ArrayList;
+import java.util.Vector;
+
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JRadioButton;
-import java.awt.BorderLayout;
-import javax.swing.BoxLayout;
+
+import com.kitri.pos.PosDto;
+
+/*
+	ViewStatDay : 일별 통계 패널
+*/
 
 public class ViewStatDay extends JPanel {
 	private JTable tableResult;
@@ -71,14 +71,33 @@ public class ViewStatDay extends JPanel {
 		add(spShowTable);
 		
 		//[테이블]	
-		//임시 테이블 모델 생성
-		String header[] = {"매출날짜", "매출합계", "순매출", "부가세", "현금매출", "카드매출", "고객수"};
-		String contents[][] = {
-					{"2019-01-25", "632,000", "590,000", "59,000", "230,000", "402,000", "50"}
-				};
+		// TODO findDaySell()의 인자값을 필드에서 받아오면 됨 & 조회 버튼 생성 후 이벤트 지정한 곳에서 수행
+		StatDao statDao = new StatDao();
+		PosDto result = statDao.findDaySell("2020", "08", "12"); // DB select 결과 저장 변수
+		Vector<String> col = new Vector<String>();    // 열
+		Vector<String> data = new Vector<String>();  // 행
+
+		// 테이블 열 세팅
+		col.add("매출날짜");
+		col.add("매출합계");
+		col.add("부가세");
+		col.add("현금매출");
+		col.add("카드매출");
+		col.add("고객수");
 		
-		DefaultTableModel tmodel = new DefaultTableModel(contents, header);
+		DefaultTableModel tmodel = new DefaultTableModel(col, 0);
 		
+		// 테이블 행 세팅
+		data.addElement(result.getSellDate());
+		data.addElement(Integer.toString(result.getStatTotalPrice()));
+		data.addElement(Integer.toString(result.getTotalTax()));
+		data.addElement(Integer.toString(result.getCashPrice()));
+		data.addElement(Integer.toString(result.getCardPrice()));
+		data.addElement(Integer.toString(result.getCustomerCount()));
+		
+		tmodel.addRow(data);
+		
+		// 테이블 보이기
 		tableResult = new JTable(tmodel);
 		spShowTable.setViewportView(tableResult);
 		

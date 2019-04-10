@@ -1,16 +1,14 @@
 package com.kitri.pos.stat;
 
-import javax.swing.JPanel;
-import javax.swing.JLabel;
 import java.awt.Font;
-import javax.swing.JSpinner;
-import javax.swing.JComboBox;
-import javax.swing.JButton;
-import javax.swing.JTable;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
+
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.JTextArea;
+
+/*
+	ViewStatProduct : 상품별 통계 패널
+*/
+
 
 public class ViewStatProduct extends JPanel {
 	private JTable tableResult;

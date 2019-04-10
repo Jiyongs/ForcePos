@@ -45,6 +45,42 @@ public class PosDto {
 	private String discountCode; // 할인코드
 	private String membershipId; // 맴버쉽아이디
 	// =====================================//
+	private int ranking;           // 매출순위
+	private int statTotalPrice;   // 매출합계
+	private int totalTax;           // 부가세합계
+	private int customerCount; // 고객수
+
+	public int getRanking() {
+		return ranking;
+	}
+
+	public void setRanking(int ranking) {
+		this.ranking = ranking;
+	}
+
+	public int getStatTotalPrice() {
+		return statTotalPrice;
+	}
+
+	public void setStatTotalPrice(int statTotalPrice) {
+		this.statTotalPrice = statTotalPrice;
+	}
+
+	public int getTotalTax() {
+		return totalTax;
+	}
+
+	public void setTotalTax(int totalTax) {
+		this.totalTax = totalTax;
+	}
+
+	public int getCustomerCount() {
+		return customerCount;
+	}
+
+	public void setCustomerCount(int customerCount) {
+		this.customerCount = customerCount;
+	}
 
 	public String getName() {
 		return name;

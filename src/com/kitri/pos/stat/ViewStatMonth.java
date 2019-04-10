@@ -1,15 +1,13 @@
 package com.kitri.pos.stat;
 
-import javax.swing.JPanel;
-import javax.swing.JLabel;
 import java.awt.Font;
-import javax.swing.JSpinner;
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JTable;
+
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
+
+/*
+	ViewStatMonth : 월별 통계 패널
+*/
 
 public class ViewStatMonth extends JPanel {
 	private JTable tableResult;
