@@ -2,11 +2,14 @@ package com.kitri.pos.calc;
 
 
 import java.awt.BorderLayout;
+import java.awt.Button;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.CellEditorListener;
+import javax.swing.event.ChangeEvent;
 
 import com.kitri.pos.ForcePos;
 
@@ -27,7 +30,7 @@ import java.awt.CardLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class Cmain extends JFrame implements ActionListener {
+public class Cmain extends JFrame {
 
 
 	/**
@@ -42,8 +45,8 @@ public class Cmain extends JFrame implements ActionListener {
 	Cmain frame1;
 	CardLayout card = new CardLayout();
 	JPanel pMonitor;
-	PCalc pCalc = new PCalc();
-	CalcService calcService = new CalcService(pCalc);
+	static PCalc pCalc;
+	CalcService calcService;
 	
 	JButton mBtnCalc;
 	
@@ -217,25 +220,39 @@ public class Cmain extends JFrame implements ActionListener {
 		
 		pMonitor = new JPanel();
 
+		pCalc = new PCalc();
 		pMonitor.setBackground(new Color(255, 255, 255));
 		pMonitor.setBounds(0, 50, 1144, 535);
 		contentPane.add(pMonitor);
 		pMonitor.setLayout(card);
 		pMonitor.add("Calc",pCalc);
 		card.show(pMonitor,"Calc");
-		mBtnCalc.addActionListener(this);
-		pCalc.btnCalc_Input.addActionListener(this);
+		
+		
+		calcService = new CalcService(this);
+		
+		mBtnCalc.addActionListener(calcService);
+		pCalc.btnCalc_0.addActionListener(calcService);
+		pCalc.btnCalc_1.addActionListener(calcService);
+		pCalc.btnCalc_2.addActionListener(calcService);
+		pCalc.btnCalc_3.addActionListener(calcService);
+		pCalc.btnCalc_4.addActionListener(calcService);
+		pCalc.btnCalc_5.addActionListener(calcService);
+		pCalc.btnCalc_6.addActionListener(calcService);
+		pCalc.btnCalc_7.addActionListener(calcService);
+		pCalc.btnCalc_8.addActionListener(calcService);
+		pCalc.btnCalc_9.addActionListener(calcService);
+		pCalc.btnCalc_00.addActionListener(calcService);
+		pCalc.btnCalc_Input.addActionListener(calcService);
+		pCalc.btnCalc_del.addActionListener(calcService);
+		pCalc.btnCalc_C.addActionListener(calcService);
+		pCalc.btnCalc_Apply.addActionListener(calcService);
+		pCalc.btnCalc_Cancel.addActionListener(calcService);
+		
+		
+	
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		Object ob = e.getSource();
-		if(ob == mBtnCalc) {
-			
-			card.show(pMonitor,"Calc");
-		}else if(ob == pCalc.btnCalc_Input) {
-		
-			
-		}
-	}
+
+	
 }
