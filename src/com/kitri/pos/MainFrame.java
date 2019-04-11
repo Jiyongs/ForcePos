@@ -39,8 +39,8 @@ public class MainFrame extends JFrame implements ActionListener {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainFrame frame1 = new MainFrame();
-					frame1.setVisible(true);
+					MainFrame frame = new MainFrame();
+					frame.setVisible(true);
 //					Administrator frame2 = new Administrator();
 //					frame2.setVisible(true);
 				} catch (Exception e) {
@@ -54,6 +54,7 @@ public class MainFrame extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 
+	//계정창 보여주세요~
 	public void showFrameTest() {
 //		frame1.setVisible(true);
 //		frame.dispose();

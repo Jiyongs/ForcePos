@@ -4,8 +4,7 @@ public class PosDto {
 
 	// 필드 선언
 
-	private int USER_CODE; // 유저코드
-	private String name; // 이름
+	private int userCode; // 유저코드
 	private String attendCode; // 출결코드
 	private String loginTime; // 출근시간
 	private String logoutTime; // 퇴근시간
@@ -43,59 +42,26 @@ public class PosDto {
 	private String inDate; // 입고날짜
 	private int totalPrice;
 	private String discountCode; // 할인코드
-	private String membershipId; // 맴버쉽아이디
 	// =====================================//
-	private int ranking;           // 매출순위
-	private int statTotalPrice;   // 매출합계
-	private int totalTax;           // 부가세합계
-	private int customerCount; // 고객수
 
-	public int getRanking() {
-		return ranking;
+	private String membershipId; // 맴버쉽아이디
+	private String memberName; //멤버쉽 회원 이름
+
+
+	public String getMemberName() {
+		return memberName;
 	}
 
-	public void setRanking(int ranking) {
-		this.ranking = ranking;
-	}
-
-	public int getStatTotalPrice() {
-		return statTotalPrice;
-	}
-
-	public void setStatTotalPrice(int statTotalPrice) {
-		this.statTotalPrice = statTotalPrice;
-	}
-
-	public int getTotalTax() {
-		return totalTax;
-	}
-
-	public void setTotalTax(int totalTax) {
-		this.totalTax = totalTax;
-	}
-
-	public int getCustomerCount() {
-		return customerCount;
-	}
-
-	public void setCustomerCount(int customerCount) {
-		this.customerCount = customerCount;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
+	public void setMemberName(String memberName) {
+		this.memberName = memberName;
 	}
 
 	public int getUserCode() {
-		return USER_CODE;
+		return userCode;
 	}
 
-	public void setUserCode(int USER_CODE) {
-		this.USER_CODE = USER_CODE;
+	public void setUserCode(int userCode) {
+		this.userCode = userCode;
 	}
 
 	public String getAttendCode() {
@@ -385,5 +351,6 @@ public class PosDto {
 	public void setDiscountCode(String discountCode) {
 		this.discountCode = discountCode;
 	}
+
 
 }
