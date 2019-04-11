@@ -1,7 +1,7 @@
 package com.kitri.pos.stat;
 
 import java.sql.*;
-import java.util.ArrayList;
+import java.util.Vector;
 
 import com.kitri.pos.PosDto;
 import com.kitri.pos.db.DBManager;
@@ -29,12 +29,12 @@ public class StatDao {
 	//////////////////////////////// 상품별 통계 ////////////////////////////////
 	// <상품별 매출내역 select> 메소드
 	// : 소분류, 년, 월 입력받아 매출합계 랭킹순으로 조회
-	public ArrayList<PosDto> findProductSell(String minor_level, String year, String month) {
+	public Vector<PosDto> findProductSell(String minor_level, String year, String month) {
 
 		// 쿼리문 결과 (여러 행) 담을 PosDto 객체
-		ArrayList<PosDto> list = new ArrayList<PosDto>();
+		Vector<PosDto> list = new Vector<PosDto>();
 
-		int date = Integer.parseInt(year.concat(month));
+		int date = Integer.parseInt(year.concat(month).concat("01"));
 		try {
 			// DB 연결
 			conn = DBManager.getConnection();
@@ -63,7 +63,7 @@ public class StatDao {
 				posDto.setProductName(rs.getString(4));
 				posDto.setPrice(rs.getInt(5));
 				posDto.setPurchase(rs.getInt(6));
-				posDto.setVolume(rs.getInt(7));
+				posDto.setSellCount(rs.getInt(7));
 				posDto.setStatTotalPrice(rs.getInt(8));
 				posDto.setCompany(rs.getString(9));
 
@@ -87,12 +87,12 @@ public class StatDao {
 
 	// <상품별 매출내역 BEST 5 select> 메소드
 	// : 소분류, 년, 월 입력받아 매출합계 랭킹 상위 5위까지 조회
-	public ArrayList<PosDto> findProductSellBestFive(String minor_level, String year, String month) {
+	public Vector<PosDto> findProductSellBestFive(String minor_level, String year, String month) {
 		// 쿼리문 결과 (여러 행) 담을 PosDto 객체
-		ArrayList<PosDto> list = new ArrayList<PosDto>();
+		Vector<PosDto> list = new Vector<PosDto>();
 
 		// String으로 입력한 날짜를 '년월' 합쳐서 int로 변환
-		int date = Integer.parseInt(year.concat(month));
+		int date = Integer.parseInt(year.concat(month).concat("01"));
 		try {
 			// DB 연결
 			conn = DBManager.getConnection();
@@ -123,7 +123,7 @@ public class StatDao {
 				posDto.setProductName(rs.getString(4));
 				posDto.setPrice(rs.getInt(5));
 				posDto.setPurchase(rs.getInt(6));
-				posDto.setVolume(rs.getInt(7));
+				posDto.setSellCount(rs.getInt(7));
 				posDto.setStatTotalPrice(rs.getInt(8));
 				posDto.setCompany(rs.getString(9));
 
@@ -148,9 +148,10 @@ public class StatDao {
 	//////////////////////////////// 기간별 통계 ////////////////////////////////
 	// <연도별 매출내역 select> 메소드
 	// : 년 입력받아 조회
-	public ArrayList<PosDto> findYearSell(int startYear, int endYear) {
+	
+	public Vector<PosDto> findYearSell(int startYear, int endYear) {
 		// 쿼리문 결과 (여러 행) 담을 PosDto 객체
-		ArrayList<PosDto> list = new ArrayList<PosDto>();
+		Vector<PosDto> list = new Vector<PosDto>();
 
 		try {
 			// DB 연결
@@ -192,16 +193,15 @@ public class StatDao {
 				e.printStackTrace();
 			}
 		}
-
 		// 결과 리턴
 		return list;
 	}
 
 	// <월별 매출내역 select> 메소드
 	// : 년 입력받아 조회
-	public ArrayList<PosDto> findMonthSell(int year) {
+	public Vector<PosDto> findMonthSell(int year) {
 		// 쿼리문 결과 (여러 행) 담을 PosDto 객체
-		ArrayList<PosDto> list = new ArrayList<PosDto>();
+		Vector<PosDto> list = new Vector<PosDto>();
 
 		try {
 			// DB 연결
