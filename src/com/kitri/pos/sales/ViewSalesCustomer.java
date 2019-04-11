@@ -1,8 +1,10 @@
-package com.kitri.pos.sales;
+package com.kitri.pos;
 								//판매 메인화면은 판매 등록화면으로 시작?
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.util.Vector;
+
 //import javax.swing.JSpinner;	//텍스트필드에 화살표 위아래
 //import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -11,17 +13,20 @@ import javax.swing.table.DefaultTableModel;
 //import javax.swing.JRadioButton;
 import javax.swing.JScrollPane; //컴포넌트에 스크롤
 import javax.swing.JTextField;
-import java.awt.Dimension;	
+import java.awt.Dimension;
+import javax.swing.SwingConstants;	
 
 public class ViewSalesCustomer extends JPanel {
 	
 	private JTable tableResult;
 	
-	private JTextField textField2;
-	private JTextField textField3;
-	private JTextField textField1;
-	private JTable mainTable;
-
+	JTextField cellphone;
+	JTextField name;
+	JTable mainTable;
+	JButton enroll;
+	JButton search;
+	JButton delete;
+	DefaultTableModel tmodel;
 	/**
 	 * Create the panel.
 	 */
@@ -48,20 +53,15 @@ public class ViewSalesCustomer extends JPanel {
 		add(salesMainSearchPanel);
 		salesMainSearchPanel.setLayout(null);
 		
-		textField1 = new JTextField();
-		textField1.setColumns(10);
-		textField1.setBounds(145, 12, 218, 46);
-		salesMainSearchPanel.add(textField1);//이름
+		name = new JTextField();
+		name.setColumns(10);
+		name.setBounds(145, 12, 218, 46);
+		salesMainSearchPanel.add(name);//이름
 		
-		textField2 = new JTextField();
-		textField2.setColumns(10);
-		textField2.setBounds(466, 12, 218, 46);
-		salesMainSearchPanel.add(textField2);//휴대폰
-		
-		textField3 = new JTextField();
-		textField3.setColumns(10);
-		textField3.setBounds(852, 12, 218, 46);
-		salesMainSearchPanel.add(textField3);//삭제
+		cellphone = new JTextField();
+		cellphone.setColumns(10);
+		cellphone.setBounds(466, 12, 218, 46);
+		salesMainSearchPanel.add(cellphone);
 		
 		JLabel label = new JLabel("\uC774\uB984 :");//이름
 		label.setBounds(54, 26, 77, 18);
@@ -71,25 +71,39 @@ public class ViewSalesCustomer extends JPanel {
 		lblNewLabel_1.setBounds(390, 26, 62, 18);
 		salesMainSearchPanel.add(lblNewLabel_1);
 		
-		JLabel lblNewLabel_2 = new JLabel("\uC0AD\uC81C :");//삭제
-		lblNewLabel_2.setBounds(713, 26, 125, 18);
-		salesMainSearchPanel.add(lblNewLabel_2);
+		enroll = new JButton("\uB4F1\uB85D");
+		enroll.setBounds(719, 11, 97, 46);
+		salesMainSearchPanel.add(enroll);
+		
+		search = new JButton("\uC870\uD68C");
+		search.setBounds(991, 11, 97, 46);
+		salesMainSearchPanel.add(search);
+		
+		delete = new JButton("\uC0AD\uC81C");
+		delete.setBounds(857, 11, 97, 46);
+		salesMainSearchPanel.add(delete);
 		
 		//[테이블]
 		//임시 테이블 모델 생성
+		Vector<String> header = new Vector<String>();
+		header.add("멤버십 ID");
+		header.add("이름");
+		header.add("연락처");
+		header.add("포인트");
 		
-		String header[] = {"멤버쉽 ID", "이름", "연락처", "포인트"};
-		String contents[][] = {
-				{"1", "이종영", "010-1234-1234", "30000"},
-				{"2", "신지영", "010-2345-2345", "3000"},
-				{"3", "박광규", "010-1111-2222", "30000"},
-				{"4", "노정탁", "010-1324-1324", "30000"},
-				{"5", "김의연", "010-1324-3333", "30000"},
-				{"6", "김형섭", "010-2432-2432", "1000000000"}
 		
-		};
+//		String header[] = {"멤버쉽 ID", "이름", "연락처", "포인트"};
+//		String contents[][] = {
+//				{"1", "이종영", "010-1234-1234", "30000"},
+//				{"2", "신지영", "010-2345-2345", "3000"},
+//				{"3", "박광규", "010-1111-2222", "30000"},
+//				{"4", "노정탁", "010-1324-1324", "30000"},
+//				{"5", "김의연", "010-1324-3333", "30000"},
+//				{"6", "김형섭", "010-2432-2432", "1000000000"}
+//		
+//		};
 		
-		DefaultTableModel tmodel = new DefaultTableModel(contents, header);
+		tmodel = new DefaultTableModel(header,0);
 		
 		tableResult = new JTable(tmodel);
 		tableResult.setRowHeight(30);
@@ -97,4 +111,11 @@ public class ViewSalesCustomer extends JPanel {
 		mainScrollPane.setViewportView(tableResult);
 
 	}
+
+	public String getText() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 }

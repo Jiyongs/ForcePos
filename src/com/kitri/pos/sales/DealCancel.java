@@ -1,87 +1,88 @@
-package com.kitri.pos.sales;
+package com.kitri.pos;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import java.awt.GridLayout;
+import java.awt.Font;
+import java.awt.Color;
 
-public class DealCancel extends JFrame {
+public class DealCancel extends JDialog {
 
-	private JPanel contentPane;
+	private final JPanel contentPanel = new JPanel();
 	private JTextField textField;
-	
-	
+
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					DealCancel frame = new DealCancel();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-
+		try {
+			DealCancel dialog = new DealCancel();
+			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			dialog.setVisible(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-
+	
 	/**
-	 * Create the frame.
+	 * Create the dialog.
 	 */
 	public DealCancel() {
-		setLocation(new Point(500, 600));
-		setSize(new Dimension(450, 300));
+		
 		setTitle("\uAC70\uB798\uCDE8\uC18C");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
-		contentPane = new JPanel();
-		contentPane.setBackground(new Color(0, 0, 128));
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(new GridLayout(3, 1, 0, 0));
-
-		JPanel panel_1 = new JPanel();
-		contentPane.add(panel_1);
-		panel_1.setLayout(null);
-
-		JLabel lblNewLabel = new JLabel("\uAC70\uB798\uCDE8\uC18C");
-		lblNewLabel.setFont(new Font("±¼¸²", Font.PLAIN, 30));
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(133, 10, 157, 64);
-		panel_1.add(lblNewLabel);
-
-		JPanel panel_2 = new JPanel();
-		contentPane.add(panel_2);
-		panel_2.setLayout(null);
-
-		JLabel label = new JLabel("\uAC70\uB798\uBC88\uD638");
-		label.setFont(new Font("±¼¸²", Font.BOLD, 20));
-		label.setHorizontalAlignment(SwingConstants.CENTER);
-		label.setBounds(0, 10, 98, 64);
-		panel_2.add(label);
-
-		textField = new JTextField();
-		textField.setBounds(110, 10, 288, 64);
-		panel_2.add(textField);
-		textField.setColumns(10);
-
-		JPanel panel = new JPanel();
-		contentPane.add(panel);
-		panel.setLayout(null);
-
-		JButton receipt_reprint = new JButton("\uC601\uC218\uC99D \uC7AC\uCD9C\uB825");
-		receipt_reprint.setFont(new Font("±¼¸²", Font.PLAIN, 15));
-		receipt_reprint.setBounds(220, 23, 128, 51);
-		panel.add(receipt_reprint);
-
-		JButton cancel = new JButton("\uD658\uBD88");
-		cancel.setFont(new Font("±¼¸²", Font.PLAIN, 15));
-		cancel.setBounds(87, 23, 121, 51);
-		panel.add(cancel);
+		getContentPane().setLayout(new BorderLayout());
+		contentPanel.setBackground(new Color(0, 0, 102));
+		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		getContentPane().add(contentPanel, BorderLayout.CENTER);
+		contentPanel.setLayout(new GridLayout(3, 1, 0, 0));
+		{
+			JPanel panel = new JPanel();
+			contentPanel.add(panel);
+			panel.setLayout(new BorderLayout(0, 0));
+			{
+				JLabel lblNewLabel = new JLabel("\uAC70\uB798\uCDE8\uC18C");
+				lblNewLabel.setFont(new Font("±¼¸²", Font.PLAIN, 25));
+				lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+				panel.add(lblNewLabel, BorderLayout.CENTER);
+			}
+		}
+		{
+			JPanel panel = new JPanel();
+			contentPanel.add(panel);
+			panel.setLayout(null);
+			{
+				JLabel lblNewLabel_1 = new JLabel("\uAC70\uB798\uBC88\uD638");
+				lblNewLabel_1.setFont(new Font("±¼¸²", Font.PLAIN, 20));
+				lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
+				lblNewLabel_1.setBounds(24, 10, 84, 52);
+				panel.add(lblNewLabel_1);
+			}
+			
+			textField = new JTextField();
+			textField.setBounds(120, 13, 252, 52);
+			panel.add(textField);
+			textField.setColumns(10);
+		}
+		{
+			JPanel panel = new JPanel();
+			contentPanel.add(panel);
+			panel.setLayout(null);
+			
+			JButton refund = new JButton("\uD658\uBD88");
+			refund.setBounds(101, 21, 97, 53);
+			panel.add(refund);
+			{
+				JButton reprint = new JButton("\uC601\uC218\uC99D \uC7AC\uCD9C\uB825");
+				reprint.setBounds(210, 21, 111, 53);
+				panel.add(reprint);
+			}
+		}
+		setModal(true);
 	}
-
+	
 
 }

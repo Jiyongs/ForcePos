@@ -1,4 +1,4 @@
-package com.kitri.pos.sales;
+package com.kitri.pos;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -6,8 +6,15 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-public class Sales extends JFrame implements ActionListener{
+import com.kitr.pos.dao.SalesDao;
 
+import jdk.nashorn.internal.objects.annotations.Setter;
+
+
+
+public class Sales extends JFrame implements ActionListener {
+
+	SalesDao salesDao = new SalesDao();
 	private JPanel contentPane;
 	private JTextField notice;
 	private JPanel pMonitor;
@@ -16,21 +23,61 @@ public class Sales extends JFrame implements ActionListener{
 	ViewSalesDisuse viewSalesDisues = new ViewSalesDisuse();
 	ViewSalesInput viewSalesInput = new ViewSalesInput();
 	ViewSalesChange viewSalesChange = new ViewSalesChange();
+
 	DealCancel dealCancel = new DealCancel();
+	
+	
 	Payment_1 payment_1 = new Payment_1();
+	Payment_2 payment_2 = new Payment_2();
+	Payment_3 payment_3 = new Payment_3();
+	Payment_4 payment_4 = new Payment_4();
+	Receipt receipt = new Receipt();
 //	카드레이아웃 다른 클래스에서 쓰기 위해 전역 변수로 지정
 	CardLayout cardLayout = new CardLayout();
 //	카드레이아웃에 사용할 버튼 전역 변수 지정
-
-	JButton sBtnCustomer;// *
-	JButton sBtnDisuse;// *
-	JButton sBtnPdInput;// *
+//	판매 기본 버튼 
+	JButton sBtnCustomer;
+	JButton sBtnDisuse;
+	JButton sBtnPdInput;
 	JButton sBtnPdChange;
 	JButton sBtnPdCancel;
 	JButton sBtnPdHold;
 	JButton sBtnPay;
-	JButton sBtnCancel;//*
+	JButton sBtnCancel;
 
+//	회원 조회 버튼  ViewCustomer
+	JButton enroll;
+	JButton search;
+	JButton delete;
+	
+	
+//	결제창 버튼	
+	JButton btnP1Before;
+	JButton btnP1Next;
+	
+//	결제 2
+	JButton btnP2Before;
+	JButton btnP2Next;
+	JButton btnP2Cancel;
+	JButton btnP2Register;
+	JButton btnP2Save;
+	JButton btnP2Apply;
+	
+//	결제 4
+	JButton btnP4Before;
+	JButton btnP4Next;
+	JButton btnP4Cancel;
+	
+//	결제3
+	JButton btnP3Before;
+	JButton btnP3Cancel;
+	JButton btnP3Payment;
+	JButton btnP3PrintReceipt;
+	
+//	영수증
+	
+	JButton cancel;
+	JButton print;
 	/**
 	 * Launch the application.
 	 */
@@ -224,7 +271,6 @@ public class Sales extends JFrame implements ActionListener{
 		pMonitor.add("ViewSalesDisuse", viewSalesDisues);
 		pMonitor.add("ViewSalesInput", viewSalesInput);
 		pMonitor.add("ViewSalesChange", viewSalesChange);
-	
 
 //		처음에 보여줄 패널 설정
 		cardLayout.show(pMonitor, "Enroll");
@@ -239,26 +285,116 @@ public class Sales extends JFrame implements ActionListener{
 		sBtnPay.addActionListener(this);
 		sBtnCancel.addActionListener(this);
 		
+		viewSalesCustomer.enroll.addActionListener(this);
+		
+
+////		결제1 이벤트 등록
+		payment_1.btnP1Before.addActionListener(this);
+		payment_1.btnP1Next.addActionListener(this);
+
+//		결제2 이벤트 등록
+		payment_2.btnP2Before.addActionListener(this);
+		payment_2.btnP2Next.addActionListener(this);
+		payment_2.btnP2Cancel.addActionListener(this);
+		payment_2.btnP2Register.addActionListener(this);
+		payment_2.btnP2Save.addActionListener(this);
+		payment_2.btnP2Apply.addActionListener(this);
+		
+//		결제 4 이벤트 등록
+		payment_4.btnP4Before.addActionListener(this);
+		payment_4.btnP4Next.addActionListener(this);
+		payment_4.btnP4Cancel.addActionListener(this);
+		
+		
+//		결제3 이벤트 등록
+		payment_3.btnP3Before.addActionListener(this);
+		payment_3.btnP3Cancel.addActionListener(this);
+		payment_3.btnP3Payment.addActionListener(this);
+		payment_3.btnP3PrintReceipt.addActionListener(this);
+		
+//		영수증 이벤트 등록
+		receipt.cancel.addActionListener(this);;
+		receipt.print.addActionListener(this);;
 	}
 
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object ob = e.getSource();
-		if (ob == sBtnCustomer) {
-			cardLayout.show(pMonitor, "ViewSalesCustomer");
+		if (ob == sBtnCancel) {
+			dealCancel.setVisible(true);
 		} else if (ob == sBtnDisuse) {
 			cardLayout.show(pMonitor, "ViewSalesDisuse");
 		} else if (ob == sBtnPdInput) {
 			cardLayout.show(pMonitor, "ViewSalesInput");
 		} else if (ob == sBtnPdChange) {
 			cardLayout.show(pMonitor, "ViewSalesChange");
-		} else if (ob == sBtnCancel) {
-			dealCancel.setVisible(true);
-		} else if (ob == sBtnPay) {
+		} else if (ob == sBtnCustomer) {
+			cardLayout.show(pMonitor, "ViewSalesCustomer");// 판매 오른쪽 창 완료
+			salesDao.searchAll();
+		} else if (ob == sBtnCustomer) {
+			cardLayout.show(pMonitor, "ViewSalesCustomer");
+		} else if (ob == sBtnPay) {// 결제 1창 연결
 			payment_1.setVisible(true);
-
+		} else if (ob == payment_1.btnP1Before) {
+			payment_1.setVisible(false);
+			payment_2.setVisible(false);
+			payment_4.setVisible(false);
+			payment_3.setVisible(false);
+		} else if (ob == payment_1.btnP1Next) {
+			payment_1.setVisible(false);
+			payment_2.setVisible(true);
+		} else if (ob == payment_2.btnP2Before) {// 결제2 창 연결
+			payment_1.setVisible(true);
+			payment_2.setVisible(false);
+			payment_4.setVisible(false);
+			payment_3.setVisible(false);
+		} else if (ob == payment_2.btnP2Next) {
+			payment_4.setVisible(true);
+			payment_2.setVisible(false);
+		} else if (ob == payment_2.btnP2Cancel) {// 결제4창 연결
+			payment_2.setVisible(false);
+		} else if (ob == payment_4.btnP4Before) {
+			payment_1.setVisible(false);
+			payment_4.setVisible(false);
+			payment_3.setVisible(false);
+			payment_2.setVisible(true);
+			
+		} else if (ob == payment_4.btnP4Next) {
+			payment_4.setVisible(false);
+			payment_3.setVisible(true);
+		} else if (ob == payment_4.btnP4Cancel) {//결제 4창 끝, 결제 3창 연결
+			payment_4.setVisible(false);
+		} else if (ob == payment_3.btnP3Before) {
+			payment_4.setVisible(true);
+			payment_1.setVisible(false);
+			payment_2.setVisible(false);
+			payment_3.setVisible(false);			
+		} else if (ob == payment_3.btnP3Cancel) {
+			payment_3.setVisible(false);
+		} else if (ob == payment_3.btnP3Payment) {
+			
+		} else if (ob == payment_3.btnP3PrintReceipt) {
+			receipt.setVisible(true);
+		} else if (ob == receipt.cancel) {
+			receipt.setVisible(false);
+		} else if (ob == receipt.print) {
+			receipt.setVisible(false);
+		} else if (ob == viewSalesCustomer.enroll) {
+			
+			String name;
+			String cellphone;
+			name = viewSalesCustomer.name.getText().trim();
+			cellphone = viewSalesCustomer.cellphone.getText().trim();
+			salesDao.register(name,cellphone );
+			viewSalesCustomer.name.setText("");
+			viewSalesCustomer.cellphone.setText("");
+			
+		}
+			
 	}
 
-}
+	
+	
 	
 }
