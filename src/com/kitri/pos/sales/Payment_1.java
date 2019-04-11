@@ -1,4 +1,4 @@
-package com.kitri.pos.sales;
+package com.kitri.pos;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -13,6 +13,7 @@ import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import javax.swing.JMenuItem;
 
 public class Payment_1 extends JFrame {
 
@@ -27,7 +28,7 @@ public class Payment_1 extends JFrame {
 	JLabel lbP1Afterprice;
 	JLabel lbP1Discountpercent;
 	Payment_2 payment_2 = new Payment_2();
-	Payment_4 payment_3 = new Payment_4();
+	Payment_3 payment_3 = new Payment_3();
 
 	/**
 	 * Launch the application.
@@ -69,6 +70,10 @@ public class Payment_1 extends JFrame {
 		JComboBox cbP1Cooperation = new JComboBox();
 		cbP1Cooperation.setBounds(100, 100, 200, 50);
 		payment_1.add(cbP1Cooperation);
+//		cbP1Cooperation.addItem("KT");
+//		cbP1Cooperation.addItem("SKT");
+//		cbP1Cooperation.addItem("LG U+");
+		
 
 		JButton btnP1Apply = new JButton("\uC801\uC6A9");
 		btnP1Apply.setBounds(350, 100, 150, 50);
@@ -113,5 +118,4 @@ public class Payment_1 extends JFrame {
 		payment_1.add(lbP1Discountpercent);
 
 	}
-
 }
