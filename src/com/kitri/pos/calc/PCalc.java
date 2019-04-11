@@ -24,12 +24,12 @@ public class PCalc extends JPanel {
 //	Vector<String> total;
 	
 	
-	static String[][] data;
-	private JTable cashTable;
+	 String[][] data;
+	public JTable cashTable;
 	public JTextField tfCashState;
-	private JTextField tfCashCheck;
-	private JTextField tfCalcResult;
-	
+	public JTextField tfCashCheck;
+	public JTextField tfCalcResult;
+//	
 	
 	JPanel pcalcmain;
 	JPanel pNum;
@@ -67,8 +67,15 @@ public class PCalc extends JPanel {
 				
 		String[] header = new String[] { "권종", "수량", "금액" };
 		
-		data = new String[][] { { "50000", "5", "0" }, { "10000", "5", "0" }, { "5000", "5", "0" }, { "1000", "", "0" }, { "500", "", "0" },
-			{ "100", "", "0" }, { "50", "", "0" }, { "10", "", "0" } };
+		data = new String[][] { 
+			{ "50000", "", "0" }, 
+			{ "10000", "", "0" }, 
+			{ "5000", "", "0" }, 
+			{ "1000", "", "0" }, 
+			{ "500", "", "0" },
+			{ "100", "", "0" }, 
+			{ "50", "", "0" }, 
+			{ "10", "", "0" } };
 		
 		
 		setLayout(null);
@@ -80,16 +87,15 @@ public class PCalc extends JPanel {
 		model = new DefaultTableModel(data,header);
 		cashTable = new JTable(model);
 		
-		
-		
-		
-		
+//		cashTable = new JTable();
 		
 		cashTable.setFont(new Font("����", Font.PLAIN, 20));
-		pCashstate.add(cashTable);
 		cashTable.setPreferredSize(new Dimension(533, 515));
 		cashTable.setFillsViewportHeight(true);
-		 cashTable.setBounds(0,0,533,515);
+		cashTable.setBounds(0,0,533,515);
+//		cashTable.setDragEnabled(true);
+//		cashTable.setColumnSelectionAllowed(false);
+		pCashstate.add(cashTable);
 
 		pcalcmain = new JPanel();
 		pcalcmain.setBounds(557, 10, 575, 515);
@@ -202,20 +208,18 @@ public class PCalc extends JPanel {
 		pcalcState.add(panel_2, BorderLayout.CENTER);
 		panel_2.setLayout(new GridLayout(0, 1, 0, 10));
 
-		tfCashState = new JTextField("300000");
+		tfCashState = new JTextField();
 		tfCashState.setEnabled(false);
 		panel_2.add(tfCashState);
 		tfCashState.setColumns(10);
 
-		tfCashCheck = new JTextField("250000");
+		tfCashCheck = new JTextField("0");
 		tfCashCheck.setEnabled(false);
 		panel_2.add(tfCashCheck);
 		tfCashCheck.setColumns(10);
 
-		tfCalcResult = new JTextField(
-				String.valueOf((Integer.parseInt(tfCashState.getText()) - Integer.parseInt(tfCashCheck.getText())))); // '-'��ȣ��
-		// ����
-		// ����
+		tfCalcResult = new JTextField("0");
+				
 		tfCalcResult.setEnabled(false);
 		panel_2.add(tfCalcResult);
 		tfCalcResult.setColumns(10);

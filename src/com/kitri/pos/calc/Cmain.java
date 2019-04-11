@@ -1,34 +1,20 @@
 package com.kitri.pos.calc;
 
 
-import java.awt.BorderLayout;
-import java.awt.Button;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.CellEditorListener;
-import javax.swing.event.ChangeEvent;
-
-import com.kitri.pos.ForcePos;
-
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import java.awt.Font;
-import javax.swing.SwingConstants;
-import java.awt.Color;
-import javax.swing.JButton;
 import java.awt.CardLayout;
-import java.awt.event.ActionListener;
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
 public class Cmain extends JFrame {
 
@@ -41,7 +27,7 @@ public class Cmain extends JFrame {
 	private JTextField notice;
 	
 	
-	ForcePos frame;
+	
 	Cmain frame1;
 	CardLayout card = new CardLayout();
 	JPanel pMonitor;
@@ -50,7 +36,7 @@ public class Cmain extends JFrame {
 	
 	JButton mBtnCalc;
 	
-	
+	static JPanel pTest;
 	/**
 	 * Launch the application.
 	 */
@@ -76,7 +62,7 @@ public class Cmain extends JFrame {
 	
 	public void showFrameTest() {
 		frame1.setVisible(true);
-		frame.dispose();
+//		frame.dispose();
 	}
 	
 	
@@ -218,15 +204,23 @@ public class Cmain extends JFrame {
 		sBtnPdCancel.setBounds(0, 520, 164, 120);
 		pSellFunction.add(sBtnPdCancel);
 		
+		
+		//test
+		pTest = new JPanel();
+		
 		pMonitor = new JPanel();
-
 		pCalc = new PCalc();
 		pMonitor.setBackground(new Color(255, 255, 255));
 		pMonitor.setBounds(0, 50, 1144, 535);
 		contentPane.add(pMonitor);
 		pMonitor.setLayout(card);
 		pMonitor.add("Calc",pCalc);
-		card.show(pMonitor,"Calc");
+//		card.show(pMonitor,"Calc");
+/////////////////////////////////////test		
+		
+		pMonitor.add("Test", pTest);
+		card.show(pMonitor, "Test");
+//////////////////////////////////////////
 		
 		
 		calcService = new CalcService(this);
@@ -248,6 +242,8 @@ public class Cmain extends JFrame {
 		pCalc.btnCalc_C.addActionListener(calcService);
 		pCalc.btnCalc_Apply.addActionListener(calcService);
 		pCalc.btnCalc_Cancel.addActionListener(calcService);
+		
+		
 		
 		
 	
