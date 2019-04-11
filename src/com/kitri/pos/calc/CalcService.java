@@ -3,6 +3,11 @@ package com.kitri.pos.calc;
 import java.awt.Button;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.event.CellEditorListener;
+import javax.swing.event.ChangeEvent;
 
 public class CalcService implements ActionListener {
 	Cmain cmain;
@@ -15,7 +20,8 @@ public class CalcService implements ActionListener {
 	String tmp;
 	int sum = 0;
 	String sumStr;
-	int[] coin = new int[8];
+//	Thread t;
+	
 	
 	CalcDao dao;
 
@@ -27,7 +33,7 @@ public class CalcService implements ActionListener {
 	}
 
 	public void cashCaclEach() {
-		/////////////////////////////////////각각의 권종 합에 반영
+		///////////////////////////////////// 각각의 권종 합에 반영
 		System.out.println("메소드입장");
 		for (int i = 0; i < 8; i++) {
 			numStr = "";
@@ -46,14 +52,13 @@ public class CalcService implements ActionListener {
 				sum += value;
 			}
 		}
-		/////////////////////////////////////정산금액에 반영
-		
-			Cmain.pCalc.tfCashCheck.setText(String.valueOf(sum));
-			sum = 0;
-		////////////////////////////////////차액반영
-			Cmain.pCalc.tfCalcResult.setText(
-					String.valueOf((Integer.parseInt(Cmain.pCalc.tfCashCheck.getText()) 
-							- Integer.parseInt(Cmain.pCalc.tfCashState.getText())))); // '-'��ȣ��
+		///////////////////////////////////// 정산금액에 반영
+
+		Cmain.pCalc.tfCashCheck.setText(String.valueOf(sum));
+		sum = 0;
+		//////////////////////////////////// 차액반영
+		Cmain.pCalc.tfCalcResult.setText(String.valueOf((Integer.parseInt(Cmain.pCalc.tfCashCheck.getText())
+				- Integer.parseInt(Cmain.pCalc.tfCashState.getText())))); // '-'��ȣ��
 	}
 
 	@Override
@@ -64,15 +69,25 @@ public class CalcService implements ActionListener {
 //		obStr = b.getLabel();
 
 		if (ob == cmain.mBtnCalc) {
-
+//			t = new Thread(this);
+//			t.start();
+			
 			cmain.card.show(cmain.pMonitor, "Calc");
 			dao = new CalcDao();
 			Cmain.pCalc.tfCashState.setText(Integer.toString(dao.inputComs_Calc()));
+			
 		} else if (isNumber(obStr) == true) {
-			numStr += obStr;
 			int row = Cmain.pCalc.cashTable.getSelectedRow();
 			int column = Cmain.pCalc.cashTable.getSelectedColumn();
-			Cmain.pCalc.cashTable.setValueAt(numStr, row, column);
+			numStr = String.valueOf(Cmain.pCalc.cashTable.getValueAt(row, column));
+			if(numStr.isEmpty()) {
+				Cmain.pCalc.cashTable.setValueAt(obStr, row, column);
+			}else {
+				numStr += obStr;
+				Cmain.pCalc.cashTable.setValueAt(numStr, row, column);
+				
+			}
+			
 //			Cmain.pCalc.model.
 
 //			테이블에 선택한 칸에 입력되게끔.calculator.numL.setText(numStr);
@@ -83,17 +98,20 @@ public class CalcService implements ActionListener {
 //			입력된 값 추가와 동시에 입력된 값으로 금액계산함
 			System.out.println("반응");
 			cashCaclEach();
-			
+
 		} else if (ob == Cmain.pCalc.btnCalc_del) {
 //			맨뒤 한숫자 삭제
 			int row = Cmain.pCalc.cashTable.getSelectedRow();
 			int column = Cmain.pCalc.cashTable.getSelectedColumn();
 			String value = String.valueOf(Cmain.pCalc.model.getValueAt(row, column));
 			int len = value.length();
-			value = value.substring(0, len - 1);
-			Cmain.pCalc.model.setValueAt(value, row, column);
-			numStr = value;
-			
+			if (len > 1) {
+				value = value.substring(0, len - 1);
+				Cmain.pCalc.model.setValueAt(value, row, column);
+				numStr = value;
+			} else {
+				Cmain.pCalc.model.setValueAt("", row, column);
+			}
 		} else if (ob == Cmain.pCalc.btnCalc_C) {
 			int row = Cmain.pCalc.cashTable.getSelectedRow();
 			int column = Cmain.pCalc.cashTable.getSelectedColumn();
@@ -102,11 +120,11 @@ public class CalcService implements ActionListener {
 		} else if (ob == Cmain.pCalc.btnCalc_Apply) {
 //			Cmain.판매창.card.show(~~)
 			System.out.println("정산창 비활성화, 판매창 활성화");
-			
+
 		} else if (ob == Cmain.pCalc.btnCalc_Cancel) {
 //			Cmain.판매창.card.show(~~)
 			System.out.println("정산창 비활성화, 판매창 활성화");
-
+//			t.stop();
 		}
 
 	}
@@ -119,5 +137,15 @@ public class CalcService implements ActionListener {
 		}
 		return flag;
 	}
+
+
+
+
+//	@Override
+//	public void run() {
+//	while(true) {
+//		cashCaclEach();
+//	}
+//	}
 
 }
