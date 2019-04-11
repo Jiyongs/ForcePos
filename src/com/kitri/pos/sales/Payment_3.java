@@ -1,4 +1,4 @@
-package com.kitri.pos.sales;
+package com.kitri.pos;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -19,15 +19,15 @@ public class Payment_3 extends JFrame {
 	JPanel payment_3 = new JPanel();
 	JTextField tfP3SM;
 	JTextField tfP3CardP;
-	JButton btnP3Before;
-	JButton btnP3Next;
-	JButton btnP3Cancel;
 	JLabel lbP3FinalPay;
 	JLabel lbP3Payment;
 	JTextField tfP3CashP;
 	JLabel lbP3PointView;
 	JLabel lbP3FinalPayView;
 
+	JButton btnP3Before;
+	JButton btnP3Next;
+	JButton btnP3Cancel;
 	/**
 	 * Launch the application.
 	 */
@@ -64,9 +64,9 @@ public class Payment_3 extends JFrame {
 		payment_3.add(tfP3SM);
 		tfP3SM.setColumns(10);
 
-		JButton btnP4Input = new JButton("\uC785\uB825\uC644\uB8CC");
-		btnP4Input.setBounds(369, 89, 140, 90);
-		payment_3.add(btnP4Input);
+		JButton btnP3Input = new JButton("\uC785\uB825\uC644\uB8CC");
+		btnP3Input.setBounds(369, 89, 140, 90);
+		payment_3.add(btnP3Input);
 
 		tfP3CardP = new JTextField();
 		tfP3CardP.setBounds(153, 89, 150, 40);

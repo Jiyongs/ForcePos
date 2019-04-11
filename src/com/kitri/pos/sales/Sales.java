@@ -2,15 +2,12 @@ package com.kitri.pos;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Vector;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import com.kitr.pos.dao.SalesDao;
-
-import jdk.nashorn.internal.objects.annotations.Setter;
-
-
+import com.kitri.pos.SalesDao;
 
 public class Sales extends JFrame implements ActionListener {
 
@@ -25,8 +22,7 @@ public class Sales extends JFrame implements ActionListener {
 	ViewSalesChange viewSalesChange = new ViewSalesChange();
 
 	DealCancel dealCancel = new DealCancel();
-	
-	
+
 	Payment_1 payment_1 = new Payment_1();
 	Payment_2 payment_2 = new Payment_2();
 	Payment_3 payment_3 = new Payment_3();
@@ -49,12 +45,11 @@ public class Sales extends JFrame implements ActionListener {
 	JButton enroll;
 	JButton search;
 	JButton delete;
-	
-	
+
 //	결제창 버튼	
 	JButton btnP1Before;
 	JButton btnP1Next;
-	
+
 //	결제 2
 	JButton btnP2Before;
 	JButton btnP2Next;
@@ -62,22 +57,23 @@ public class Sales extends JFrame implements ActionListener {
 	JButton btnP2Register;
 	JButton btnP2Save;
 	JButton btnP2Apply;
-	
+
 //	결제 4
 	JButton btnP4Before;
 	JButton btnP4Next;
 	JButton btnP4Cancel;
-	
+
 //	결제3
 	JButton btnP3Before;
 	JButton btnP3Cancel;
 	JButton btnP3Payment;
 	JButton btnP3PrintReceipt;
-	
+
 //	영수증
-	
+
 	JButton cancel;
 	JButton print;
+
 	/**
 	 * Launch the application.
 	 */
@@ -284,10 +280,9 @@ public class Sales extends JFrame implements ActionListener {
 		sBtnPdHold.addActionListener(this);
 		sBtnPay.addActionListener(this);
 		sBtnCancel.addActionListener(this);
-		
-		viewSalesCustomer.enroll.addActionListener(this);
-		
 
+		viewSalesCustomer.enroll.addActionListener(this);
+		viewSalesCustomer.search.addActionListener(this);
 ////		결제1 이벤트 등록
 		payment_1.btnP1Before.addActionListener(this);
 		payment_1.btnP1Next.addActionListener(this);
@@ -299,25 +294,25 @@ public class Sales extends JFrame implements ActionListener {
 		payment_2.btnP2Register.addActionListener(this);
 		payment_2.btnP2Save.addActionListener(this);
 		payment_2.btnP2Apply.addActionListener(this);
-		
-//		결제 4 이벤트 등록
-		payment_4.btnP4Before.addActionListener(this);
-		payment_4.btnP4Next.addActionListener(this);
-		payment_4.btnP4Cancel.addActionListener(this);
-		
-		
+
 //		결제3 이벤트 등록
 		payment_3.btnP3Before.addActionListener(this);
 		payment_3.btnP3Cancel.addActionListener(this);
-		payment_3.btnP3Payment.addActionListener(this);
-		payment_3.btnP3PrintReceipt.addActionListener(this);
-		
+		payment_3.btnP3Next.addActionListener(this);
+
+//		결제 4 이벤트 등록
+		payment_4.btnP4Before.addActionListener(this);
+		payment_4.btnP4Payment.addActionListener(this);
+		payment_4.btnP4Cancel.addActionListener(this);
+		payment_4.btnP4PrintReceipt.addActionListener(this);
+
 //		영수증 이벤트 등록
-		receipt.cancel.addActionListener(this);;
-		receipt.print.addActionListener(this);;
+		receipt.cancel.addActionListener(this);
+		;
+		receipt.print.addActionListener(this);
+		;
 	}
 
-	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object ob = e.getSource();
@@ -329,14 +324,26 @@ public class Sales extends JFrame implements ActionListener {
 			cardLayout.show(pMonitor, "ViewSalesInput");
 		} else if (ob == sBtnPdChange) {
 			cardLayout.show(pMonitor, "ViewSalesChange");
-		} else if (ob == sBtnCustomer) {
-			cardLayout.show(pMonitor, "ViewSalesCustomer");// 판매 오른쪽 창 완료
-			salesDao.searchAll();
-		} else if (ob == sBtnCustomer) {
+		} 
+// 		고객 검색 창 눌렀을 때 이벤트
+		else if (ob == sBtnCustomer) {
 			cardLayout.show(pMonitor, "ViewSalesCustomer");
-		} else if (ob == sBtnPay) {// 결제 1창 연결
+			showAll();
+		
+		} 
+		else if (ob == sBtnCustomer) {
+			cardLayout.show(pMonitor, "ViewSalesCustomer");
+		} 
+//		else if (ob == sBtnPay) {
+//			payment_1.setVisible(true);
+//		} 
+		else if (ob == viewSalesCustomer.search) {
+			searchname();
+		} 
+		else if (ob == sBtnPay) {// 결제 1창 연결
 			payment_1.setVisible(true);
-		} else if (ob == payment_1.btnP1Before) {
+		} 
+		else if (ob == payment_1.btnP1Before) {
 			payment_1.setVisible(false);
 			payment_2.setVisible(false);
 			payment_4.setVisible(false);
@@ -347,54 +354,95 @@ public class Sales extends JFrame implements ActionListener {
 		} else if (ob == payment_2.btnP2Before) {// 결제2 창 연결
 			payment_1.setVisible(true);
 			payment_2.setVisible(false);
-			payment_4.setVisible(false);
 			payment_3.setVisible(false);
+			payment_4.setVisible(false);
 		} else if (ob == payment_2.btnP2Next) {
-			payment_4.setVisible(true);
+			payment_3.setVisible(true);
 			payment_2.setVisible(false);
 		} else if (ob == payment_2.btnP2Cancel) {// 결제4창 연결
 			payment_2.setVisible(false);
-		} else if (ob == payment_4.btnP4Before) {
+		} else if (ob == payment_3.btnP3Before) {
 			payment_1.setVisible(false);
 			payment_4.setVisible(false);
 			payment_3.setVisible(false);
 			payment_2.setVisible(true);
-			
-		} else if (ob == payment_4.btnP4Next) {
-			payment_4.setVisible(false);
-			payment_3.setVisible(true);
-		} else if (ob == payment_4.btnP4Cancel) {//결제 4창 끝, 결제 3창 연결
-			payment_4.setVisible(false);
-		} else if (ob == payment_3.btnP3Before) {
+
+		} else if (ob == payment_3.btnP3Next) {
+			payment_3.setVisible(false);
 			payment_4.setVisible(true);
+		} else if (ob == payment_4.btnP4Cancel) {// 결제 3창 연결
+			payment_4.setVisible(false);
+		} else if (ob == payment_4.btnP4Before) {
+			payment_3.setVisible(true);
 			payment_1.setVisible(false);
 			payment_2.setVisible(false);
-			payment_3.setVisible(false);			
-		} else if (ob == payment_3.btnP3Cancel) {
-			payment_3.setVisible(false);
-		} else if (ob == payment_3.btnP3Payment) {
-			
-		} else if (ob == payment_3.btnP3PrintReceipt) {
+			payment_4.setVisible(false);
+		} else if (ob == payment_4.btnP4Cancel) {
+			payment_4.setVisible(false);
+		} else if (ob == payment_4.btnP4Payment) {
+
+		} else if (ob == payment_4.btnP4PrintReceipt) {
 			receipt.setVisible(true);
 		} else if (ob == receipt.cancel) {
 			receipt.setVisible(false);
 		} else if (ob == receipt.print) {
 			receipt.setVisible(false);
 		} else if (ob == viewSalesCustomer.enroll) {
-			
+
 			String name;
 			String cellphone;
 			name = viewSalesCustomer.name.getText().trim();
 			cellphone = viewSalesCustomer.cellphone.getText().trim();
-			salesDao.register(name,cellphone );
+//			salesDao.register(name,cellphone );
 			viewSalesCustomer.name.setText("");
 			viewSalesCustomer.cellphone.setText("");
-			
+
 		}
-			
+
 	}
 
 	
-	
-	
+	private void searchname() {
+		SalesDao salesDao = new SalesDao();
+		Vector<PosDto> results = new Vector<PosDto>();
+		String name = null;
+		results = salesDao.search(name);
+
+		int size = results.size();
+
+		for (int i = 0; i < size; i++) {
+			Vector<String> rows = new Vector<String>(); // 행
+
+			rows.addElement(results.get(i).getMembershipId());
+			rows.addElement(results.get(i).getMemberName());
+			rows.addElement(results.get(i).getPhone());
+			rows.addElement(Integer.toString(results.get(i).getPoint()));
+
+			viewSalesCustomer.tmodel.addRow(rows);
+
+		}
+
+	}
+
+	private void showAll() {
+		SalesDao salesDao = new SalesDao();
+		Vector<PosDto> results = new Vector<PosDto>();
+		results = salesDao.searchAll();
+
+		int size = results.size();
+
+		for (int i = 0; i < size; i++) {
+			Vector<String> rows = new Vector<String>(); // 행
+
+			rows.addElement(results.get(i).getMembershipId());
+			rows.addElement(results.get(i).getMemberName());
+			rows.addElement(results.get(i).getPhone());
+			rows.addElement(Integer.toString(results.get(i).getPoint()));
+
+			viewSalesCustomer.tmodel.addRow(rows);
+
+		}
+
+	}
+
 }
