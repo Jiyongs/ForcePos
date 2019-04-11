@@ -27,41 +27,41 @@ public class ViewSalesDisuse extends JPanel {
 		setSize(new Dimension(1144, 535));
 		setLayout(null);
 		
-		JPanel salesMainTablePanel = new JPanel();//Å×ÀÌºí ÆĞ³Î
+		JPanel salesMainTablePanel = new JPanel();//í…Œì´ë¸” íŒ¨ë„
 		salesMainTablePanel.setBounds(0, 0, 1144, 452);
 		add(salesMainTablePanel);
 		salesMainTablePanel.setLayout(null);
 		
-		JScrollPane mainScrollPane = new JScrollPane();//Å×ÀÌºí ½ºÅ©·Ñ
+		JScrollPane mainScrollPane = new JScrollPane();//í…Œì´ë¸” ìŠ¤í¬ë¡¤
 		mainScrollPane.setBounds(14, 12, 1116, 428);
 		salesMainTablePanel.add(mainScrollPane);
 		
 		mainTable = new JTable();
 		mainScrollPane.setViewportView(mainTable);
 		
-		JPanel salesMainSearchPanel = new JPanel();//Æó±â ÆĞ³Î
+		JPanel salesMainSearchPanel = new JPanel();//íê¸° íŒ¨ë„
 		salesMainSearchPanel.setBounds(0, 452, 1144, 83);
 		add(salesMainSearchPanel);
 		salesMainSearchPanel.setLayout(null);
 		
-		JButton btnNewButton = new JButton("\uD3D0\uAE30 \uCC98\uB9AC"); //Æó±âÃ³¸® 
+		JButton btnNewButton = new JButton("\uD3D0\uAE30 \uCC98\uB9AC"); //íê¸°ì²˜ë¦¬ 
 		btnNewButton.setBackground(new Color(0, 102, 204));
 		btnNewButton.setBounds(494, 12, 142, 59);
 		salesMainSearchPanel.add(btnNewButton);
 		
 		
 		
-		//[Å×ÀÌºí]
-		//ÀÓ½Ã Å×ÀÌºí ¸ğµ¨ »ı¼º
+		//[í…Œì´ë¸”]
+		//ì„ì‹œ í…Œì´ë¸” ëª¨ë¸ ìƒì„±
 		
-		String header[] = {"»óÇ°ÄÚµå", "ÀÔ°íÀÏÀÚ", "»óÇ°¸í", "»óÇ°ºĞ·ù", "¼ö·®", "ÆÇ¸Å", "À¯Åë±âÇÑ"};
+		String header[] = {"ìƒí’ˆì½”ë“œ", "ì…ê³ ì¼ì", "ìƒí’ˆëª…", "ìƒí’ˆë¶„ë¥˜", "ìˆ˜ëŸ‰", "íŒë§¤", "ìœ í†µê¸°í•œ"};
 		String contents[][] = {
-				{"FFSW-108", "2019.04.04", "º£ÀÌÄÁ¿¡±×Åä¸¶Åä»÷µåÀ§Ä¡","»÷µåÀ§Ä¡", "2", "2200", "D-5d"},
-				{"FFSW-102", "2019.04.04", "°è¶õµë»Ò»÷µå", "»÷µåÀ§Ä¡", "2", "2000", "D-15"},
-				{"FFSG-102", "2019.04.04", "ÂüÄ¡¸¶¿ä", "»ï°¢±è¹ä", "15", "800", "D-1d"},
-				{"FFS-101", "2019.04.03", "º£ÀÌÄÁ¼Ò¼¼Áö", "¼Ò½ÃÁö", "5", "1800", "D-1d"},
-				{"FFS104", "2019.04.03", "ÀÇ¼º¸¶´ÃÇÁ¶ûÅ©", "¼Ò½ÃÁö", "1", "1500", "D-1d"},
-				{"FFD-112", "2019.04.05", "È«¼®ÃµÄ¡Å²µµ½Ã¶ô", "µµ½Ã¶ô", "2", "4800", "D-1d"}
+				{"FFSW-108", "2019.04.04", "ë² ì´ì»¨ì—ê·¸í† ë§ˆí† ìƒŒë“œìœ„ì¹˜","ìƒŒë“œìœ„ì¹˜", "2", "2200", "D-5d"},
+				{"FFSW-102", "2019.04.04", "ê³„ë€ë“¬ë¿ìƒŒë“œ", "ìƒŒë“œìœ„ì¹˜", "2", "2000", "D-15"},
+				{"FFSG-102", "2019.04.04", "ì°¸ì¹˜ë§ˆìš”", "ì‚¼ê°ê¹€ë°¥", "15", "800", "D-1d"},
+				{"FFS-101", "2019.04.03", "ë² ì´ì»¨ì†Œì„¸ì§€", "ì†Œì‹œì§€", "5", "1800", "D-1d"},
+				{"FFS104", "2019.04.03", "ì˜ì„±ë§ˆëŠ˜í”„ë‘í¬", "ì†Œì‹œì§€", "1", "1500", "D-1d"},
+				{"FFD-112", "2019.04.05", "í™ì„ì²œì¹˜í‚¨ë„ì‹œë½", "ë„ì‹œë½", "2", "4800", "D-1d"}
 		
 		};
 		

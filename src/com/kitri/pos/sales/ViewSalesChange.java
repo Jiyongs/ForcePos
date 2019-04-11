@@ -23,12 +23,12 @@ public class ViewSalesChange extends JPanel {
 	private JTextField total_price_input;
 	
 	public static void tableCellCenter(JTable t){
-        DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer(); // µğÆúÆ®Å×ÀÌºí¼¿·»´õ·¯¸¦ »ı¼º
-        dtcr.setHorizontalAlignment(SwingConstants.CENTER); // ·»´õ·¯ÀÇ °¡·ÎÁ¤·ÄÀ» CENTER·Î
+        DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer(); // ë””í´íŠ¸í…Œì´ë¸”ì…€ë Œë”ëŸ¬ë¥¼ ìƒì„±
+        dtcr.setHorizontalAlignment(SwingConstants.CENTER); // ë Œë”ëŸ¬ì˜ ê°€ë¡œì •ë ¬ì„ CENTERë¡œ
        
-        TableColumnModel tcm = t.getColumnModel() ; // Á¤·ÄÇÒ Å×ÀÌºíÀÇ ÄÃ·³¸ğµ¨À» °¡Á®¿È
+        TableColumnModel tcm = t.getColumnModel() ; // ì •ë ¬í•  í…Œì´ë¸”ì˜ ì»¬ëŸ¼ëª¨ë¸ì„ ê°€ì ¸ì˜´
        
-        //ÀüÃ¼ ¿­¿¡ ÁöÁ¤
+        //ì „ì²´ ì—´ì— ì§€ì •
         for(int i = 0 ; i < tcm.getColumnCount() ; i++){
            tcm.getColumn(i).setCellRenderer(dtcr);  
         }
@@ -47,14 +47,14 @@ public class ViewSalesChange extends JPanel {
 		add(backgroundpanel);
 		backgroundpanel.setLayout(null);
 		
-		String header[] = {"¹øÈ£", "»óÇ°¸í", "´Ü°¡", "¼ö·®", "±İ¾×", "»óÇ°ÄÚµå", "À¯Åë±âÇÑ"};
+		String header[] = {"ë²ˆí˜¸", "ìƒí’ˆëª…", "ë‹¨ê°€", "ìˆ˜ëŸ‰", "ê¸ˆì•¡", "ìƒí’ˆì½”ë“œ", "ìœ í†µê¸°í•œ"};
 		String contents[][]= {
-				{"1", "»ï°¢±è¹ä", "1000", "4", "4000", "", ""}	
+				{"1", "ì‚¼ê°ê¹€ë°¥", "1000", "4", "4000", "", ""}	
 		};
 		DefaultTableModel model = new DefaultTableModel(contents, header);
 		JTable table = new JTable(new DefaultTableModel(
 			new Object[][] {
-				{"1", "»ï°¢±è¹ä", "1000", "4", "4000", "", ""},
+				{"1", "ì‚¼ê°ê¹€ë°¥", "1000", "4", "4000", "", ""},
 				{null, null, null, null, null, null, null},
 				{null, null, null, null, null, null, null},
 				{null, null, null, null, null, null, null},
@@ -88,7 +88,7 @@ public class ViewSalesChange extends JPanel {
 		searchpanel.setLayout(null);
 		
 		JLabel product_code = new JLabel("\uC0C1\uD488\uCF54\uB4DC");
-		product_code.setFont(new Font("±¼¸²", Font.PLAIN, 15));
+		product_code.setFont(new Font("êµ´ë¦¼", Font.PLAIN, 15));
 		product_code.setHorizontalAlignment(SwingConstants.CENTER);
 		product_code.setBounds(51, 31, 80, 50);
 		searchpanel.add(product_code);
@@ -96,13 +96,13 @@ public class ViewSalesChange extends JPanel {
 		JLabel product_name = new JLabel("\uC0C1\uD488\uBA85");
 		product_name.setHorizontalAlignment(SwingConstants.CENTER);
 		product_name.setBounds(new Rectangle(10, 10, 10, 10));
-		product_name.setFont(new Font("±¼¸²", Font.PLAIN, 15));
+		product_name.setFont(new Font("êµ´ë¦¼", Font.PLAIN, 15));
 		product_name.setBounds(369, 31, 80, 50);
 		searchpanel.add(product_name);
 		
 		JLabel total_price = new JLabel("\uCD1D \uACB0\uC81C \uAE08\uC561");
 		total_price.setHorizontalAlignment(SwingConstants.CENTER);
-		total_price.setFont(new Font("±¼¸²", Font.PLAIN, 15));
+		total_price.setFont(new Font("êµ´ë¦¼", Font.PLAIN, 15));
 		total_price.setBounds(763, 31, 91, 50);
 		searchpanel.add(total_price);
 		
