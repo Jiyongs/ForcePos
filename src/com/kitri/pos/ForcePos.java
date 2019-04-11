@@ -5,6 +5,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.border.EtchedBorder;
+import java.awt.Window.Type;
 
 public class ForcePos extends JFrame implements ActionListener {
 
@@ -53,6 +54,7 @@ public class ForcePos extends JFrame implements ActionListener {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(10, 15, 1326, 753);
 		contentPane = new JPanel();
+		contentPane.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -67,12 +69,12 @@ public class ForcePos extends JFrame implements ActionListener {
 				g.drawImage(image.getImage(), 0, 0, d.width, d.height, null); // Jpanel의 크기에 맞게 이미지를 그린다.
 				setOpaque(false); // 배경을 투명하게 설정해줌
 				super.paintComponent(g);
-
 			}
 		};
+		background.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		background.setOpaque(false);
 
-		background.setBounds(12, 10, 1326, 753);
+		background.setBounds(0, 34, 1320, 633);
 		contentPane.add(background);
 		background.setLayout(null);
 
@@ -84,9 +86,9 @@ public class ForcePos extends JFrame implements ActionListener {
 
 		JLabel Forcepos = new JLabel("Forcepos");
 		Forcepos.setHorizontalTextPosition(SwingConstants.CENTER);
-		Forcepos.setForeground(new Color(255, 0, 0));
+		Forcepos.setForeground(new Color(0, 128, 128));
 		Forcepos.setHorizontalAlignment(SwingConstants.CENTER);
-		Forcepos.setFont(new Font("돋움체", Font.BOLD, 70));
+		Forcepos.setFont(new Font("Consolas", Font.BOLD, 70));
 		title.add(Forcepos, BorderLayout.CENTER);
 
 		// 로그인 화면 패널 설정
@@ -100,25 +102,15 @@ public class ForcePos extends JFrame implements ActionListener {
 				super.paintComponent(g);
 			}
 		};
-		user.setBounds(328, 176, 153, 165);
+		user.setBounds(328, 129, 153, 165);
 		background.add(user);
 
 		// 유저 패널
 		JPanel userP = new JPanel();
 		userP.setOpaque(false);
-		userP.setBounds(497, 176, 475, 165);
+		userP.setBounds(497, 129, 475, 165);
 		background.add(userP);
 		userP.setLayout(new BorderLayout(0, 0));
-
-		// 유저 텍스트필드
-		userTf = new JTextField(6);
-		userTf.setHorizontalAlignment(SwingConstants.CENTER);
-		userTf.setFont(new Font("맑은 고딕", Font.ITALIC, 40));
-
-		// 아이디를 입력받는
-		userTf.setText("");
-		userP.add(userTf, BorderLayout.CENTER);
-		userTf.setColumns(10);
 
 		// 패스워드 패널 설정
 		JPanel pass = new JPanel() {
@@ -133,29 +125,30 @@ public class ForcePos extends JFrame implements ActionListener {
 		};
 		pass.setOpaque(false);
 
-		pass.setBounds(328, 368, 153, 156);
+		pass.setBounds(328, 320, 153, 156);
 		background.add(pass);
 
 		// 패스워드 패널
 		JPanel passP = new JPanel();
-		passP.setBounds(497, 368, 475, 156);
+		passP.setBounds(497, 320, 475, 156);
 		background.add(passP);
 		passP.setLayout(new BorderLayout(0, 0));
 
 		// 비밀번호텍스트필드
 		passTf = new JPasswordField(6);
+		passP.add(passTf, BorderLayout.CENTER);
 		passTf.setHorizontalAlignment(SwingConstants.CENTER);
 		passTf.setFont(new Font("맑은 고딕", Font.ITALIC, 40));
 
 		// 비밀번호를 입력받는
 		passTf.setText("");
-		passP.add(passTf, BorderLayout.CENTER);
 		passTf.setColumns(10);
+		passTf.addActionListener(this);
 
 		// 버튼 두개
 		JPanel SouthButt = new JPanel();
 		SouthButt.setOpaque(false);
-		SouthButt.setBounds(407, 584, 515, 111);
+		SouthButt.setBounds(388, 518, 518, 73);
 		background.add(SouthButt);
 		SouthButt.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 0));
 
@@ -193,20 +186,25 @@ public class ForcePos extends JFrame implements ActionListener {
 		exitB.setMaximumSize(new Dimension(73, 23));
 		exitB.setFont(new Font("맑은 고딕", Font.PLAIN, 50));
 		SouthButt.add(exitB);
-//		inputIcon();
+
+		// 유저 텍스트필드
+		userTf = new JTextField(6);
+		userTf.setBounds(497, 129, 475, 165);
+		background.add(userTf);
+		userTf.setHorizontalAlignment(SwingConstants.CENTER);
+		userTf.setFont(new Font("맑은 고딕", Font.ITALIC, 40));
+
+		// 아이디를 입력받는
+		userTf.setText("");
+		userTf.setColumns(10);
 		setResizable(false);
 
-		// 리스너 등록
+// 리스너 등록
+//		inputIcon();
 		userTf.addActionListener(this);
 		loginB.addActionListener(this);
 		exitB.addActionListener(this);
-		passTf.addActionListener(this);
 
-	}
-
-	// 로그인 성공 / 실패 판단 메소드
-	public boolean isLogin() {
-		return loginCheck;
 	}
 
 // 아이디 비밀번호 유효성 검사
@@ -216,17 +214,23 @@ public class ForcePos extends JFrame implements ActionListener {
 	public void isLoginCheck() {
 
 		if (userTf.getText().equals("개나리") && new String(passTf.getText()).equals("1234")) {
+
 			String str = userTf.getText();
-			JOptionPane.showMessageDialog(null, str + "님이 로그인 되었습니다.");
+			JOptionPane.showMessageDialog(null, str + "님 환영합니다.");
 			loginCheck = true;
-			if (isLogin()) {
-				showFrameTest();
-			}
+			showFrameTest();
+			
 
 		} else {
+			loginCheck = false;
 			JOptionPane.showMessageDialog(null, "로그인이 되지 않았습니다.");
 		}
 
+	}
+
+	// 로그인 성공 / 실패 판단 메소드
+	public boolean isLogin() {
+		return loginCheck;
 	}
 
 	public void showFrameTest() {
@@ -244,14 +248,13 @@ public class ForcePos extends JFrame implements ActionListener {
 
 	// 실행
 	public static void main(String[] args) {
-		ForcePos frame = new ForcePos();
-//		main.setVisible(true);
 
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainFrame main = new MainFrame(); // 메인프레임 객체생성
+					ForcePos frame = new ForcePos();
 					frame.setVisible(true);
+//					MainFrame main = new MainFrame(); // 메인프레임 객체생성
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -267,8 +270,9 @@ public class ForcePos extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+
 		Object ob = e.getSource();
-		
+
 		boolean id = userTf.getText().equals("개나리");
 		boolean pass = passTf.getText().equals("1234");
 
@@ -277,17 +281,23 @@ public class ForcePos extends JFrame implements ActionListener {
 //			isLoginCheck();
 //			passTf.requestFocus();	
 //		}
+		if(ob == loginB) {
+			isLoginCheck();
+//			showFrameTest();
+		}
+		
+		
+		
+		
 		if (id) {
+			isLoginCheck();
 			passTf.requestFocus();
 		}
-
-		if (ob == loginB) {
-			isLoginCheck();
-		}
-
+		
 		if (pass) {
 			isLoginCheck();
 		}
+		
 
 		if (ob == exitB) {
 			System.exit(0);

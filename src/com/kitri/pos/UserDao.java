@@ -2,98 +2,194 @@ package com.kitri.pos;
 
 import java.io.*;
 import java.sql.*;
+import java.util.Vector;
 
 //유저등록할때 받아야하는 값
 //유저 ID, 유저 패스워드, 이름 , 권한
 
 public class UserDao {
 
-	private BufferedReader in;
-	PosDto posdto;
-	// 관리자 클래스 객체생성 후 생성자 호출
-	Administrator ad = new Administrator();
-	Connection conn = null; // DB연결된 상태(세션)을 담은 객체
-	PreparedStatement pstm = null; // SQL 문을 나타내는 객체
-	ResultSet rs = null; // 쿼리문을 날린것에 대한 반환값을 담을 객체
+	// 회원리스트 클래스
+	UserList mList;
 
-	// 기본 생성자
+	// DB연결시 필요
+	Connection con = null;
+	PreparedStatement ps = null;
+	ResultSet rs = null;
+
+	// 기본생성자
 	public UserDao() {
-		super();
-		in = new BufferedReader(new InputStreamReader(System.in));
-		registerMenu();
+
 	}
 
-	public void registerMenu() {
+	//
+	public UserDao(UserList mList) {
+		this.mList = mList;
+	}
+	// 리스트에 담은 값들을 얻어온다.
 
-		int USER_CODE = 0;
-		String pw = null;
-		String id = null;
-		String authority = null;
-		String name = null;
+	// 회원 검색
+	public Vector<UserDto> getMemberList() {
 
+		Vector<UserDto> row = new Vector<UserDto>(); // Jtable에 넣을 값 //유저코드, 이름, 분류
+
+//			Connection con = null; //연결
+//			PreparedStatement ps = null; //명령
+//			ResultSet rs = null; //결과
+
+		con = getConnection();
+
+		String select = "select *" + "from members" + "order by name asc";
 		try {
-			System.out.print("유저코드입력하세요.");
-			USER_CODE = Integer.parseInt(in.readLine());
-			System.out.print("비밀번호입력하세요.");
-			pw = in.readLine().trim();
-			System.out.println();
-			System.out.print("아이디입력하세요.");
-			id = in.readLine().trim();
-			System.out.print("권한입력하세요.");
-			authority = in.readLine().trim();
-			System.out.print("이름입력하세요.");
-			name = in.readLine().trim();
-//			System.out.print("실행중");
-		
-			register(posdto);
-		} catch (IOException e) {
+			ps = con.prepareStatement(select);
+			rs = ps.executeQuery();
 
-			e.printStackTrace();
+			while (rs.next()) {
+
+				int user_code = rs.getInt(1);
+				String pw = rs.getString(2);
+				String id = rs.getString(3);
+				String authority = rs.getNString(4);
+				String name = rs.getString(5);
+
+				UserDto userdto = new UserDto();
+				userdto.setUserCode(user_code);
+				userdto.setPw(pw);
+				userdto.setId(id);
+				userdto.setAuthority(authority);
+				userdto.setName(name);
+
+				row.add(userdto);
+
+			}
+
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 
+		// TODO Auto-generated method stub
+		return row;
 	}
 
-	public void register(PosDto posdto) {
+	// 회원수
+	public boolean updateMember(UserDto dto) {
 
-		conn = getConnection();
-		String insert = "INSERT INTO MEMBERS(USER_CODE, PW, ID, AUTHORITY, NAME) VALUES(?, ?, ?, ?, ?)";
+		boolean result = false;
+
+//			Connection con = null;
+//			PreparedStatement ps = null;
+//			
+		con = getConnection();
+
+		String update = "update members set name= ?, pw= ?" + "where id = ? and pw = ?";
+
 		try {
-			pstm = conn.prepareStatement(insert);
-			pstm.setInt(1, posdto.getUserCode());
-			pstm.setString(2, posdto.getPw());
-			pstm.setString(3, posdto.getId());
-			pstm.setString(4, posdto.getAuthority());
-			pstm.setString(5, posdto.getName());
 
-			int result = pstm.executeUpdate();
+			ps = con.prepareStatement(update);
 
-			if (result > 0) {
-				System.out.println(posdto.getName() + "님의 DB 저장");
-			} else {
-				System.out.println("DB연결실패");
+			ps.setString(1, dto.getName());
+			ps.setString(2, dto.getPw());
+			ps.setString(3, dto.getId());
+			ps.setString(4, dto.getPw());
+
+			int r = ps.executeUpdate();
+
+			if (r > 0) {
+				result = true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	// 회원정보삭제
+	public boolean deleteMember(String id, String pw) {
+
+		boolean result = false;
+//			Connection con = null;
+//			PreparedStatement ps = null;
+
+		con = getConnection();
+		String delete = "delete" + "from members " + "where id = ? and pw = ?";
+
+		try {
+
+			ps = con.prepareStatement(delete);
+			ps.setString(1, id);
+			ps.setString(2, pw);
+
+			int r = ps.executeUpdate();
+
+			if (r > 0) {
+				result = true;
 			}
 
 		} catch (SQLException e) {
-
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-
-			try {
-				if (pstm != null) {
-					pstm.close();
-				}
-				if (conn != null) {
-				}
-				conn.close();
-
-			} catch (SQLException e) {
-
-				e.printStackTrace();
-			}
-			this.posdto = posdto;
 		}
+		return result;
 	}
 
+	// 회원등록
+	public boolean insertMember(UserDto userdto) {
+
+		boolean result = false;
+
+//			Connection con = null;
+//			PreparedStatement ps = null;
+
+		con = getConnection();
+
+		String insert = "insert into members(user_code, pw, id, authority, name) values(USER_CODE_SEQ.NEXTVAL, ?, ?, ?, ?)";
+		try {
+
+			ps = con.prepareStatement(insert);
+
+//				ps.setInt(1, userdto.getUserCode());
+			ps.setString(1, userdto.getPw());
+			ps.setString(2, userdto.getId());
+			ps.setString(3, userdto.getAuthority());
+			ps.setString(4, userdto.getName());
+
+			int r = ps.executeUpdate(); // 실행 >> 저장
+
+			if (r > 0) {
+				System.out.println("회원가입 성공 ");
+				result = true;
+			} else {
+				System.out.println("회원가입 실패");
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} //finally {
+//
+//			if (rs != null)
+//				try {
+//					rs.close();
+//				} catch (SQLException ex) {
+//				}
+//			if (ps != null)
+//				try {
+//					ps.close();
+//				} catch (SQLException ex) {
+//				}
+//			if (con != null)
+//				try {
+//					con.close();
+//				} catch (SQLException ex) {
+//				}
+//
+//		}
+		return result;
+	}
+
+	// innerClass "DB 연결하는중..."
 	public Connection getConnection() {
 
 		String user = "kitri";
@@ -101,26 +197,38 @@ public class UserDao {
 		String url = "jdbc:oracle:thin:@localhost:1521:orcl";
 
 		try {
-
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn = DriverManager.getConnection(url, user, pw);
+			try {
+				con = DriverManager.getConnection(url, user, pw);
+				System.out.println("DB연결 성공했습니다.");
+			} catch (SQLException e) {
+				System.out.println("DB연결 실패했습니다.");
+				e.printStackTrace();
+			}
 
-			System.out.print("Database에 연결성공.\n");
-
-		} catch (ClassNotFoundException cnfe) {
-			System.out.println("DB 드라이버 로딩 실패 :" + cnfe.toString());
-		} catch (SQLException sqle) {
-			System.out.println("DB 접속실패 : " + sqle.toString());
-		} catch (Exception e) {
-			System.out.println("Unkonwn error");
+		} catch (ClassNotFoundException e) {
+			System.out.println("알수없음.");
 			e.printStackTrace();
-		}
-		return conn;
-	};
-
-	public static void main(String[] args) {
-		new UserDao();
-//		System.out.println("실행중");
-//		System.out.println();
+		} //finally {
+//
+//			if (rs != null)
+//				try {
+//					rs.close();
+//				} catch (SQLException ex) {
+//				}
+//			if (ps != null)
+//				try {
+//					ps.close();
+//				} catch (SQLException ex) {
+//				}
+//			if (con != null)
+//				try {
+//					con.close();
+//				} catch (SQLException ex) {
+//				}
+//
+//		}
+		return con;
 	}
+
 }
