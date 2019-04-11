@@ -21,7 +21,8 @@ import javax.swing.JList;
 public class Reciept extends JFrame {
 
 	private JPanel contentPane;
-
+	JButton cancel;
+	JButton print;
 	/**
 	 * Launch the application.
 	 */
@@ -99,13 +100,13 @@ public class Reciept extends JFrame {
 		contentPane.add(panel_1);
 		panel_1.setLayout(null);
 		
-		JButton cancel = new JButton("\uCDE8\uC18C");
-		cancel.setFont(new Font("±¼¸²", Font.PLAIN, 15));
+		cancel = new JButton("\uCDE8\uC18C");
+		cancel.setFont(new Font("êµ´ë¦¼", Font.PLAIN, 15));
 		cancel.setBounds(60, 10, 97, 53);
 		panel_1.add(cancel);
 		
-		JButton print = new JButton("\uCD9C\uB825");
-		print.setFont(new Font("±¼¸²", Font.PLAIN, 15));
+		print = new JButton("\uCD9C\uB825");
+		print.setFont(new Font("êµ´ë¦¼", Font.PLAIN, 15));
 		print.setBounds(167, 10, 97, 53);
 		panel_1.add(print);
 		
@@ -117,7 +118,7 @@ public class Reciept extends JFrame {
 		
 		JLabel lblNewLabel = new JLabel("\uC601 \uC218 \uC99D");
 		lblNewLabel.setBackground(new Color(255, 255, 255));
-		lblNewLabel.setFont(new Font("±¼¸²", Font.BOLD, 18));
+		lblNewLabel.setFont(new Font("êµ´ë¦¼", Font.BOLD, 18));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setBounds(12, 10, 305, 33);
 		panel_2.add(lblNewLabel);

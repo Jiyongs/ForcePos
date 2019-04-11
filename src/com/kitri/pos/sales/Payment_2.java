@@ -1,7 +1,9 @@
-package com.kitri.pos.sales;
+package com.kitri.pos;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -16,18 +18,20 @@ public class Payment_2 extends JFrame {
 
 	private JPanel contentPane;
 	private final JPanel payment_2 = new JPanel();
-	private JTextField tfP2SM;
-	private JTextField tfP2PhoneNum;
-	private JTextField tfP2Point;
-	private JButton btnP2Before;
-	private JButton btnP2Next;
-	private JLabel lbP2AfterPoint;
-	private JButton btnP2Cancel;
-	private JLabel lbP2point;
-	private JLabel lbP2UsePoint;
-	private JButton btnP2Register;
-	private JButton btnP2Save;
-	private JButton btnP2Apply;
+//	Payment_1 payment_1 = new Payment_1();
+//	Payment_3 payment_3 = new Payment_3();
+	JTextField tfP2SM;
+	JTextField tfP2PhoneNum;
+	JTextField tfP2Point;
+	JButton btnP2Before;
+	JButton btnP2Next;
+	JLabel lbP2AfterPoint;
+	JButton btnP2Cancel;
+	JLabel lbP2point;
+	JLabel lbP2UsePoint;
+	JButton btnP2Register;
+	JButton btnP2Save;
+	JButton btnP2Apply;
 	
 
 	/**
@@ -124,5 +128,9 @@ public class Payment_2 extends JFrame {
 		btnP2Apply = new JButton("\uC801\uC6A9");
 		btnP2Apply.setBounds(350, 254, 150, 50);
 		payment_2.add(btnP2Apply);
+		
+		
 	}
+
+	
 }

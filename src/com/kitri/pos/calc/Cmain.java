@@ -1,33 +1,22 @@
 package com.kitri.pos.calc;
 
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import com.kitri.pos.ForcePos;
-
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import java.awt.Font;
-import javax.swing.SwingConstants;
-import java.awt.Color;
-import javax.swing.JButton;
 import java.awt.CardLayout;
-import java.awt.event.ActionListener;
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class Cmain extends JFrame implements ActionListener {
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
+public class Cmain extends JFrame {
 
 
 	/**
@@ -38,16 +27,16 @@ public class Cmain extends JFrame implements ActionListener {
 	private JTextField notice;
 	
 	
-	ForcePos frame;
+	
 	Cmain frame1;
 	CardLayout card = new CardLayout();
 	JPanel pMonitor;
-	PCalc pCalc = new PCalc();
-	CalcService calcService = new CalcService(pCalc);
+	static PCalc pCalc;
+	CalcService calcService;
 	
 	JButton mBtnCalc;
 	
-	
+	static JPanel pTest;
 	/**
 	 * Launch the application.
 	 */
@@ -73,7 +62,7 @@ public class Cmain extends JFrame implements ActionListener {
 	
 	public void showFrameTest() {
 		frame1.setVisible(true);
-		frame.dispose();
+//		frame.dispose();
 	}
 	
 	
@@ -215,27 +204,51 @@ public class Cmain extends JFrame implements ActionListener {
 		sBtnPdCancel.setBounds(0, 520, 164, 120);
 		pSellFunction.add(sBtnPdCancel);
 		
+		
+		//test
+		pTest = new JPanel();
+		
 		pMonitor = new JPanel();
-
+		pCalc = new PCalc();
 		pMonitor.setBackground(new Color(255, 255, 255));
 		pMonitor.setBounds(0, 50, 1144, 535);
 		contentPane.add(pMonitor);
 		pMonitor.setLayout(card);
 		pMonitor.add("Calc",pCalc);
-		card.show(pMonitor,"Calc");
-		mBtnCalc.addActionListener(this);
-		pCalc.btnCalc_Input.addActionListener(this);
+//		card.show(pMonitor,"Calc");
+/////////////////////////////////////test		
+		
+		pMonitor.add("Test", pTest);
+		card.show(pMonitor, "Test");
+//////////////////////////////////////////
+		
+		
+		calcService = new CalcService(this);
+		
+		mBtnCalc.addActionListener(calcService);
+		pCalc.btnCalc_0.addActionListener(calcService);
+		pCalc.btnCalc_1.addActionListener(calcService);
+		pCalc.btnCalc_2.addActionListener(calcService);
+		pCalc.btnCalc_3.addActionListener(calcService);
+		pCalc.btnCalc_4.addActionListener(calcService);
+		pCalc.btnCalc_5.addActionListener(calcService);
+		pCalc.btnCalc_6.addActionListener(calcService);
+		pCalc.btnCalc_7.addActionListener(calcService);
+		pCalc.btnCalc_8.addActionListener(calcService);
+		pCalc.btnCalc_9.addActionListener(calcService);
+		pCalc.btnCalc_00.addActionListener(calcService);
+		pCalc.btnCalc_Input.addActionListener(calcService);
+		pCalc.btnCalc_del.addActionListener(calcService);
+		pCalc.btnCalc_C.addActionListener(calcService);
+		pCalc.btnCalc_Apply.addActionListener(calcService);
+		pCalc.btnCalc_Cancel.addActionListener(calcService);
+		
+		
+		
+		
+	
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		Object ob = e.getSource();
-		if(ob == mBtnCalc) {
-			
-			card.show(pMonitor,"Calc");
-		}else if(ob == pCalc.btnCalc_Input) {
-		
-			
-		}
-	}
+
+	
 }

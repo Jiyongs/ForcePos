@@ -4,8 +4,7 @@ public class PosDto {
 
 	// 필드 선언
 
-	private int USER_CODE; // 유저코드
-	private String name; // 이름
+	private int userCode; // 유저코드
 	private String attendCode; // 출결코드
 	private String loginTime; // 출근시간
 	private String logoutTime; // 퇴근시간
@@ -43,23 +42,26 @@ public class PosDto {
 	private String inDate; // 입고날짜
 	private int totalPrice;
 	private String discountCode; // 할인코드
-	private String membershipId; // 맴버쉽아이디
 	// =====================================//
 
-	public String getName() {
-		return name;
+	private String membershipId; // 맴버쉽아이디
+	private String memberName; //멤버쉽 회원 이름
+
+
+	public String getMemberName() {
+		return memberName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setMemberName(String memberName) {
+		this.memberName = memberName;
 	}
 
 	public int getUserCode() {
-		return USER_CODE;
+		return userCode;
 	}
 
-	public void setUserCode(int USER_CODE) {
-		this.USER_CODE = USER_CODE;
+	public void setUserCode(int userCode) {
+		this.userCode = userCode;
 	}
 
 	public String getAttendCode() {
@@ -349,5 +351,6 @@ public class PosDto {
 	public void setDiscountCode(String discountCode) {
 		this.discountCode = discountCode;
 	}
+
 
 }

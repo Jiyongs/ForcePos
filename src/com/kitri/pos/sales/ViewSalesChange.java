@@ -1,4 +1,4 @@
-package com.kitri.pos.sales;
+package com.kitri.pos;
 
 import javax.swing.JPanel;
 import java.awt.Color;
