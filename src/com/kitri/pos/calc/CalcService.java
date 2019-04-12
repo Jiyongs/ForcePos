@@ -120,10 +120,19 @@ public class CalcService implements ActionListener {
 			int row = Cmain.pCalc.cashTable.getSelectedRow();
 			int column = Cmain.pCalc.cashTable.getSelectedColumn();
 			Cmain.pCalc.cashTable.setValueAt("", row, column);
-//			
+
 		} else if (ob == Cmain.pCalc.btnCalc_Apply) {
+			
+			dao.calc_Apply(Integer.parseInt(Cmain.pCalc.tfCashState.getText()),
+			Integer.parseInt(Cmain.pCalc.tfCashCheck.getText()),
+			Integer.parseInt(Cmain.pCalc.tfCalcResult.getText()));
+			
 //			Cmain.판매창.card.show(~~)
-			System.out.println("정산창 비활성화, 판매창 활성화");
+//			System.out.println(Integer.parseInt(Cmain.pCalc.tfCashState.getText()));
+//			System.out.println("2");
+//			System.out.println(Integer.parseInt(Cmain.pCalc.tfCashCheck.getText()));
+//			System.out.println("3");
+//			System.out.println(Integer.parseInt(Cmain.pCalc.tfCalcResult.getText()));
 
 		} else if (ob == Cmain.pCalc.btnCalc_Cancel) {
 			cmain.card.show(cmain.pMonitor, "Test");

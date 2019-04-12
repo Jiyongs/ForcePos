@@ -221,21 +221,18 @@ public class PCalc extends JPanel {
 		panel_2.setLayout(new GridLayout(0, 1, 0, 10));
 
 		tfCashState = new JTextField();
-		tfCashState.setEditable(false);
 		tfCashState.setForeground(Color.BLACK);
 		tfCashState.setFont(new Font("굴림", Font.BOLD, 20));
 		panel_2.add(tfCashState);
 		tfCashState.setColumns(10);
 
-		tfCashCheck = new JTextField("0");
-		tfCashCheck.setEditable(false);
+		tfCashCheck = new JTextField();
 		tfCashCheck.setForeground(Color.BLACK);
 		tfCashCheck.setFont(new Font("굴림", Font.BOLD, 20));
 		panel_2.add(tfCashCheck);
 		tfCashCheck.setColumns(10);
 
-		tfCalcResult = new JTextField("0");
-		tfCalcResult.setEditable(false);
+		tfCalcResult = new JTextField();
 		tfCalcResult.setForeground(Color.RED);
 		tfCalcResult.setFont(new Font("굴림", Font.BOLD, 20));
 		panel_2.add(tfCalcResult);

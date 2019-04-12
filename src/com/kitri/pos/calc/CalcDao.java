@@ -11,7 +11,7 @@ import java.util.GregorianCalendar;
 import java.util.Vector;
 
 public class CalcDao {
-
+	PCalc pCalc = new PCalc();
 //	Dto part(inner class)
 	public class CalcDto {
 		private String count_date;
@@ -100,7 +100,7 @@ public class CalcDao {
 			rs = st.executeQuery(query);
 
 			
-			PCalc pCalc = new PCalc();
+			pCalc = new PCalc();
 			
 			while(rs.next()) {
 				sumCash = rs.getInt(1);
@@ -123,25 +123,70 @@ public class CalcDao {
 	}
 
 //	정산결과값 테이블에 insert
-	public void calc_Apply() {
-		
-		
-//		vec.add()
+	public boolean calc_Apply(int s, int c, int r) {
+		boolean result = false;
+		int user = 0;
 		try {
 			conn = DBManager.getConnection();
+		//select 유저
+		
+		String query = "select user_code from Members where name = '개나리'";
+		
+		
+		st = conn.createStatement();
+		rs = st.executeQuery(query);
+				while(rs.next()) {
+		user = rs.getInt(1);
+				}
+		
+
+		
+		//insert 정산객체 삽입
+//		vec.add()
+		
 			
-			String query = "insert into money value(?,?,?,?,?)";
+			query = "insert into money(count_date ,user_code ,coms_calc ,current_money ,total_calc)"
+					+ " values(to_date(sysdate,'yyyy.mm.dd hh.mi.ss'),?,?,?,?)";
 			
 			ps = conn.prepareStatement(query);
 			
 			
+//			String s = pCalc.tfCashState.getText();
+//			String c = pCalc.tfCashCheck.getText();
+//			String r = pCalc.tfCalcResult.getText();
+//			
+			System.out.println(s);
+//			System.out.println(Integer.parseInt(s));
+			System.out.println(c);
+//			System.out.println(Integer.parseInt(c));
+			System.out.println(r);
+//			System.out.println(Integer.parseInt(r));
 
+//			
+//			ps.setInt(1, user);
+//			ps.setInt(2,Integer.parseInt(pCalc.tfCashState.getText()));
+//			ps.setInt(3,Integer.parseInt(pCalc.tfCashCheck.getText()));
+//			ps.setInt(4,Integer.parseInt(pCalc.tfCalcResult.getText()));
+			ps.setInt(1,user);
+			ps.setInt(2,s);
+			ps.setInt(3,c);
+			ps.setInt(4,r);
 			
-			PCalc pCalc = new PCalc();
+//			vec.add(pCalc.tfCashState.getText());
+//			vec.add(pCalc.tfCashCheck.getText());
+//			vec.add(pCalc.tfCalcResult.getText());
+			int e = ps.executeUpdate();
+			System.out.println("변경된 row  : " + e);
 			
-			while(rs.next()) {
+			if(e>0)
+				result = true;
+			else
+				result = false;
+			
+			
+//			while(rs.next()) {
 								
-			}
+//			}
 //			pCalc.tfCashState.setText(Integer.toString(sumCash));
 
 		} catch (SQLException e) {
@@ -154,7 +199,7 @@ public class CalcDao {
 			}
 
 		}
-		
+		return result;
 
 	}
 	
