@@ -4,6 +4,8 @@ import java.nio.channels.MembershipKey;
 import java.sql.*;
 import java.util.Vector;
 
+import javax.swing.table.DefaultTableModel;
+
 import com.kitri.pos.sales.PosDto;
 import com.kitri.pos.db.DBManager;
 
@@ -35,7 +37,8 @@ public class SalesDao {
 			conn = DBManager.getConnection();
 
 			// 쿼리문 세팅
-			String query = "select * from membership\r\n";
+			String query = "select * from membership\r\n"
+					+ "order by membership_id asc";
 			ps = conn.prepareStatement(query);
 
 			// 쿼리문 실행
@@ -71,26 +74,23 @@ public class SalesDao {
 //	name만 입력하고 멤버십 조회하는 메소드
 	public Vector<PosDto> search(String name) {
 		// 쿼리문 결과 (여러 행) 담을 PosDto 객체
-		
+
 		Vector<PosDto> list = new Vector<PosDto>();
-		
-	
+
 		try {
 			// DB 연결
 			conn = DBManager.getConnection();
 
 			// 쿼리문 세팅
-			String query = "select membership_id, name, phone, point\r\n" + 
-					"from membership\r\n" + 
-					"where name = ?";
+			String query = "select membership_id, name, phone, point\r\n" + "from membership\r\n" + "where name = ?";
 			ps = conn.prepareStatement(query);
 
 			ps.setString(1, name);
-			
+
 			// 쿼리문 실행
 			rs = ps.executeQuery();
 			// 결과 저장
-		
+
 			while (rs.next()) {
 
 				posDto = new PosDto();
@@ -116,29 +116,27 @@ public class SalesDao {
 		// 결과 리턴
 		return list;
 	}
+
 //	phone만 입력하고 조회하는 메소드
 	public Vector<PosDto> search1(String cellphone) {
 		// 쿼리문 결과 (여러 행) 담을 PosDto 객체
-		
+
 		Vector<PosDto> list = new Vector<PosDto>();
-		
-	
+
 		try {
 			// DB 연결
 			conn = DBManager.getConnection();
 
 			// 쿼리문 세팅
-			String query = "select membership_id, name, phone, point\r\n" + 
-					"from membership\r\n" + 
-					"where phone = ?";
+			String query = "select membership_id, name, phone, point\r\n" + "from membership\r\n" + "where phone = ?";
 			ps = conn.prepareStatement(query);
 
 			ps.setString(1, cellphone);
-			
+
 			// 쿼리문 실행
 			rs = ps.executeQuery();
 			// 결과 저장
-		
+
 			while (rs.next()) {
 
 				posDto = new PosDto();
@@ -164,31 +162,29 @@ public class SalesDao {
 		// 결과 리턴
 		return list;
 	}
+
 //		name, phone 전부로 조회하는 메소드
 	public Vector<PosDto> search2(String name, String cellphone) {
 		// 쿼리문 결과 (여러 행) 담을 PosDto 객체
-		
+
 		Vector<PosDto> list = new Vector<PosDto>();
-		
-	
+
 		try {
 			// DB 연결
 			conn = DBManager.getConnection();
 
 			// 쿼리문 세팅
-			String query = "select membership_id, name, phone, point\r\n" + 
-					"from membership\r\n" + 
-					"where name = ?" +
-					"and phone = ?";
+			String query = "select membership_id, name, phone, point\r\n" + "from membership\r\n" + "where name = ?"
+					+ "and phone = ?";
 			ps = conn.prepareStatement(query);
 
 			ps.setString(1, name);
 			ps.setString(2, cellphone);
-			
+
 			// 쿼리문 실행
 			rs = ps.executeQuery();
 			// 결과 저장
-		
+
 			while (rs.next()) {
 
 				posDto = new PosDto();
@@ -214,6 +210,7 @@ public class SalesDao {
 		// 결과 리턴
 		return list;
 	}
+
 //		회원정보를 입력하는 메소드	
 	public int register(String name, String cellphone) {
 		int result = 0;
@@ -225,7 +222,7 @@ public class SalesDao {
 			// 쿼리문
 			String query = "insert into membership values((MEMBERSHIP_ID_SEQ.NEXTVAL), ?, ?, 0)";
 
-			//	쿼리문 실행
+			// 쿼리문 실행
 			ps = conn.prepareStatement(query);
 			ps.setString(1, name);
 			ps.setString(2, cellphone);
@@ -257,6 +254,16 @@ public class SalesDao {
 		return result;
 	}
 
+	// 테이블 행 모두 지우기 (화면단에서만)
 	
-	
+
+	public static void clearRows(int rowCount, DefaultTableModel tmodel) {
+		// TODO Auto-generated method stub
+		if (rowCount > 0) {
+			for (int i = rowCount - 1; i >= 0; i--) {
+				tmodel.removeRow(i);
+			}
+		}
+	}
+
 }
