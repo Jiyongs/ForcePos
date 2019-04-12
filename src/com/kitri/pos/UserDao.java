@@ -1,25 +1,25 @@
 package com.kitri.pos;
 
-import java.io.*;
+
 import java.sql.*;
 import java.util.Vector;
 
 import com.kitri.pos.db.DBManager;
 
-//À¯Àúµî·ÏÇÒ¶§ ¹Ş¾Æ¾ßÇÏ´Â °ª
-//À¯Àú ID, À¯Àú ÆĞ½º¿öµå, ÀÌ¸§ , ±ÇÇÑ
+//ìœ ì €ë“±ë¡í• ë•Œ ë°›ì•„ì•¼í•˜ëŠ” ê°’
+//ìœ ì € ID, ìœ ì € íŒ¨ìŠ¤ì›Œë“œ, ì´ë¦„ , ê¶Œí•œ
 
 public class UserDao {
 
-	// È¸¿ø¸®½ºÆ® Å¬·¡½º
+	// íšŒì›ë¦¬ìŠ¤íŠ¸ í´ë˜ìŠ¤
 	UserList mList;
 
-	// DB¿¬°á½Ã ÇÊ¿ä
+	// DBì—°ê²°ì‹œ í•„ìš”
 	Connection con = null;
 	PreparedStatement ps = null;
 	ResultSet rs = null;
 
-	// ±âº»»ı¼ºÀÚ
+	// ê¸°ë³¸ìƒì„±ì
 	public UserDao() {
 
 	}
@@ -28,16 +28,12 @@ public class UserDao {
 	public UserDao(UserList mList) {
 		this.mList = mList;
 	}
-	// ¸®½ºÆ®¿¡ ´ãÀº °ªµéÀ» ¾ò¾î¿Â´Ù.
+	// ë¦¬ìŠ¤íŠ¸ì— ë‹´ì€ ê°’ë“¤ì„ ì–»ì–´ì˜¨ë‹¤.
 
-	// È¸¿ø °Ë»ö
+	// íšŒì› ê²€ìƒ‰
 	public Vector<UserDto> getMemberList() {
-
-		Vector<UserDto> row = new Vector<UserDto>(); // Jtable¿¡ ³ÖÀ» °ª //À¯ÀúÄÚµå, ÀÌ¸§, ºĞ·ù
-
-//			Connection con = null; //¿¬°á
-//			PreparedStatement ps = null; //¸í·É
-//			ResultSet rs = null; //°á°ú
+		// Jtableì— ë„£ì„ ê°’ //ìœ ì €ì½”ë“œ, ì´ë¦„, ë¶„ë¥˜
+		Vector<UserDto> row = new Vector<UserDto>(); 
 
 		con = DBManager.getConnection();
 
@@ -70,7 +66,7 @@ public class UserDao {
 			}
 
 		} catch (SQLException e1) {
-			System.out.println("µî·Ï ¿À·ù");
+			System.out.println("ë“±ë¡ ì˜¤ë¥˜");
 			e1.printStackTrace();
 		}  finally {
 			try {
@@ -85,7 +81,7 @@ public class UserDao {
 		return row;
 	}
 
-	// È¸¿ø¼ö
+	// íšŒì›ìˆ˜
 	public boolean updateMember(UserDto dto) throws SQLException {
 
 		boolean result = false;
@@ -110,11 +106,11 @@ public class UserDao {
 			int r = ps.executeUpdate();
 
 			if (r > 0) {
-				System.out.println("DB¼öÁ¤ÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù.");
+				System.out.println("DBìˆ˜ì •ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.");
 				result = true;
 			}
 		} catch (SQLException e) {
-			System.out.println("DB¼öÁ¤ÀÌ ½ÇÆĞÇß½À´Ï´Ù.");
+			System.out.println("DBìˆ˜ì •ì´ ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤.");
 			e.printStackTrace();
 		} finally {
 			DBManager.dbClose(ps, con);
@@ -122,16 +118,16 @@ public class UserDao {
 		return result;
 	}
 
-	// È¸¿øÁ¤º¸»èÁ¦
+	// íšŒì›ì •ë³´ì‚­ì œ
 	public boolean deleteMember(String id, String pw) {
 
 		boolean result = false;
-//			Connection con = null;
-//			PreparedStatement ps = null;
 
 		con = DBManager.getConnection();
 		
-		String delete = "delete" + "from members " + "where id = ? and pw = ?";
+		String delete = "delete" + 
+						"from members " + 
+						"where id = ? and pw = ? ";
 
 		try {
 
@@ -147,7 +143,7 @@ public class UserDao {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		} finally {
 			try {
@@ -160,13 +156,10 @@ public class UserDao {
 		return result;
 	}
 
-	// È¸¿øµî·Ï
+	// íšŒì›ë“±ë¡
 	public boolean insertMember(UserDto userdto) {
 
 		boolean result = false;
-
-//			Connection con = null;
-//			PreparedStatement ps = null;
 
 		con = DBManager.getConnection();
 
@@ -175,20 +168,15 @@ public class UserDao {
 
 			ps = con.prepareStatement(insert);
 
-//			ps.setInt(1, userdto.getUserCode());
 			ps.setString(1, userdto.getPw());
 			ps.setString(2, userdto.getId());
 			ps.setString(3, userdto.getAuthority());
 			ps.setString(4, userdto.getName());
 
-			int r = ps.executeUpdate(); // ½ÇÇà >> ÀúÀå
-//			String str = Integer.toString(r);
-//			if (str == null) {
-//				System.out.println("È¸¿ø°¡ÀÔ ½ÇÆĞ");
-//			}
+			int r = ps.executeUpdate(); // ì‹¤í–‰ >> ì €ì¥
 
 			if (r > 0) {
-				System.out.println("È¸¿ø°¡ÀÔ ¼º°ø ");
+				System.out.println("íšŒì›ê°€ì… ì„±ê³µ ");
 				result = true;
 			}
 

@@ -2,53 +2,53 @@ package com.kitri.pos;
 
 public class PosDto {
 
-	// ÇÊµå ¼±¾ğ
+	// í•„ë“œ ì„ ì–¸
 
-	private int USER_CODE; // À¯ÀúÄÚµå
-	private String name; // ÀÌ¸§
-	private String attendCode; // Ãâ°áÄÚµå
-	private String loginTime; // Ãâ±Ù½Ã°£
-	private String logoutTime; // Åğ±Ù½Ã°£
-	private String workTime; // ±Ù¹«½Ã°£
-	private String pw; // ÆĞ½º¿öµå
-	private String id; // ¾ÆÀÌµğ
-	private String authority; // ±ÇÇÑ
+	private int USER_CODE; // ìœ ì €ì½”ë“œ
+	private String name; // ì´ë¦„
+	private String attendCode; // ì¶œê²°ì½”ë“œ
+	private String loginTime; // ì¶œê·¼ì‹œê°„
+	private String logoutTime; // í‡´ê·¼ì‹œê°„
+	private String workTime; // ê·¼ë¬´ì‹œê°„
+	private String pw; // íŒ¨ìŠ¤ì›Œë“œ
+	private String id; // ì•„ì´ë””
+	private String authority; // ê¶Œí•œ
 	// ===================================//
-	private String cooperateName; // Á¦ÈŞ»ç
-	private String company; // Á¦Á¶»ç
-	private String productCode; // »óÇ°ÄÚµå
-	private String productName; // »óÇ°ÀÌ¸§
-	private String levelCode; // ºĞ·ùÄÚµå
-	private String majorLevel; // ´ëºĞ·ù
-	private String mediumLevel; // ÁßºĞ·ù
-	private String minorLevel; // ¼ÒºĞ·ù
-	private int price; // °¡°İ
-	private int purchase; // ¸ÅÀÔ°¡
-	private int volume; // ¼ö·®
-	private String realExp; // À¯Åë±âÇÑ
+	private String cooperateName; // ì œíœ´ì‚¬
+	private String company; // ì œì¡°ì‚¬
+	private String productCode; // ìƒí’ˆì½”ë“œ
+	private String productName; // ìƒí’ˆì´ë¦„
+	private String levelCode; // ë¶„ë¥˜ì½”ë“œ
+	private String majorLevel; // ëŒ€ë¶„ë¥˜
+	private String mediumLevel; // ì¤‘ë¶„ë¥˜
+	private String minorLevel; // ì†Œë¶„ë¥˜
+	private int price; // ê°€ê²©
+	private int purchase; // ë§¤ì…ê°€
+	private int volume; // ìˆ˜ëŸ‰
+	private String realExp; // ìœ í†µê¸°í•œ
 	// ===================================//
-	private String sellId; // ÆÇ¸Å¾ÆÀÌµğ
-	private String sellDate; // ÆÇ¸ÅÀÏÀÚ
-	private int sellCount; // ÆÇ¸Å¼ö·®
-	private String countDate; // Á¤»ê³¯Â¥
-	private int comsCalc; // Çö±İ°áÁ¦±İ¾×
+	private String sellId; // íŒë§¤ì•„ì´ë””
+	private String sellDate; // íŒë§¤ì¼ì
+	private int sellCount; // íŒë§¤ìˆ˜ëŸ‰
+	private String countDate; // ì •ì‚°ë‚ ì§œ
+	private int comsCalc; // í˜„ê¸ˆê²°ì œê¸ˆì•¡
 	private int cashPrice;
-	private String discountPct; // ÇÒÀÎÀ²
-	private int currentMoney; // ÇöÀç½ÃÁ¦
-	private int totalCalc; // Â÷¾×
-	private String phone; // ÇÚµåÆù¹øÈ£
-	private int point; // Æ÷ÀÎÆ®
+	private String discountPct; // í• ì¸ìœ¨
+	private int currentMoney; // í˜„ì¬ì‹œì œ
+	private int totalCalc; // ì°¨ì•¡
+	private String phone; // í•¸ë“œí°ë²ˆí˜¸
+	private int point; // í¬ì¸íŠ¸
 	private String payment;
-	private int cardPrice; // Ä«µå°áÁ¦±İ¾×
-	private String inDate; // ÀÔ°í³¯Â¥
+	private int cardPrice; // ì¹´ë“œê²°ì œê¸ˆì•¡
+	private String inDate; // ì…ê³ ë‚ ì§œ
 	private int totalPrice;
-	private String discountCode; // ÇÒÀÎÄÚµå
-	private String membershipId; // ¸É¹ö½±¾ÆÀÌµğ
+	private String discountCode; // í• ì¸ì½”ë“œ
+	private String membershipId; // ë§´ë²„ì‰½ì•„ì´ë””
 	// =====================================//
-	private int ranking;           // ¸ÅÃâ¼øÀ§
-	private int statTotalPrice;   // ¸ÅÃâÇÕ°è
-	private int totalTax;           // ºÎ°¡¼¼ÇÕ°è
-	private int customerCount; // °í°´¼ö
+	private int ranking;           // ë§¤ì¶œìˆœìœ„
+	private int statTotalPrice;   // ë§¤ì¶œí•©ê³„
+	private int totalTax;           // ë¶€ê°€ì„¸í•©ê³„
+	private int customerCount; // ê³ ê°ìˆ˜
 
 	public int getRanking() {
 		return ranking;

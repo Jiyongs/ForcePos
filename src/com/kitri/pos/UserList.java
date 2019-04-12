@@ -12,50 +12,48 @@ public class UserList implements MouseListener {
 
 	Vector<UserDto> row;
 	Vector<String> cols;
+	
 	//====================//
+	
 	DefaultTableModel model;
 	JTable jTable;
 	JScrollPane pane;
-//	UserDao dao;
 
-	// ±âº»»ı¼ºÀÚ
+
+	// ê¸°ë³¸ìƒì„±ì
 	public UserList() {
 
 		UserDao dao = new UserDao();
-		
 		row = dao.getMemberList();
+		
 		cols = new Vector<String>(getColum());
 
 
 		jTable = new JTable(model);
-		jTable.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
+		jTable.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.PLAIN, 20));
 		pane = new JScrollPane(jTable);
-	
-		Administrator ad = new Administrator();
-//		ad.pTable.add(row, cols);
-
 		jTable.addMouseListener(this);
 
 	}
 
-	// Jtable ÄÃ·³
+	// Jtable ì»¬ëŸ¼
 	Vector<String> getColum() {
 		
 		cols = new Vector<String>();
 
-		cols.add("À¯ÀúÄÚµå");
-		cols.add("ÆĞ½º¿öµå");
-		cols.add("¾ÆÀÌµğ");
-		cols.add("±ÇÇÑ");
-		cols.add("ÀÌ¸§");
+		cols.add("ìœ ì €ì½”ë“œ");
+		cols.add("íŒ¨ìŠ¤ì›Œë“œ");
+		cols.add("ì•„ì´ë””");
+		cols.add("ê¶Œí•œ");
+		cols.add("ì´ë¦„");
 
 		return cols;
 	}
 
-	// Jtable ³»¿ë °»½Å
+	// Jtable ë‚´ìš© ê°±ì‹ 
 	public void jtableRefresh() {
 
-		UserDao userdao = new UserDao();
+//		UserDao userdao = new UserDao();
 //		DefaultTableModel model = new DefaultTableModel(userdao.getMemberList(), getColum());
 //		jTable.setModel(model);
 
@@ -64,8 +62,9 @@ public class UserList implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 	
-		int r = jTable.getSelectedRow();
-		String id = (String) jTable.getValueAt(r, 0);
+		//í…Œì´ë¸”ì˜ í–‰ì„ ì„ íƒí•  ë•Œì˜ ì¸ë±ìŠ¤ê°’ì„ ì–»ì–´ì˜¨ë‹¤.
+//		int r = jTable.getSelectedRow();
+//		String str = (String) jTable.getValueAt(r, 0);
 //		Administrator ad = new Administrator();
 		
 	}

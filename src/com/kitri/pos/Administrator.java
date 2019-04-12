@@ -3,50 +3,46 @@ package com.kitri.pos;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.*;
-
-import com.sun.org.apache.bcel.internal.classfile.PMGClass;
-
-import javax.swing.border.EmptyBorder;
-
-import java.io.*;
 import java.util.Vector;
 import java.awt.*;
 import java.awt.event.*;
-
 import javax.swing.border.LineBorder;
 
 public class Administrator extends JFrame implements ActionListener, MouseListener {
 
-	private JPanel contentPane; // ÀüÃ¼ ÇÁ·¹ÀÓ
-	private JTextField userTf; // ¾ÆÀÌµğ ÀÔ·Â
-	private JTextField passTf; // ÆĞ½º¿öµå ÀÔ·Â
-	private JTextField nameTf; // ÀÌ¸§ ÀÔ·Â
-	private JTextField notice; // »óÅÂÃ¢
-	private ForcePos frame; // ¸ŞÀÎÇÁ·¹ÀÓ
-	private UserDto userdto; // Dto
-	private UserDao userdao; // Dao
-	private UserList userList; // À¯Àú¸®½ºÆ®
-	private JComboBox authority; // ±ÇÇÑ
-//	private JRadioButton job1, job2; // ÄŞº¸¹Ú½º¾È¿¡ Á÷¿ø, °ü¸®ÀÚ
-//	String arrJob[] = { "Á÷¿ø", "°ü¸®ÀÚ" };
-	private String auth = "F"; // Á÷¿ø ±ÇÇÑ °íÁ¤
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JPanel contentPane; // ì „ì²´ í”„ë ˆì„
+	private JTextField userTf; // ì•„ì´ë”” ì…ë ¥
+	private JTextField passTf; // íŒ¨ìŠ¤ì›Œë“œ ì…ë ¥
+	private JTextField nameTf; // ì´ë¦„ ì…ë ¥
+	private JTextField notice; // ìƒíƒœì°½
+	private ForcePos frame; // ë©”ì¸í”„ë ˆì„
+	private UserDao userDao; 
+	private JComboBox<String> authority; // ê¶Œí•œ
+//	private JRadioButton job1, job2; // ì½¤ë³´ë°•ìŠ¤ì•ˆì— ì§ì›, ê´€ë¦¬ì
+//	String arrJob[] = { "ì§ì›", "ê´€ë¦¬ì" };
+	private String auth = "F"; // ì§ì› ê¶Œí•œ ê³ ì •
 	private JPanel pMonitor;
 	private JTable table;
 	private JTextField upuserTF;
 	private JTextField upassTf;
 	private JTextField unameTf;
-	private boolean result; // ÀÎ¼­Æ® °á°ú°ª ÀúÀå
+	private boolean result; // ì¸ì„œíŠ¸ ê²°ê³¼ê°’ ì €ì¥
 	DefaultTableModel tm;
 	
-//	String colName[] = { "À¯ÀúÄÚµå", "", "", "", "" };
-//	Object data[][] = { { "1", "°³³ª¸®", "ÁÖ°£1" }, { "2", "³ë¿À¶õ", "¾ß°£1" }, { "3", "²É±×´Ã", "ÁÖ°£2" },
-//			{ "4", "ÃÖ¾Æ·¡", "¾ß°£2" } };
+//	String colName[] = { "ìœ ì €ì½”ë“œ", "", "", "", "" };
+//	Object data[][] = { { "1", "ê°œë‚˜ë¦¬", "ì£¼ê°„1" }, { "2", "ë…¸ì˜¤ë€", "ì•¼ê°„1" }, { "3", "ê½ƒê·¸ëŠ˜", "ì£¼ê°„2" },
+//			{ "4", "ìµœì•„ë˜", "ì•¼ê°„2" } };
 
-	// È¸¿øµî·Ï ÆĞ³Î
+	// íšŒì›ë“±ë¡ íŒ¨ë„
 	JPanel pRegister = new JPanel();
-	// È¸¿øÅ×ÀÌºí ÆĞ³Î
+	// íšŒì›í…Œì´ë¸” íŒ¨ë„
 	JPanel pTable = new JPanel();
-	// È¸¿ø¼öÁ¤ ÆĞ³Î
+	// íšŒì›ìˆ˜ì • íŒ¨ë„
 	JPanel ppRegister;
 
 	CardLayout card = new CardLayout();
@@ -56,9 +52,10 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 			public void run() {
 
 				try {
+					
 					Administrator administrator = new Administrator();
-
 					administrator.setVisible(true);
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -73,41 +70,40 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 
 	public static void tableCellCenter(JTable table) {
 
-		DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer(); // µğÆúÆ®Å×ÀÌºí¼¿·»´õ·¯¸¦ »ı¼º
+		DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer(); // ë””í´íŠ¸í…Œì´ë¸”ì…€ë Œë”ëŸ¬ë¥¼ ìƒì„±
 
-		dtcr.setHorizontalAlignment(SwingConstants.CENTER); // ·»´õ·¯ÀÇ °¡·ÎÁ¤·ÄÀ» CENTER·Î
+		dtcr.setHorizontalAlignment(SwingConstants.CENTER); // ë Œë”ëŸ¬ì˜ ê°€ë¡œì •ë ¬ì„ CENTERë¡œ
 
-		TableColumnModel tcm = table.getColumnModel(); // Á¤·ÄÇÒ Å×ÀÌºíÀÇ ÄÃ·³¸ğµ¨À» °¡Á®¿È
+		TableColumnModel tcm = table.getColumnModel(); // ì •ë ¬í•  í…Œì´ë¸”ì˜ ì»¬ëŸ¼ëª¨ë¸ì„ ê°€ì ¸ì˜´
 
-		// ÀüÃ¼ ¿­¿¡ ÁöÁ¤
+		// ì „ì²´ ì—´ì— ì§€ì •
 		for (int i = 0; i < tcm.getColumnCount(); i++) {
 			tcm.getColumn(i).setCellRenderer(dtcr);
 		}
 	}
 
-	// º¸¿©Áà
+	// ë³´ì—¬ì¤˜
 	public void showFrame() {
 		frame = new ForcePos();
 		this.setVisible(false);
 		frame.setVisible(true);
 	}
 
-// Àü¿ªº¯¼öÀÇ Å×ÀÌºí
+// ì „ì—­ë³€ìˆ˜ì˜ í…Œì´ë¸”
 //	public Administrator(JTable table) {
 //		this.table = table;
 //	}
 
-	// ¼öÁ¤, »èÁ¦¿ë »ı¼ºÀÚ
+	// ìˆ˜ì •, ì‚­ì œìš© ìƒì„±ì
 	public Administrator(String id, UserList userList) {
 
-		this.userList = userList;
-		UserDao userDao = new UserDao();
+//		UserDao userDao = new UserDao();
 
 	}
 
 	public Administrator() {
 
-		setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 20));
+		setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 20));
 		setTitle("Force.pos");
 		setAlwaysOnTop(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -127,12 +123,12 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 		titleLabel.setForeground(Color.WHITE);
 		titleLabel.setBackground(new Color(0, 0, 128));
 		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		titleLabel.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 25));
+		titleLabel.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 25));
 		titleLabel.setBounds(14, 8, 241, 31);
 		pStatusBar.add(titleLabel);
 
 		notice = new JTextField();
-		notice.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
+		notice.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.PLAIN, 20));
 		notice.setText("\uC0C1\uD488\uBA85(..)\uB294 \uC720\uD1B5\uAE30\uD55C\uC774 \uC9C0\uB0AC\uC2B5\uB2C8\uB2E4.");
 		notice.setHorizontalAlignment(SwingConstants.CENTER);
 		notice.setBounds(258, 8, 726, 31);
@@ -143,7 +139,7 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 		dateLabel.setBackground(new Color(0, 0, 128));
 		dateLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		dateLabel.setForeground(new Color(255, 255, 255));
-		dateLabel.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
+		dateLabel.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.PLAIN, 20));
 		dateLabel.setBounds(1016, 8, 278, 31);
 		pStatusBar.add(dateLabel);
 
@@ -156,20 +152,20 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 		JLabel idLabel = new JLabel("\uAD00\uB9AC\uC790");
 		idLabel.setBackground(new Color(105, 105, 105));
 		idLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		idLabel.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 20));
+		idLabel.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 20));
 		idLabel.setBounds(860, 0, 201, 120);
 		pMainBtn.add(idLabel);
 
 		JButton mBtnInven = new JButton("\uC7AC\uACE0");
 		mBtnInven.setBackground(new Color(28, 94, 94));
 		mBtnInven.setForeground(new Color(255, 255, 255));
-		mBtnInven.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 20));
+		mBtnInven.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 20));
 		mBtnInven.setBounds(0, 0, 157, 120);
 		pMainBtn.add(mBtnInven);
 
 		JButton mBtnSale = new JButton("\uD310\uB9E4");
 		mBtnSale.setBackground(new Color(99, 166, 166));
-		mBtnSale.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 20));
+		mBtnSale.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 20));
 		mBtnSale.setForeground(new Color(255, 255, 255));
 		mBtnSale.setBounds(156, 0, 157, 120);
 		pMainBtn.add(mBtnSale);
@@ -177,13 +173,13 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 		JButton mBtnCalc = new JButton("\uC815\uC0B0");
 		mBtnCalc.setBackground(new Color(28, 94, 94));
 		mBtnCalc.setForeground(new Color(255, 255, 255));
-		mBtnCalc.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 20));
+		mBtnCalc.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 20));
 		mBtnCalc.setBounds(313, 0, 157, 120);
 		pMainBtn.add(mBtnCalc);
 
 		JButton mBtnStat = new JButton("\uD1B5\uACC4");
 		mBtnStat.setBackground(new Color(99, 166, 166));
-		mBtnStat.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 20));
+		mBtnStat.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 20));
 		mBtnStat.setForeground(new Color(255, 255, 255));
 		mBtnStat.setBounds(470, 0, 157, 120);
 		pMainBtn.add(mBtnStat);
@@ -191,7 +187,7 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 		JButton mBtnAccount = new JButton("\uACC4\uC815");
 		mBtnAccount.setBackground(new Color(28, 94, 94));
 		mBtnAccount.setForeground(new Color(255, 255, 255));
-		mBtnAccount.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 20));
+		mBtnAccount.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 20));
 		mBtnAccount.setBounds(626, 0, 157, 120);
 		pMainBtn.add(mBtnAccount);
 
@@ -201,15 +197,15 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 		contentPane.add(pSellFunction);
 		pSellFunction.setLayout(null);
 
-		// À¯Àúµî·Ï ¹öÆ°
+		// ìœ ì €ë“±ë¡ ë²„íŠ¼
 		JButton userInsert = new JButton("\uC720\uC800\uB4F1\uB85D");
 		userInsert.setForeground(new Color(255, 255, 255));
 		userInsert.setBackground(new Color(0, 0, 128));
-		userInsert.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 20));
+		userInsert.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 20));
 		userInsert.setBounds(0, 10, 164, 120);
 		pSellFunction.add(userInsert);
 
-		// À¯Àú¼öÁ¤ ¹öÆ°
+		// ìœ ì €ìˆ˜ì • ë²„íŠ¼
 		JButton userUpdate = new JButton("\uC720\uC800\uC218\uC815");
 		userUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -217,11 +213,11 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 		});
 		userUpdate.setBackground(new Color(100, 149, 237));
 		userUpdate.setForeground(new Color(255, 255, 255));
-		userUpdate.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 20));
+		userUpdate.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 20));
 		userUpdate.setBounds(0, 130, 164, 120);
 		pSellFunction.add(userUpdate);
 
-		// À¯Àú»èÁ¦ ¹öÆ°
+		// ìœ ì €ì‚­ì œ ë²„íŠ¼
 		JButton userDelete = new JButton("\uC720\uC800\uC0AD\uC81C");
 		userDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -229,14 +225,14 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 		});
 		userDelete.setBackground(new Color(0, 0, 128));
 		userDelete.setForeground(new Color(255, 255, 255));
-		userDelete.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 20));
+		userDelete.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 20));
 		userDelete.setBounds(0, 260, 164, 120);
 		pSellFunction.add(userDelete);
 
 		JButton sBtnPdChange = new JButton("\uCD9C\uACB0");
 		sBtnPdChange.setBackground(new Color(100, 149, 237));
 		sBtnPdChange.setForeground(new Color(255, 255, 255));
-		sBtnPdChange.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 20));
+		sBtnPdChange.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 20));
 		sBtnPdChange.setBounds(0, 390, 164, 120);
 		pSellFunction.add(sBtnPdChange);
 
@@ -247,7 +243,7 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 		});
 		logout.setBackground(new Color(255, 69, 0));
 		logout.setForeground(new Color(255, 255, 255));
-		logout.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 20));
+		logout.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 20));
 		logout.setBounds(0, 520, 164, 120);
 		pSellFunction.add(logout);
 
@@ -272,15 +268,14 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 		prInput.setLayout(new GridLayout(11, 1, 0, 0));
 		pRegister.add(prInput);
 //---------------------------------------------------------------------//
-//		UserList userList = new UserList();
 
-		UserDao userDao = new UserDao();
+		userDao = new UserDao();
 		Vector<UserDto> result = new Vector<UserDto>();
 		result = userDao.getMemberList();
 
 		Vector<String> userColumn = new Vector<String>();
 
-		userColumn.addElement("À¯ÀúÄÚµå");
+		userColumn.addElement("ìœ ì €ì½”ë“œ");
 		userColumn.addElement("pw");
 		userColumn.addElement("id");
 		userColumn.addElement("aurthority");
@@ -291,9 +286,9 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 		int size = result.size();
 		for (int i = 0; i < size; i++) {
 			Vector<String> row = new Vector<String>();
-			// Çà
+			// í–‰
 
-			// ¼ıÀÚ¸¦ ¹®ÀÚ·Î º¯È¯ Çà¿¡ Ãß°¡
+			// ìˆ«ìë¥¼ ë¬¸ìë¡œ ë³€í™˜ í–‰ì— ì¶”ê°€
 			row.addElement(Integer.toString(result.get(i).getUserCode()));
 			row.addElement(result.get(i).getPw());
 			row.addElement(result.get(i).getId());
@@ -304,31 +299,25 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 			table = new JTable(tm);
 		}
 
-//		userList.getColum();
-//		pTable.setBounds(0, 0, 10, 10);
-//		pMonitor.add(pTable);
-//		table = new JTable(tm);
-
 		table.setRowHeight(60);
 		tableCellCenter(table);
 
-		// Çà°ú ¿­ÀÇ µ¥ÀÌÅÍ¸¦ »Ì¾Æ¿È.
+		// í–‰ê³¼ ì—´ì˜ ë°ì´í„°ë¥¼ ë½‘ì•„ì˜´.
 //		Object ob = table.getValueAt(0, 0);
 //		System.out.println(ob);
-
-		// ¿­ÀÇ ÀÌ¸§À» »Ì¾Æ¿È.
+		// ì—´ì˜ ì´ë¦„ì„ ë½‘ì•„ì˜´.
 //		String str = table.getColumnName(0);
 //		System.out.println(str);
 //		str = table.getColumnName(1);
 //		System.out.println(str);
-//
-//		table.getColumn("À¯ÀúÄÚµå").setPreferredWidth(5);
+//		table.getColumn("ìœ ì €ì½”ë“œ").setPreferredWidth(5);
+		
 		pTable.setLayout(null);
 		JScrollPane scrollPane = new JScrollPane(table);
 		pTable.add(scrollPane);
 		scrollPane.setBounds(0, 5, 1144, 528);
 
-		// Ä«µå·¹ÀÌ¾Æ¿ô´ã´ç.
+		// ì¹´ë“œë ˆì´ì•„ì›ƒë‹´ë‹¹.
 		pMonitor.setLayout(card);
 		pMonitor.add("pTable", pTable);
 		pMonitor.add("pRegister", pRegister);
@@ -338,66 +327,56 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 		JPanel panel = new JPanel();
 		prInput.add(panel);
 
-//		pRegister.setBackground(SystemColor.desktop);
-//		pRegister.setBorder(new LineBorder(new Color(0, 0, 0)));
-//		pMonitor.add(pRegister, "name_39053666565740");
-//		pRegister.setLayout(null);
-//		JPanel prInput = new JPanel();
-//		prInput.setBorder(new LineBorder(new Color(0, 0, 0)));
-//		prInput.setBounds(456, 10, 356, 513);
-//		pRegister.add(prInput);
-//		prInput.setLayout(new GridLayout(9, 1, 0, 0));
-
 		JLabel userIdLabel = new JLabel("\uC720\uC800ID");
 		userIdLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		userIdLabel.setHorizontalTextPosition(SwingConstants.LEADING);
-		userIdLabel.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
+		userIdLabel.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.PLAIN, 20));
 		prInput.add(userIdLabel);
 
-		// È¸¿øµî·Ï - À¯Àú¾ÆÀÌµğÀÔ·Â
+		// íšŒì›ë“±ë¡ - ìœ ì €ì•„ì´ë””ì…ë ¥
 		userTf = new JTextField();
 		prInput.add(userTf);
 		userTf.setColumns(10);
 		JLabel passWLabel_1 = new JLabel("\uD328\uC2A4\uC6CC\uB4DC");
 		passWLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		passWLabel_1.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
+		passWLabel_1.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.PLAIN, 20));
 		prInput.add(passWLabel_1);
 
-		// È¸¿øµî·Ï - ÆĞ½º¿öµåÀÔ·Â
+		// íšŒì›ë“±ë¡ - íŒ¨ìŠ¤ì›Œë“œì…ë ¥
 		passTf = new JTextField();
 		prInput.add(passTf);
 		passTf.setColumns(10);
 		JLabel lblNewLabel_2 = new JLabel("\uC774\uB984");
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_2.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
+		lblNewLabel_2.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.PLAIN, 20));
 		prInput.add(lblNewLabel_2);
 
-		// È¸¿øµî·Ï - ÀÌ¸§ÀÔ·Â
+		// íšŒì›ë“±ë¡ - ì´ë¦„ì…ë ¥
 		nameTf = new JTextField();
 		prInput.add(nameTf);
 		nameTf.setColumns(10);
 		JLabel lblNewLabel_3 = new JLabel("\uAD8C\uD55C");
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_3.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
+		lblNewLabel_3.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.PLAIN, 20));
 		prInput.add(lblNewLabel_3);
 
-		// ±ÇÇÑ¹è¿­
-		authority = new JComboBox(new Object[] { "Á÷¿ø", "°ü¸®ÀÚ" });
+		// ê¶Œí•œë°°ì—´
+		authority = new JComboBox<String>();
 		prInput.add(authority);
 //		authority.getName();
 //		System.out.println(authority);
 		authority.getSelectedItem();
 
-		// ¾Æ·¡¹öÆ°ÆĞ³Î
+		// ì•„ë˜ë²„íŠ¼íŒ¨ë„
 		JPanel pB = new JPanel();
 		prInput.add(pB);
 		pB.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
-		// È®ÀÎ¹öÆ°
+		// í™•ì¸ë²„íŠ¼
 		JButton ok = new JButton("\uD655\uC778");
 		ok.setMargin(new Insets(2, 20, 2, 20));
 		ok.setHorizontalTextPosition(SwingConstants.CENTER);
-		ok.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
+		ok.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.PLAIN, 20));
 		ok.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
@@ -405,15 +384,15 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 		ok.setAlignmentX(Component.CENTER_ALIGNMENT);
 		pB.add(ok);
 
-		// Ãë¼Ò¹öÆ°
+		// ì·¨ì†Œë²„íŠ¼
 		JButton cancel = new JButton("\uCDE8\uC18C");
 		cancel.setMargin(new Insets(2, 20, 2, 20));
 		cancel.setBackground(new Color(255, 99, 71));
 		cancel.setHorizontalTextPosition(SwingConstants.CENTER);
-		cancel.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 20));
+		cancel.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 20));
 		pB.add(cancel);
 
-		// È¸¿ø¼öÁ¤ - È­¸é
+		// íšŒì›ìˆ˜ì • - í™”ë©´
 		JPanel prInsert = new JPanel();
 		prInsert.setBounds(451, 10, 356, 513);
 		prInsert.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -425,7 +404,7 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 
 		JLabel upuserL = new JLabel("\uC720\uC800ID");
 		upuserL.setHorizontalAlignment(SwingConstants.CENTER);
-		upuserL.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
+		upuserL.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.PLAIN, 20));
 		prInsert.add(upuserL);
 
 		upuserTF = new JTextField();
@@ -434,7 +413,7 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 
 		JLabel uppassL = new JLabel("\uD328\uC2A4\uC6CC\uB4DC");
 		uppassL.setHorizontalAlignment(SwingConstants.CENTER);
-		uppassL.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
+		uppassL.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.PLAIN, 20));
 		prInsert.add(uppassL);
 
 		upassTf = new JTextField();
@@ -443,7 +422,7 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 
 		JLabel upnameL = new JLabel("\uC774\uB984");
 		upnameL.setHorizontalAlignment(SwingConstants.CENTER);
-		upnameL.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
+		upnameL.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.PLAIN, 20));
 		prInsert.add(upnameL);
 
 		unameTf = new JTextField();
@@ -452,11 +431,11 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 
 		JLabel upauthL = new JLabel("\uAD8C\uD55C");
 		upauthL.setHorizontalAlignment(SwingConstants.CENTER);
-		upauthL.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
+		upauthL.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.PLAIN, 20));
 		prInsert.add(upauthL);
 
-		JComboBox comboBox = new JComboBox(new Object[] { "Á÷¿ø", "°ü¸®ÀÚ" });
-		prInsert.add(comboBox);
+		authority = new JComboBox<String>();
+		prInsert.add(authority);
 
 		JPanel panel_3 = new JPanel();
 		prInsert.add(panel_3);
@@ -465,18 +444,18 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 		JButton button = new JButton("\uD655\uC778");
 		button.setMargin(new Insets(2, 20, 2, 20));
 		button.setHorizontalTextPosition(SwingConstants.CENTER);
-		button.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
+		button.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.PLAIN, 20));
 		button.setAlignmentX(0.5f);
 		panel_3.add(button);
 
 		JButton button_1 = new JButton("\uCDE8\uC18C");
 		button_1.setMargin(new Insets(2, 20, 2, 20));
 		button_1.setHorizontalTextPosition(SwingConstants.CENTER);
-		button_1.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 20));
+		button_1.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 20));
 		button_1.setBackground(new Color(255, 99, 71));
 		panel_3.add(button_1);
 
-		// ÀÌº¥Æ® ¸®½º³Ê µî·Ï
+		// ì´ë²¤íŠ¸ ë¦¬ìŠ¤ë„ˆ ë“±ë¡
 		userInsert.addActionListener(this);
 		userUpdate.addActionListener(this);
 		table.addMouseListener(this);
@@ -490,7 +469,7 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 //		celAlignCenter.setHorizontalAlignment(table);
 	}
 
-	// È¸¿øµî·ÏÃ¢¿¡ ÀÔ·ÂµÈ °ªÀ» º¸¿©Áà
+	// íšŒì›ë“±ë¡ì°½ì— ì…ë ¥ëœ ê°’ì„ ë³´ì—¬ì¤˜
 	public UserDto getViewData() {
 
 //		BufferedReader in;
@@ -499,23 +478,23 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 
 		try {
 
-//			System.out.print("À¯ÀúÄÚµå ÀÔ·Â ¹Ù¶÷.");
+//			System.out.print("ìœ ì €ì½”ë“œ ì…ë ¥ ë°”ëŒ.");
 //			int user_code = Integer.parseInt(in.readLine());
-//			System.out.println("ÆĞ½º¿öµå ÀÔ·Â¹Ù¶÷");
+//			System.out.println("íŒ¨ìŠ¤ì›Œë“œ ì…ë ¥ë°”ëŒ");
 			userdto.setPw(passTf.getText());
-//			System.out.println("¾ÆÀÌµğ ÀÔ·Â¹Ù¶÷");
+//			System.out.println("ì•„ì´ë”” ì…ë ¥ë°”ëŒ");
 			userdto.setId(userTf.getText());
-//			System.out.println("±ÇÇÑ ÀÔ·Â¹Ù¶÷");
+//			System.out.println("ê¶Œí•œ ì…ë ¥ë°”ëŒ");
 			userdto.setAuthority(auth); // string
 			userdto.setName(nameTf.getText());
-//			System.out.println("ÀÌ¸§ ÀÔ·Â¹Ù¶÷");
+//			System.out.println("ì´ë¦„ ì…ë ¥ë°”ëŒ");
 
 		} catch (NumberFormatException e) {
-			System.out.println("ÀÔ·Â½ÇÆĞ");
+			System.out.println("ì…ë ¥ì‹¤íŒ¨");
 			e.printStackTrace();
 		}
 
-		// ±ÇÇÑ¼³Á¤ ½Ã °ø¹éÀ» ÁÖ°í ¼±ÅÃ‰çÀ» ¶§ °ªÀ» ¾ò¾î¿Â´Ù.
+		// ê¶Œí•œì„¤ì • ì‹œ ê³µë°±ì„ ì£¼ê³  ì„ íƒë¬ì„ ë•Œ ê°’ì„ ì–»ì–´ì˜¨ë‹¤.
 
 //		dto.setUserCode(userCode);
 
@@ -527,7 +506,7 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 //
 //		Object ob = authority.getSelectedItem();
 //
-//		if (ob.equals("Á÷¿ø")) {
+//		if (ob.equals("ì§ì›")) {
 //			auth = "F";
 //		} else {
 //			auth = "T";
@@ -556,28 +535,28 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 		String name = nameTf.getText().trim();
 
 		if (user.length() > 10) {
-			JOptionPane.showMessageDialog(this, "¾ÆÀÌµğ´Â 10ÀÚ ¹Ì¸¸À¸·Î »ı¼º°¡´ÉÇÕ´Ï´Ù.", "ID»ı¼º ¿À·ù", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(this, "ì•„ì´ë””ëŠ” 10ì ë¯¸ë§Œìœ¼ë¡œ ìƒì„±ê°€ëŠ¥í•©ë‹ˆë‹¤.", "IDìƒì„± ì˜¤ë¥˜", JOptionPane.WARNING_MESSAGE);
 			result = false;
 		} else {
 			result = true;
 		}
 
 		if (user.isEmpty()) {
-			JOptionPane.showMessageDialog(this, "ID °ø¹éÀº ¾ÈµÇ¿ä!!!");
+			JOptionPane.showMessageDialog(this, "ID ê³µë°±ì€ ì•ˆë˜ìš”!!!");
 			result = false;
 		} else {
 			result = true;
 		}
 
 		if (pass.isEmpty()) {
-			JOptionPane.showMessageDialog(this, "ºñ¹Ğ¹øÈ£ °ø¹éÀº ¾ÈµÇ¿ä!!!");
+			JOptionPane.showMessageDialog(this, "ë¹„ë°€ë²ˆí˜¸ ê³µë°±ì€ ì•ˆë˜ìš”!!!");
 			result = false;
 		} else {
 			result = true;
 		}
 
 		if (name.isEmpty()) {
-			JOptionPane.showMessageDialog(this, "ÀÌ¸§À» ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+			JOptionPane.showMessageDialog(this, "ì´ë¦„ì„ ì…ë ¥í•´ì£¼ì„¸ìš”.");
 			result = false;
 		} else {
 			result = true;
@@ -585,39 +564,35 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 		return result;
 	}
 
-	// È¸¿øµî·ÏÀ¯È¿¼º°Ë»ç.
+	// íšŒì›ë“±ë¡ìœ íš¨ì„±ê²€ì‚¬.
 	private void insertUser() {
 
-		UserDto userDto = getViewData();
-		UserDao userDao = new UserDao();
-
-//		boolean result = userDao.insertMember(userDto);
+		getViewData();
+		userDao = new UserDao();
 
 		if (isUserId()) {
-			JOptionPane.showMessageDialog(this, "µî·ÏÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù. °¨»çÇÕ´Ï´Ù.");
+			JOptionPane.showMessageDialog(this, "ë“±ë¡ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤. ê°ì‚¬í•©ë‹ˆë‹¤.");
 			card.show(pMonitor, "pTable");
-//			dispose();
 		} else {
-			JOptionPane.showMessageDialog(this, "µî·ÏÀÌ ½ÇÆĞµÇ¾ú½À´Ï´Ù.");
+			JOptionPane.showMessageDialog(this, "ë“±ë¡ì´ ì‹¤íŒ¨ë˜ì—ˆìŠµë‹ˆë‹¤.");
 		}
-
 	}
-
-	private boolean updateUser() {
-		boolean result = true;
-
-		UserDto userDto = getViewData();
-		UserDao userDao = new UserDao();
-
-		if (result) {
-			JOptionPane.showMessageDialog(this, "¼öÁ¤ÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù.");
-//			dispose();
-		} else {
-			JOptionPane.showMessageDialog(this, "¼öÁ¤ÀÌ ½ÇÆĞµÇ¾ú½À´Ï´Ù.");
-			result = false;
-		}
-		return result;
-	}
+//
+//	private boolean updateUser() {
+//		boolean result = true;
+//
+//		userDto = getViewData();
+//		userDao = new UserDao();
+//
+//		if (result) {
+//			JOptionPane.showMessageDialog(this, "ìˆ˜ì •ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.");
+////			dispose();
+//		} else {
+//			JOptionPane.showMessageDialog(this, "ìˆ˜ì •ì´ ì‹¤íŒ¨ë˜ì—ˆìŠµë‹ˆë‹¤.");
+//			result = false;
+//		}
+//		return result;
+//	}
 
 	public void tfClear() {
 		userTf.setText("");
@@ -630,40 +605,24 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 
 		Object ob = e.getActionCommand();
 
-		// È¸¿øµî·ÏÀÌ¶ó°íÇÏÁÒ.
-		if (ob.equals("À¯Àúµî·Ï")) {
+		// íšŒì›ë“±ë¡ì´ë¼ê³ í•˜ì£ .
+		if (ob.equals("ìœ ì €ë“±ë¡")) {
 			card.show(pMonitor, "pRegister");
 			tfClear();
-//			userdao = new UserDao(s);
-//			System.out.println("À¯Àúµî·Ï¹öÆ°");
-//			userdto = new UserDto();
-//			userdao.insertMember(userdto);  
-//			DefaultTableModel tm = (DefaultTableModel) table.getModel();
-//			String add[] = {"1", "±èÀÇ¿¬", "ÁÖ°£"};
-//			tm.addRow(add);
-//			UserDao userdao = new UserDao();
-//			userdao.register(posdto);	
-//			getViewData();
-
 		}
 
-		// È¸¿ø¼öÁ¤ÀÌ¶ó°í ÇÏÁÒ.
-		if (ob.equals("À¯Àú¼öÁ¤")) {
+		// íšŒì›ìˆ˜ì •ì´ë¼ê³  í•˜ì£ .
+		if (ob.equals("ìœ ì €ìˆ˜ì •")) {
 			card.show(pMonitor, "ppRegister");
 		}
 
-//		if (ob.equals("Ãë¼Ò")) {
-//		System.out.println("Ãë¼Òµî·Ï¹öÆ°");
-////			card.show(pMonitor, "pTable");
-//		}
-
-		// À¯Àú¸¦ Áö¿öº¸µµ·Ï ÇÏÁÒ
-		if (ob.equals("À¯Àú»èÁ¦")) {
-			// Å×ÀÌºí¿¡¼­ ³»°¡ ¼±ÅÃÇÑ Çà¹øÈ£
-			int number = table.getSelectedRow();
+		// ìœ ì €ë¥¼ ì§€ì›Œë³´ë„ë¡ í•˜ì£ .
+		if (ob.equals("ìœ ì €ì‚­ì œ")) {
+			// í…Œì´ë¸”ì—ì„œ ë‚´ê°€ ì„ íƒí•œ í–‰ë²ˆí˜¸
+//			int number = table.getSelectedRow();
 		
-			//TODO ¿©±â±îÁöÀÛ¾÷Çß½À´Ï´ç..!! 	
-			UserDao userdao = new UserDao();
+			//TODO ì—¬ê¸°ê¹Œì§€ì‘ì—…í–ˆìŠµë‹ˆë‹¹..!! 	
+			userDao = new UserDao();
 //			userdao.deleteMember(id, pw);
 //			System.out.println(number);
 //			DefaultTableModel tm = (DefaultTableModel) table.getModel();
@@ -672,9 +631,9 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 //			}
 		}
 
-		// È®ÀÎÀ» ´©¸£¸é À¯Àúµî·ÏÃ¢
-		if (ob.equals("È®ÀÎ")) {
-//			System.out.println("È®ÀÎµî·Ï¿ë");
+		// í™•ì¸ì„ ëˆ„ë¥´ë©´ ìœ ì €ë“±ë¡ì°½
+		if (ob.equals("í™•ì¸")) {
+
 			insertUser();
 			UserDto re = getViewData();
 			UserDao userdao = new UserDao();
@@ -686,14 +645,14 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 
 		}
 
-		// Ãë¼Ò¹öÆ°À» ´©¸£´Â µ¿½Ã¿¡ ´Ù½Ã Å×ÀÌºíÈ­¸éÀ¸·Î.
-		if (ob.equals("Ãë¼Ò")) {
-			System.out.println("Ãë¼Ò¹öÆ°µî·Ï");
+		// ì·¨ì†Œë²„íŠ¼ì„ ëˆ„ë¥´ëŠ” ë™ì‹œì— ë‹¤ì‹œ í…Œì´ë¸”í™”ë©´ìœ¼ë¡œ.
+		if (ob.equals("ì·¨ì†Œ")) {
+			System.out.println("ì·¨ì†Œë²„íŠ¼ë“±ë¡");
 			card.show(pMonitor, "pTable");
 		}
 
-		// ¸»±×´ë·Î ·Î±×¾Æ¿ô ¸ŞÀÎÇÁ·¹ÀÓÀ¸·Î ³Ñ¾î°¨.
-		if (ob.equals("·Î±×¾Æ¿ô")) {
+		// ë§ê·¸ëŒ€ë¡œ ë¡œê·¸ì•„ì›ƒ ë©”ì¸í”„ë ˆì„ìœ¼ë¡œ ë„˜ì–´ê°.
+		if (ob.equals("ë¡œê·¸ì•„ì›ƒ")) {
 			this.setVisible(false);
 			ForcePos forcePos = new ForcePos();
 			forcePos.setVisible(true);
@@ -705,17 +664,17 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 	public void mouseClicked(MouseEvent e) {
 //		table = (JTable) e.getComponent();
 //		tm = (DefaultTableModel) table.getModel();
-//		System.out.println("¼±ÅÃÇÑ Çà/¿­ ¹øÈ£ : " + table.getSelectedRow() +  table.getSelectedColumn());
+//		System.out.println("ì„ íƒí•œ í–‰/ì—´ ë²ˆí˜¸ : " + table.getSelectedRow() +  table.getSelectedColumn());
 
-		// ÇàÀÇ ¹øÈ£¸¦ »Ì¾Æ¿È.
+		// í–‰ì˜ ë²ˆí˜¸ë¥¼ ë½‘ì•„ì˜´.
 //		int numberRow = table.getSelectedRow();
-		// ¿­ÀÇ ¹øÈ£¸¦ »Ì¾Æ¿È.
-		int numberColumn = table.getSelectedColumn();
-		// ¿­ÀÇ ÀÌ¸§À» »Ì¾Æ¿È.
-		String str = table.getColumnName(numberColumn);
+		// ì—´ì˜ ë²ˆí˜¸ë¥¼ ë½‘ì•„ì˜´.
+//		int numberColumn = table.getSelectedColumn();
+		// ì—´ì˜ ì´ë¦„ì„ ë½‘ì•„ì˜´.
+//		String str = table.getColumnName(numberColumn);
 //		int colum[] = table.getSelectedColumns();
 //		System.out.println(colum);
-// 		Çà°ú ¿­ÀÇ °ªÀ» »Ì¾Æ¿È.
+// 		í–‰ê³¼ ì—´ì˜ ê°’ì„ ë½‘ì•„ì˜´.
 //		String cValue = (String) tm.getValueAt(numberRow, numberColumn);
 //		System.out.println(cValue);
 

@@ -1,19 +1,9 @@
 package com.kitri.pos;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.Font;
@@ -26,23 +16,18 @@ import java.awt.event.ActionEvent;
 
 public class MainFrame extends JFrame implements ActionListener {
 
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField notice;
-	
-	ForcePos frame;
-	Administrator adframe = new Administrator();
+	private Administrator administrator ;
 
-	/**
-	 * Launch the application.
-	 */
+	//Ïã§Ìñâ Î©îÏÜåÎìú
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					MainFrame frame = new MainFrame();
 					frame.setVisible(true);
-//					Administrator frame2 = new Administrator();
-//					frame2.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -50,20 +35,14 @@ public class MainFrame extends JFrame implements ActionListener {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
-
-	//∞Ë¡§√¢ ∫∏ø©¡÷ººø‰~
-	public void showFrameTest() {
-//		frame1.setVisible(true);
-//		frame.dispose();
+	//Í≥ÑÏ†ïÏ∞Ω Î≥¥Ïó¨Ï£ºÏÑ∏Ïöî~
+	public void showFrame() {
 		this.setVisible(false);
-		adframe.setVisible(true);
+		administrator.setVisible(true);
 	}
 
 	public MainFrame() {
-		setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.BOLD, 20));
+		setFont(new Font("ÎßëÏùÄ Í≥†Îîï", Font.BOLD, 20));
 		setTitle("Force.pos");
 		setAlwaysOnTop(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -83,12 +62,12 @@ public class MainFrame extends JFrame implements ActionListener {
 		titleLabel.setForeground(Color.WHITE);
 		titleLabel.setBackground(new Color(0, 0, 128));
 		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		titleLabel.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.BOLD, 25));
+		titleLabel.setFont(new Font("ÎßëÏùÄ Í≥†Îîï", Font.BOLD, 25));
 		titleLabel.setBounds(14, 8, 241, 31);
 		pStatusBar.add(titleLabel);
 
 		notice = new JTextField();
-		notice.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 20));
+		notice.setFont(new Font("ÎßëÏùÄ Í≥†Îîï", Font.PLAIN, 20));
 		notice.setText("\uC0C1\uD488\uBA85(..)\uB294 \uC720\uD1B5\uAE30\uD55C\uC774 \uC9C0\uB0AC\uC2B5\uB2C8\uB2E4.");
 		notice.setHorizontalAlignment(SwingConstants.CENTER);
 		notice.setBounds(258, 8, 726, 31);
@@ -99,7 +78,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		dateLabel.setBackground(new Color(0, 0, 128));
 		dateLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		dateLabel.setForeground(new Color(255, 255, 255));
-		dateLabel.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 20));
+		dateLabel.setFont(new Font("ÎßëÏùÄ Í≥†Îîï", Font.PLAIN, 20));
 		dateLabel.setBounds(1016, 8, 278, 31);
 		pStatusBar.add(dateLabel);
 
@@ -112,20 +91,20 @@ public class MainFrame extends JFrame implements ActionListener {
 		JLabel idLabel = new JLabel("\uAD00\uB9AC\uC790");
 		idLabel.setBackground(new Color(105, 105, 105));
 		idLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		idLabel.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.BOLD, 20));
+		idLabel.setFont(new Font("ÎßëÏùÄ Í≥†Îîï", Font.BOLD, 20));
 		idLabel.setBounds(860, 0, 201, 120);
 		pMainBtn.add(idLabel);
 
 		JButton mBtnInven = new JButton("\uC7AC\uACE0");
 		mBtnInven.setBackground(new Color(28, 94, 94));
 		mBtnInven.setForeground(new Color(255, 255, 255));
-		mBtnInven.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.BOLD, 20));
+		mBtnInven.setFont(new Font("ÎßëÏùÄ Í≥†Îîï", Font.BOLD, 20));
 		mBtnInven.setBounds(0, 0, 157, 120);
 		pMainBtn.add(mBtnInven);
 
 		JButton mBtnSale = new JButton("\uD310\uB9E4");
 		mBtnSale.setBackground(new Color(99, 166, 166));
-		mBtnSale.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.BOLD, 20));
+		mBtnSale.setFont(new Font("ÎßëÏùÄ Í≥†Îîï", Font.BOLD, 20));
 		mBtnSale.setForeground(new Color(255, 255, 255));
 		mBtnSale.setBounds(156, 0, 157, 120);
 		pMainBtn.add(mBtnSale);
@@ -133,13 +112,13 @@ public class MainFrame extends JFrame implements ActionListener {
 		JButton mBtnCalc = new JButton("\uC815\uC0B0");
 		mBtnCalc.setBackground(new Color(28, 94, 94));
 		mBtnCalc.setForeground(new Color(255, 255, 255));
-		mBtnCalc.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.BOLD, 20));
+		mBtnCalc.setFont(new Font("ÎßëÏùÄ Í≥†Îîï", Font.BOLD, 20));
 		mBtnCalc.setBounds(313, 0, 157, 120);
 		pMainBtn.add(mBtnCalc);
 
 		JButton mBtnStat = new JButton("\uD1B5\uACC4");
 		mBtnStat.setBackground(new Color(99, 166, 166));
-		mBtnStat.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.BOLD, 20));
+		mBtnStat.setFont(new Font("ÎßëÏùÄ Í≥†Îîï", Font.BOLD, 20));
 		mBtnStat.setForeground(new Color(255, 255, 255));
 		mBtnStat.setBounds(470, 0, 157, 120);
 		pMainBtn.add(mBtnStat);
@@ -147,7 +126,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		JButton mBtnAccount = new JButton("\uACC4\uC815");
 		mBtnAccount.setBackground(new Color(28, 94, 94));
 		mBtnAccount.setForeground(new Color(255, 255, 255));
-		mBtnAccount.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.BOLD, 20));
+		mBtnAccount.setFont(new Font("ÎßëÏùÄ Í≥†Îîï", Font.BOLD, 20));
 		mBtnAccount.setBounds(626, 0, 157, 120);
 		pMainBtn.add(mBtnAccount);
 
@@ -160,14 +139,14 @@ public class MainFrame extends JFrame implements ActionListener {
 		JButton sBtnCustomer = new JButton("\uC7AC\uACE0\uC870\uD68C");
 		sBtnCustomer.setForeground(new Color(255, 255, 255));
 		sBtnCustomer.setBackground(new Color(0, 0, 128));
-		sBtnCustomer.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.BOLD, 20));
+		sBtnCustomer.setFont(new Font("ÎßëÏùÄ Í≥†Îîï", Font.BOLD, 20));
 		sBtnCustomer.setBounds(0, 0, 164, 120);
 		pSellFunction.add(sBtnCustomer);
 
 		JButton sBtnDisuse = new JButton("\uC785\uCD9C\uACE0");
 		sBtnDisuse.setBackground(new Color(100, 149, 237));
 		sBtnDisuse.setForeground(new Color(255, 255, 255));
-		sBtnDisuse.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.BOLD, 20));
+		sBtnDisuse.setFont(new Font("ÎßëÏùÄ Í≥†Îîï", Font.BOLD, 20));
 		sBtnDisuse.setBounds(0, 130, 164, 120);
 		pSellFunction.add(sBtnDisuse);
 
@@ -178,14 +157,14 @@ public class MainFrame extends JFrame implements ActionListener {
 		});
 		sBtnPdInput.setBackground(new Color(0, 0, 128));
 		sBtnPdInput.setForeground(new Color(255, 255, 255));
-		sBtnPdInput.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.BOLD, 20));
+		sBtnPdInput.setFont(new Font("ÎßëÏùÄ Í≥†Îîï", Font.BOLD, 20));
 		sBtnPdInput.setBounds(0, 260, 164, 120);
 		pSellFunction.add(sBtnPdInput);
 
 		JButton sBtnPdChange = new JButton("\uC7AC\uACE0\uC218\uC815");
 		sBtnPdChange.setBackground(new Color(100, 149, 237));
 		sBtnPdChange.setForeground(new Color(255, 255, 255));
-		sBtnPdChange.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.BOLD, 20));
+		sBtnPdChange.setFont(new Font("ÎßëÏùÄ Í≥†Îîï", Font.BOLD, 20));
 		sBtnPdChange.setBounds(0, 390, 164, 120);
 		pSellFunction.add(sBtnPdChange);
 
@@ -196,7 +175,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		});
 		sBtnPdCancel.setBackground(new Color(0, 0, 128));
 		sBtnPdCancel.setForeground(new Color(255, 255, 255));
-		sBtnPdCancel.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.BOLD, 20));
+		sBtnPdCancel.setFont(new Font("ÎßëÏùÄ Í≥†Îîï", Font.BOLD, 20));
 		sBtnPdCancel.setBounds(0, 520, 164, 120);
 		pSellFunction.add(sBtnPdCancel);
 
@@ -214,8 +193,8 @@ public class MainFrame extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		Object ob = e.getActionCommand();
 
-		if (ob.equals("∞Ë¡§")) {
-			showFrameTest();
+		if (ob.equals("Í≥ÑÏ†ï")) {
+			showFrame();
 		}
 
 	}
