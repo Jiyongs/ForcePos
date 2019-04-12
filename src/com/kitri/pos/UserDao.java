@@ -41,7 +41,9 @@ public class UserDao {
 
 		con = DBManager.getConnection();
 
-		String select = "select *" + "from members";
+		String select = "select * " + 
+						"from members "+
+						"order by name asc";
 
 		try {
 
@@ -64,21 +66,20 @@ public class UserDao {
 				userdto.setAuthority(authority);
 				userdto.setName(name);
 
-				row.add(userdto);
-
+				row.add(userdto);	
 			}
 
 		} catch (SQLException e1) {
 			System.out.println("등록 오류");
 			e1.printStackTrace();
-		} //finally {
-//			try {
-//				DBManager.dbClose(ps, con);
-//			} catch (SQLException e) {
-//
-//				e.printStackTrace();
-//			}
-//		}
+		}  finally {
+			try {
+				DBManager.dbClose(ps, con);
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
+		}
 
 		// TODO Auto-generated method stub
 		return row;
@@ -94,7 +95,8 @@ public class UserDao {
 //			
 		con = DBManager.getConnection();
 
-		String update = "update members set name= ?, pw= ?" + "where id = ? and pw = ?";
+		String update = "update members set name= ?, pw= ? " + 
+						"where id = ? and pw = ?";
 
 		try {
 
@@ -128,11 +130,13 @@ public class UserDao {
 //			PreparedStatement ps = null;
 
 		con = DBManager.getConnection();
+		
 		String delete = "delete" + "from members " + "where id = ? and pw = ?";
 
 		try {
 
 			ps = con.prepareStatement(delete);
+		
 			ps.setString(1, id);
 			ps.setString(2, pw);
 
@@ -176,27 +180,27 @@ public class UserDao {
 			ps.setString(2, userdto.getId());
 			ps.setString(3, userdto.getAuthority());
 			ps.setString(4, userdto.getName());
-						
+
 			int r = ps.executeUpdate(); // 실행 >> 저장
-			String str = Integer.toString(r);
-			if (str == null) {
-				System.out.println("회원가입 실패");
-			}
-			
+//			String str = Integer.toString(r);
+//			if (str == null) {
+//				System.out.println("회원가입 실패");
+//			}
+
 			if (r > 0) {
 				System.out.println("회원가입 성공 ");
 				result = true;
-			} 
+			}
 
 		} catch (SQLException e) {
-			
+
 			e.printStackTrace();
-			
-		}  finally {
+
+		} finally {
 			try {
 				DBManager.dbClose(ps, con);
 			} catch (SQLException e) {
-				
+
 				e.printStackTrace();
 			}
 		}

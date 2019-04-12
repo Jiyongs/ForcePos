@@ -37,7 +37,7 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 	private JTextField unameTf;
 	private boolean result; // 인서트 결과값 저장
 	DefaultTableModel tm;
-
+	
 //	String colName[] = { "유저코드", "", "", "", "" };
 //	Object data[][] = { { "1", "개나리", "주간1" }, { "2", "노오란", "야간1" }, { "3", "꽃그늘", "주간2" },
 //			{ "4", "최아래", "야간2" } };
@@ -287,13 +287,11 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 		userColumn.addElement("name");
 
 		tm = new DefaultTableModel(userColumn, 0);
-		table = new JTable(tm);
-
+		
 		int size = result.size();
 		for (int i = 0; i < size; i++) {
-
-			// 행
 			Vector<String> row = new Vector<String>();
+			// 행
 
 			// 숫자를 문자로 변환 행에 추가
 			row.addElement(Integer.toString(result.get(i).getUserCode()));
@@ -303,13 +301,13 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 			row.addElement(result.get(i).getName());
 
 			tm.addRow(row);
+			table = new JTable(tm);
 		}
 
 //		userList.getColum();
-
-		pTable.setBounds(0, 0, 10, 10);
-		pMonitor.add(pTable);
-		table = new JTable(tm);
+//		pTable.setBounds(0, 0, 10, 10);
+//		pMonitor.add(pTable);
+//		table = new JTable(tm);
 
 		table.setRowHeight(60);
 		tableCellCenter(table);
@@ -323,8 +321,8 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 //		System.out.println(str);
 //		str = table.getColumnName(1);
 //		System.out.println(str);
-
-		table.getColumn("유저코드").setPreferredWidth(5);
+//
+//		table.getColumn("유저코드").setPreferredWidth(5);
 		pTable.setLayout(null);
 		JScrollPane scrollPane = new JScrollPane(table);
 		pTable.add(scrollPane);
@@ -553,10 +551,9 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 
 	boolean isUserId() {
 
-		result = false;
-
 		String user = userTf.getText().trim();
 		String pass = passTf.getText().trim();
+		String name = nameTf.getText().trim();
 
 		if (user.length() > 10) {
 			JOptionPane.showMessageDialog(this, "아이디는 10자 미만으로 생성가능합니다.", "ID생성 오류", JOptionPane.WARNING_MESSAGE);
@@ -566,14 +563,21 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 		}
 
 		if (user.isEmpty()) {
-			JOptionPane.showMessageDialog(this, "ID 공백은 안되요");
+			JOptionPane.showMessageDialog(this, "ID 공백은 안되요!!!");
 			result = false;
 		} else {
 			result = true;
 		}
 
 		if (pass.isEmpty()) {
-			JOptionPane.showMessageDialog(this, "비밀번호 공백은 안되요");
+			JOptionPane.showMessageDialog(this, "비밀번호 공백은 안되요!!!");
+			result = false;
+		} else {
+			result = true;
+		}
+
+		if (name.isEmpty()) {
+			JOptionPane.showMessageDialog(this, "이름을 입력해주세요.");
 			result = false;
 		} else {
 			result = true;
@@ -589,7 +593,7 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 
 //		boolean result = userDao.insertMember(userDto);
 
-		if (result) {
+		if (isUserId()) {
 			JOptionPane.showMessageDialog(this, "등록이 완료되었습니다. 감사합니다.");
 			card.show(pMonitor, "pTable");
 //			dispose();
@@ -615,6 +619,12 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 		return result;
 	}
 
+	public void tfClear() {
+		userTf.setText("");
+		passTf.setText("");
+		nameTf.setText("");
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
@@ -623,7 +633,8 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 		// 회원등록이라고하죠.
 		if (ob.equals("유저등록")) {
 			card.show(pMonitor, "pRegister");
-//			userdao = new UserDao();
+			tfClear();
+//			userdao = new UserDao(s);
 //			System.out.println("유저등록버튼");
 //			userdto = new UserDto();
 //			userdao.insertMember(userdto);  
@@ -636,7 +647,7 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 
 		}
 
-		//회원수정이라고 하죠.
+		// 회원수정이라고 하죠.
 		if (ob.equals("유저수정")) {
 			card.show(pMonitor, "ppRegister");
 		}
@@ -650,11 +661,15 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 		if (ob.equals("유저삭제")) {
 			// 테이블에서 내가 선택한 행번호
 			int number = table.getSelectedRow();
+		
+			//TODO 여기까지작업했습니당..!! 	
+			UserDao userdao = new UserDao();
+//			userdao.deleteMember(id, pw);
 //			System.out.println(number);
-			DefaultTableModel tm = (DefaultTableModel) table.getModel();
-			if (number >= 0 && number < table.getRowCount()) {
-				tm.removeRow(number);
-			}
+//			DefaultTableModel tm = (DefaultTableModel) table.getModel();
+//			if (number >= 0 && number < table.getRowCount()) {
+//				tm.removeRow(number);
+//			}
 		}
 
 		// 확인을 누르면 유저등록창
@@ -663,12 +678,12 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 			insertUser();
 			UserDto re = getViewData();
 			UserDao userdao = new UserDao();
-			
-			if(result) {
+
+			if (result) {
 				userdao.insertMember(re);
 				userdao.getMemberList();
 			}
-			
+
 		}
 
 		// 취소버튼을 누르는 동시에 다시 테이블화면으로.
@@ -693,18 +708,16 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 //		System.out.println("선택한 행/열 번호 : " + table.getSelectedRow() +  table.getSelectedColumn());
 
 		// 행의 번호를 뽑아옴.
-		int numberRow = table.getSelectedRow();
+//		int numberRow = table.getSelectedRow();
 		// 열의 번호를 뽑아옴.
 		int numberColumn = table.getSelectedColumn();
 		// 열의 이름을 뽑아옴.
 		String str = table.getColumnName(numberColumn);
-
-		int colum[] = table.getSelectedColumns();
-		System.out.println(colum);
-
-		// 행과 열의 값을 뽑아옴.
-		String cValue = (String) tm.getValueAt(numberRow, numberColumn);
-		System.out.println(cValue);
+//		int colum[] = table.getSelectedColumns();
+//		System.out.println(colum);
+// 		행과 열의 값을 뽑아옴.
+//		String cValue = (String) tm.getValueAt(numberRow, numberColumn);
+//		System.out.println(cValue);
 
 	}
 
