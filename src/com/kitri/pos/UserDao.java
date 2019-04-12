@@ -4,6 +4,8 @@ import java.io.*;
 import java.sql.*;
 import java.util.Vector;
 
+import com.kitri.pos.db.DBManager;
+
 //유저등록할때 받아야하는 값
 //유저 ID, 유저 패스워드, 이름 , 권한
 
@@ -37,10 +39,12 @@ public class UserDao {
 //			PreparedStatement ps = null; //명령
 //			ResultSet rs = null; //결과
 
-		con = getConnection();
+		con = DBManager.getConnection();
 
-		String select = "select *" + "from members" + "order by name asc";
+		String select = "select *" + "from members";
+
 		try {
+
 			ps = con.prepareStatement(select);
 			rs = ps.executeQuery();
 
@@ -53,6 +57,7 @@ public class UserDao {
 				String name = rs.getString(5);
 
 				UserDto userdto = new UserDto();
+
 				userdto.setUserCode(user_code);
 				userdto.setPw(pw);
 				userdto.setId(id);
@@ -64,23 +69,30 @@ public class UserDao {
 			}
 
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
+			System.out.println("등록 오류");
 			e1.printStackTrace();
-		}
+		} //finally {
+//			try {
+//				DBManager.dbClose(ps, con);
+//			} catch (SQLException e) {
+//
+//				e.printStackTrace();
+//			}
+//		}
 
 		// TODO Auto-generated method stub
 		return row;
 	}
 
 	// 회원수
-	public boolean updateMember(UserDto dto) {
+	public boolean updateMember(UserDto dto) throws SQLException {
 
 		boolean result = false;
 
 //			Connection con = null;
 //			PreparedStatement ps = null;
 //			
-		con = getConnection();
+		con = DBManager.getConnection();
 
 		String update = "update members set name= ?, pw= ?" + "where id = ? and pw = ?";
 
@@ -96,11 +108,14 @@ public class UserDao {
 			int r = ps.executeUpdate();
 
 			if (r > 0) {
+				System.out.println("DB수정이 완료되었습니다.");
 				result = true;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			System.out.println("DB수정이 실패했습니다.");
 			e.printStackTrace();
+		} finally {
+			DBManager.dbClose(ps, con);
 		}
 		return result;
 	}
@@ -112,7 +127,7 @@ public class UserDao {
 //			Connection con = null;
 //			PreparedStatement ps = null;
 
-		con = getConnection();
+		con = DBManager.getConnection();
 		String delete = "delete" + "from members " + "where id = ? and pw = ?";
 
 		try {
@@ -130,6 +145,13 @@ public class UserDao {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			try {
+				DBManager.dbClose(ps, con);
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
 		}
 		return result;
 	}
@@ -142,93 +164,43 @@ public class UserDao {
 //			Connection con = null;
 //			PreparedStatement ps = null;
 
-		con = getConnection();
+		con = DBManager.getConnection();
 
 		String insert = "insert into members(user_code, pw, id, authority, name) values(USER_CODE_SEQ.NEXTVAL, ?, ?, ?, ?)";
 		try {
 
 			ps = con.prepareStatement(insert);
 
-//				ps.setInt(1, userdto.getUserCode());
+//			ps.setInt(1, userdto.getUserCode());
 			ps.setString(1, userdto.getPw());
 			ps.setString(2, userdto.getId());
 			ps.setString(3, userdto.getAuthority());
 			ps.setString(4, userdto.getName());
-
+						
 			int r = ps.executeUpdate(); // 실행 >> 저장
-
+			String str = Integer.toString(r);
+			if (str == null) {
+				System.out.println("회원가입 실패");
+			}
+			
 			if (r > 0) {
 				System.out.println("회원가입 성공 ");
 				result = true;
-			} else {
-				System.out.println("회원가입 실패");
-			}
+			} 
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
-		} //finally {
-//
-//			if (rs != null)
-//				try {
-//					rs.close();
-//				} catch (SQLException ex) {
-//				}
-//			if (ps != null)
-//				try {
-//					ps.close();
-//				} catch (SQLException ex) {
-//				}
-//			if (con != null)
-//				try {
-//					con.close();
-//				} catch (SQLException ex) {
-//				}
-//
-//		}
-		return result;
-	}
-
-	// innerClass "DB 연결하는중..."
-	public Connection getConnection() {
-
-		String user = "kitri";
-		String pw = "kitri";
-		String url = "jdbc:oracle:thin:@localhost:1521:orcl";
-
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
+			
+		}  finally {
 			try {
-				con = DriverManager.getConnection(url, user, pw);
-				System.out.println("DB연결 성공했습니다.");
+				DBManager.dbClose(ps, con);
 			} catch (SQLException e) {
-				System.out.println("DB연결 실패했습니다.");
+				
 				e.printStackTrace();
 			}
-
-		} catch (ClassNotFoundException e) {
-			System.out.println("알수없음.");
-			e.printStackTrace();
-		} //finally {
-//
-//			if (rs != null)
-//				try {
-//					rs.close();
-//				} catch (SQLException ex) {
-//				}
-//			if (ps != null)
-//				try {
-//					ps.close();
-//				} catch (SQLException ex) {
-//				}
-//			if (con != null)
-//				try {
-//					con.close();
-//				} catch (SQLException ex) {
-//				}
-//
-//		}
-		return con;
+		}
+		return result;
 	}
 
 }

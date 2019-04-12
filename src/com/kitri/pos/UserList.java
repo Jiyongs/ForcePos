@@ -1,59 +1,63 @@
 package com.kitri.pos;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Vector;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import java.awt.Font;
 
 public class UserList implements MouseListener {
 
-	Vector v;
-	Vector cols;
+	Vector<UserDto> row;
+	Vector<String> cols;
 	//====================//
 	DefaultTableModel model;
 	JTable jTable;
 	JScrollPane pane;
-	UserDao dao;
+//	UserDao dao;
 
 	// 기본생성자
 	public UserList() {
 
 		UserDao dao = new UserDao();
-		v = dao.getMemberList();
-		cols = getColum();
+		
+		row = dao.getMemberList();
+		cols = new Vector<String>(getColum());
 
-		model = new DefaultTableModel(v, cols);
 
 		jTable = new JTable(model);
+		jTable.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
 		pane = new JScrollPane(jTable);
+	
+		Administrator ad = new Administrator();
+//		ad.pTable.add(row, cols);
 
 		jTable.addMouseListener(this);
 
 	}
 
 	// Jtable 컬럼
-	private Vector getColum() {
-		Vector col = new Vector();
+	Vector<String> getColum() {
+		
+		cols = new Vector<String>();
 
-		col.add("유저코드");
-		col.add("패스워드");
-		col.add("아이디");
-		col.add("권한");
-		col.add("이름");
+		cols.add("유저코드");
+		cols.add("패스워드");
+		cols.add("아이디");
+		cols.add("권한");
+		cols.add("이름");
 
-		return col;
+		return cols;
 	}
 
 	// Jtable 내용 갱신
 	public void jtableRefresh() {
 
-		dao = new UserDao();
-		DefaultTableModel model = new DefaultTableModel(dao.getMemberList(), getColum());
-		jTable.setModel(model);
+		UserDao userdao = new UserDao();
+//		DefaultTableModel model = new DefaultTableModel(userdao.getMemberList(), getColum());
+//		jTable.setModel(model);
 
 	}
 

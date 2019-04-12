@@ -206,32 +206,41 @@ public class ForcePos extends JFrame implements ActionListener {
 		exitB.addActionListener(this);
 
 	}
+	
+	// 로그인 성공 / 실패 판단 메소드
+		public boolean isLogin() {
+			return loginCheck;
+		}
 
 // 아이디 비밀번호 유효성 검사
 // userTf.setText("");
 //관리자,직원의 번호를 미리 설정한 후 입력받게 함.
 
-	public void isLoginCheck() {
+	public boolean isLoginCheck() {
 
 		if (userTf.getText().equals("개나리") && new String(passTf.getText()).equals("1234")) {
 
 			String str = userTf.getText();
 			JOptionPane.showMessageDialog(null, str + "님 환영합니다.");
 			loginCheck = true;
-			showFrameTest();
-			
-
-		} else {
-			loginCheck = false;
-			JOptionPane.showMessageDialog(null, "로그인이 되지 않았습니다.");
 		}
-
-	}
-
-	// 로그인 성공 / 실패 판단 메소드
-	public boolean isLogin() {
+//			showFrameTest();
+//
+//		} else if(userTf.getText().equals("개나리") && !new String(passTf.getText()).equals("1234") && passTf.getText() != null) {
+//			loginCheck = false;
+//			JOptionPane.showMessageDialog(null, "비밀번호를 제대로 입력해주세요.");
+//		} else if(!userTf.getText().equals("개나리") && !new String(passTf.getText()).equals("1234")) {
+//			loginCheck = false;
+//			JOptionPane.showMessageDialog(null, "아이디가 틀립니다.");
+//		} else {
+//			loginCheck = false;
+//			JOptionPane.showMessageDialog(null, "아이디와 비밀번호를 입력해주세요.");
+//		}
 		return loginCheck;
+
 	}
+
+	
 
 	public void showFrameTest() {
 		main = new MainFrame();
@@ -273,31 +282,27 @@ public class ForcePos extends JFrame implements ActionListener {
 
 		Object ob = e.getSource();
 
-		boolean id = userTf.getText().equals("개나리");
-		boolean pass = passTf.getText().equals("1234");
+		if (loginCheck) {
+			passTf.requestFocus();
+		}
+		
+		if (ob == loginB) {
+			isLoginCheck();
+//			showFrameTest();
+		}
 
+		
+//		boolean id = userTf.getText().equals("개나리");
+//		boolean pass = passTf.getText().equals("1234");	
 		// TODO 텍스트필드에서 마우스클릭 시 필드 초기화 진행해야함
 //		if () {
 //			isLoginCheck();
 //			passTf.requestFocus();	
 //		}
-		if(ob == loginB) {
-			isLoginCheck();
-//			showFrameTest();
-		}
 		
-		
-		
-		
-		if (id) {
-			isLoginCheck();
-			passTf.requestFocus();
-		}
-		
-		if (pass) {
-			isLoginCheck();
-		}
-		
+//		if (pass) {
+//			isLoginCheck();
+//		}
 
 		if (ob == exitB) {
 			System.exit(0);
