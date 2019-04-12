@@ -1,45 +1,46 @@
-package com.kitri.pos;
+package com.kitri.pos.sales;
 
 import java.nio.channels.MembershipKey;
 import java.sql.*;
 import java.util.Vector;
 
-import com.kitri.pos.PosDto;
-import com.kitri.pos.DBManager;
+import com.kitri.pos.sales.PosDto;
+import com.kitri.pos.db.DBManager;
 
 /*
-	StatDao : Åë°è DB °ü·Ã ¸Ş¼Òµå Á¤ÀÇ
+	StatDao : í†µê³„ DB ê´€ë ¨ ë©”ì†Œë“œ ì •ì˜
 */
 
 public class SalesDao {
 
-	// DB¿¬°áµÈ »óÅÂ(¼¼¼Ç)À» ´ãÀº °´Ã¼
+	// DBì—°ê²°ëœ ìƒíƒœ(ì„¸ì…˜)ì„ ë‹´ì€ ê°ì²´
 	Connection conn = null;
 
-	// Äõ¸®¹®¿¡ »ç¿ëÇÏ´Â state°´Ã¼
+	// ì¿¼ë¦¬ë¬¸ì— ì‚¬ìš©í•˜ëŠ” stateê°ì²´
 	PreparedStatement ps = null;
 
 	Statement st = null;
 	ResultSet rs = null;
 
-	// Äõ¸®¹® °á°ú (1Çà) ´ãÀ» PosDto °´Ã¼
+	// ì¿¼ë¦¬ë¬¸ ê²°ê³¼ (1í–‰) ë‹´ì„ PosDto ê°ì²´
 	PosDto posDto = null;
 
+//	 ë©¤ë²„ì‹­ ì „ì²´ ì •ë³´ë¥¼ ë¶ˆëŸ¬ì˜¤ëŠ” ë©”ì†Œë“œ
 	public Vector<PosDto> searchAll() {
-		// Äõ¸®¹® °á°ú (¿©·¯ Çà) ´ãÀ» PosDto °´Ã¼
+		// ì¿¼ë¦¬ë¬¸ ê²°ê³¼ (ì—¬ëŸ¬ í–‰) ë‹´ì„ PosDto ê°ì²´
 		Vector<PosDto> list = new Vector<PosDto>();
 
 		try {
-			// DB ¿¬°á
+			// DB ì—°ê²°
 			conn = DBManager.getConnection();
 
-			// Äõ¸®¹® ¼¼ÆÃ
-			String query = "select * from MEMBERSHIP";
+			// ì¿¼ë¦¬ë¬¸ ì„¸íŒ…
+			String query = "select * from membership\r\n";
 			ps = conn.prepareStatement(query);
 
-			// Äõ¸®¹® ½ÇÇà
+			// ì¿¼ë¦¬ë¬¸ ì‹¤í–‰
 			rs = ps.executeQuery();
-			// °á°ú ÀúÀå
+			// ê²°ê³¼ ì €ì¥
 			while (rs.next()) {
 
 				posDto = new PosDto();
@@ -56,62 +57,206 @@ public class SalesDao {
 			e.printStackTrace();
 		} finally {
 			try {
-				// DB ¿¬°á Á¾·á
+				// DB ì—°ê²° ì¢…ë£Œ
 				DBManager.dbClose(rs, ps, conn);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
 
-		// °á°ú ¸®ÅÏ
+		// ê²°ê³¼ ë¦¬í„´
 		return list;
+	}
+
+//	nameë§Œ ì…ë ¥í•˜ê³  ë©¤ë²„ì‹­ ì¡°íšŒí•˜ëŠ” ë©”ì†Œë“œ
+	public Vector<PosDto> search(String name) {
+		// ì¿¼ë¦¬ë¬¸ ê²°ê³¼ (ì—¬ëŸ¬ í–‰) ë‹´ì„ PosDto ê°ì²´
+		
+		Vector<PosDto> list = new Vector<PosDto>();
+		
+	
+		try {
+			// DB ì—°ê²°
+			conn = DBManager.getConnection();
+
+			// ì¿¼ë¦¬ë¬¸ ì„¸íŒ…
+			String query = "select membership_id, name, phone, point\r\n" + 
+					"from membership\r\n" + 
+					"where name = ?";
+			ps = conn.prepareStatement(query);
+
+			ps.setString(1, name);
+			
+			// ì¿¼ë¦¬ë¬¸ ì‹¤í–‰
+			rs = ps.executeQuery();
+			// ê²°ê³¼ ì €ì¥
+		
+			while (rs.next()) {
+
+				posDto = new PosDto();
+
+				posDto.setMembershipId(rs.getString(1));
+				posDto.setMemberName(rs.getString(2));
+				posDto.setPhone(rs.getString(3));
+				posDto.setPoint(rs.getInt(4));
+
+				list.add(posDto);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				// DB ì—°ê²° ì¢…ë£Œ
+				DBManager.dbClose(rs, ps, conn);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		// ê²°ê³¼ ë¦¬í„´
+		return list;
+	}
+//	phoneë§Œ ì…ë ¥í•˜ê³  ì¡°íšŒí•˜ëŠ” ë©”ì†Œë“œ
+	public Vector<PosDto> search1(String cellphone) {
+		// ì¿¼ë¦¬ë¬¸ ê²°ê³¼ (ì—¬ëŸ¬ í–‰) ë‹´ì„ PosDto ê°ì²´
+		
+		Vector<PosDto> list = new Vector<PosDto>();
+		
+	
+		try {
+			// DB ì—°ê²°
+			conn = DBManager.getConnection();
+
+			// ì¿¼ë¦¬ë¬¸ ì„¸íŒ…
+			String query = "select membership_id, name, phone, point\r\n" + 
+					"from membership\r\n" + 
+					"where phone = ?";
+			ps = conn.prepareStatement(query);
+
+			ps.setString(1, cellphone);
+			
+			// ì¿¼ë¦¬ë¬¸ ì‹¤í–‰
+			rs = ps.executeQuery();
+			// ê²°ê³¼ ì €ì¥
+		
+			while (rs.next()) {
+
+				posDto = new PosDto();
+
+				posDto.setMembershipId(rs.getString(1));
+				posDto.setMemberName(rs.getString(2));
+				posDto.setPhone(rs.getString(3));
+				posDto.setPoint(rs.getInt(4));
+
+				list.add(posDto);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				// DB ì—°ê²° ì¢…ë£Œ
+				DBManager.dbClose(rs, ps, conn);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		// ê²°ê³¼ ë¦¬í„´
+		return list;
+	}
+//		name, phone ì „ë¶€ë¡œ ì¡°íšŒí•˜ëŠ” ë©”ì†Œë“œ
+	public Vector<PosDto> search2(String name, String cellphone) {
+		// ì¿¼ë¦¬ë¬¸ ê²°ê³¼ (ì—¬ëŸ¬ í–‰) ë‹´ì„ PosDto ê°ì²´
+		
+		Vector<PosDto> list = new Vector<PosDto>();
+		
+	
+		try {
+			// DB ì—°ê²°
+			conn = DBManager.getConnection();
+
+			// ì¿¼ë¦¬ë¬¸ ì„¸íŒ…
+			String query = "select membership_id, name, phone, point\r\n" + 
+					"from membership\r\n" + 
+					"where name = ?" +
+					"and phone = ?";
+			ps = conn.prepareStatement(query);
+
+			ps.setString(1, name);
+			ps.setString(2, cellphone);
+			
+			// ì¿¼ë¦¬ë¬¸ ì‹¤í–‰
+			rs = ps.executeQuery();
+			// ê²°ê³¼ ì €ì¥
+		
+			while (rs.next()) {
+
+				posDto = new PosDto();
+
+				posDto.setMembershipId(rs.getString(1));
+				posDto.setMemberName(rs.getString(2));
+				posDto.setPhone(rs.getString(3));
+				posDto.setPoint(rs.getInt(4));
+
+				list.add(posDto);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				// DB ì—°ê²° ì¢…ë£Œ
+				DBManager.dbClose(rs, ps, conn);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		// ê²°ê³¼ ë¦¬í„´
+		return list;
+	}
+//		íšŒì›ì •ë³´ë¥¼ ì…ë ¥í•˜ëŠ” ë©”ì†Œë“œ	
+	public int register(String name, String cellphone) {
+		int result = 0;
+
+		try {
+			// DB ì—°ê²°
+			conn = DBManager.getConnection();
+
+			// ì¿¼ë¦¬ë¬¸
+			String query = "insert into membership values((MEMBERSHIP_ID_SEQ.NEXTVAL), ?, ?, 0)";
+
+			//	ì¿¼ë¦¬ë¬¸ ì‹¤í–‰
+			ps = conn.prepareStatement(query);
+			ps.setString(1, name);
+			ps.setString(2, cellphone);
+
+			// 3)ì¿¼ë¦¬ë¬¸ ê²°ê³¼
+
+			System.out.println("ì¿¼ë¦¬ë¬¸ ì‹¤í–‰");
+			result = ps.executeUpdate();
+
+			if (result > 0) {
+				System.out.println("INSERT ì„±ê³µ");
+			} else
+				System.out.println("INSERT ì‹¤íŒ¨");
+
+		} catch (SQLException sqle) {
+			System.out.println("INSERT");
+			sqle.printStackTrace();
+
+		} finally {
+			// DB ì—°ê²° ì¢…ë£Œ
+			try {
+				DBManager.dbClose(ps, conn);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		}
+		// ê²°ê³¼ ë¦¬í„´
+		return result;
 	}
 
 	
-	public Vector<PosDto> search(String name) {
-		// Äõ¸®¹® °á°ú (¿©·¯ Çà) ´ãÀ» PosDto °´Ã¼
-		Vector<PosDto> list = new Vector<PosDto>();
-		ViewSalesCustomer viewSalesCustomer = new ViewSalesCustomer();
-		name = viewSalesCustomer.name.getText();
-		try {
-			// DB ¿¬°á
-			conn = DBManager.getConnection();
-
-			// Äõ¸®¹® ¼¼ÆÃ
-			String query = "select * from MEMBERSHIP"
-					+ "where name = ?";
-			ps = conn.prepareStatement(query);
-			
-			ps.setString(1, name);
-			
-			// Äõ¸®¹® ½ÇÇà
-			rs = ps.executeQuery();
-			// °á°ú ÀúÀå
-			while (rs.next()) {
-
-				posDto = new PosDto();
-
-				posDto.setMembershipId(rs.getString(1));
-				posDto.setMemberName(rs.getString(2));
-				posDto.setPhone(rs.getString(3));
-				posDto.setPoint(rs.getInt(4));
-
-				list.add(posDto);
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				// DB ¿¬°á Á¾·á
-				DBManager.dbClose(rs, ps, conn);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
-		// °á°ú ¸®ÅÏ
-		return list;
-	}
 	
 }

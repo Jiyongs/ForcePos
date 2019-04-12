@@ -1,4 +1,4 @@
-package com.kitri.pos;
+package com.kitri.pos.sales;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -45,7 +45,7 @@ public class DealCancel extends JDialog {
 			panel.setLayout(new BorderLayout(0, 0));
 			{
 				JLabel lblNewLabel = new JLabel("\uAC70\uB798\uCDE8\uC18C");
-				lblNewLabel.setFont(new Font("±¼¸²", Font.PLAIN, 25));
+				lblNewLabel.setFont(new Font("êµ´ë¦¼", Font.PLAIN, 25));
 				lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 				panel.add(lblNewLabel, BorderLayout.CENTER);
 			}
@@ -56,7 +56,7 @@ public class DealCancel extends JDialog {
 			panel.setLayout(null);
 			{
 				JLabel lblNewLabel_1 = new JLabel("\uAC70\uB798\uBC88\uD638");
-				lblNewLabel_1.setFont(new Font("±¼¸²", Font.PLAIN, 20));
+				lblNewLabel_1.setFont(new Font("êµ´ë¦¼", Font.PLAIN, 20));
 				lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 				lblNewLabel_1.setBounds(24, 10, 84, 52);
 				panel.add(lblNewLabel_1);
