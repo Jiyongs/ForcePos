@@ -33,7 +33,7 @@ public class CalcService implements ActionListener {
 	}
 
 	public void cashCaclEach() {
-		///////////////////////////////////// 각각의 권종 합에 반영
+		/////////////////////////////////// 각각의 권종 합에 반영
 		System.out.println("메소드입장");
 		for (int i = 0; i < 8; i++) {
 			numStr = "";
@@ -79,6 +79,10 @@ public class CalcService implements ActionListener {
 		} else if (isNumber(obStr) == true) {
 			int row = Cmain.pCalc.cashTable.getSelectedRow();
 			int column = Cmain.pCalc.cashTable.getSelectedColumn();
+			if(Cmain.pCalc.model.isCellEditable(row, column) == false) {
+				return;
+			}
+				
 			numStr = String.valueOf(Cmain.pCalc.cashTable.getValueAt(row, column));
 			if(numStr.isEmpty()) {
 				Cmain.pCalc.cashTable.setValueAt(obStr, row, column);
@@ -122,7 +126,7 @@ public class CalcService implements ActionListener {
 			System.out.println("정산창 비활성화, 판매창 활성화");
 
 		} else if (ob == Cmain.pCalc.btnCalc_Cancel) {
-//			Cmain.판매창.card.show(~~)
+			cmain.card.show(cmain.pMonitor, "Test");
 			System.out.println("정산창 비활성화, 판매창 활성화");
 //			t.stop();
 		}

@@ -11,26 +11,29 @@ import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
+import java.awt.Rectangle;
+import javax.swing.ScrollPaneConstants;
 
 public class PCalc extends JPanel {
 
 //	Vector<String> type = new Vector<String>();
-	DefaultTableModel model;
+	public DefaultTableModel model;
 //	Vector<String> cnt;
 //	Vector<String> total;
-	
-	
-	 String[][] data;
+
+	String[][] data;
 	public JTable cashTable;
 	public JTextField tfCashState;
 	public JTextField tfCashCheck;
 	public JTextField tfCalcResult;
+
 //	
-	
+
 	JPanel pcalcmain;
 	JPanel pNum;
 	JButton btnCalc_0;
@@ -52,8 +55,7 @@ public class PCalc extends JPanel {
 	JLabel lbCashState;
 	JLabel lbCashCheck;
 	JLabel lbCalcResult;
-	
-	
+	private JScrollPane spTable;
 
 	/**
 	 * Create the panel.
@@ -63,39 +65,49 @@ public class PCalc extends JPanel {
 		setBackground(new Color(255, 255, 255));
 		setBounds(0, 50, 1144, 535);
 
-		
-				
 		String[] header = new String[] { "권종", "수량", "금액" };
-		
-		data = new String[][] { 
-			{ "50000", "", "0" }, 
-			{ "10000", "", "0" }, 
-			{ "5000", "", "0" }, 
-			{ "1000", "", "0" }, 
-			{ "500", "", "0" },
-			{ "100", "", "0" }, 
-			{ "50", "", "0" }, 
-			{ "10", "", "0" } };
-		
-		
+
+		data = new String[][] { { "50000", "", "0" }, { "10000", "", "0" }, { "5000", "", "0" }, { "1000", "", "0" },
+				{ "500", "", "0" }, { "100", "", "0" }, { "50", "", "0" }, { "10", "", "0" } };
+
 		setLayout(null);
 		JPanel pCashstate = new JPanel();
 		pCashstate.setBounds(12, 10, 533, 515);
 		add(pCashstate);
-		
-	
-		model = new DefaultTableModel(data,header);
+
+		model = new DefaultTableModel(data, header) {
+			@Override
+			public boolean isCellEditable(int row,int column) {
+				if (column == 1) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		};
+
+		spTable = new JScrollPane();
+		spTable.setWheelScrollingEnabled(false);
+		spTable.setEnabled(false);
+		spTable.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		spTable.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+		pCashstate.add(spTable);
 		cashTable = new JTable(model);
-		
+		cashTable.setRowHeight(61);
+		cashTable.setPreferredScrollableViewportSize(new Dimension(530, 485));
+		cashTable.setAutoscrolls(false);
+
 //		cashTable = new JTable();
-		
+
 		cashTable.setFont(new Font("����", Font.PLAIN, 20));
-		cashTable.setPreferredSize(new Dimension(533, 515));
+		cashTable.setPreferredSize(new Dimension(530, 485));
 		cashTable.setFillsViewportHeight(true);
-		cashTable.setBounds(0,0,533,515);
-//		cashTable.setDragEnabled(true);
-//		cashTable.setColumnSelectionAllowed(false);
-		pCashstate.add(cashTable);
+		cashTable.setBounds(0, 0, 533, 515);
+		// cashTable.setDragEnabled(true);
+		// cashTable.setColumnSelectionAllowed(false);
+		spTable.setBounds(0, 0, 533, 515);
+		spTable.setViewportView(cashTable);
+//				pCashstate.add(cashTable);
 
 		pcalcmain = new JPanel();
 		pcalcmain.setBounds(557, 10, 575, 515);
@@ -143,18 +155,18 @@ public class PCalc extends JPanel {
 		btnCalc_2 = new JButton("2");
 		panel_1.add(btnCalc_2);
 
-		 btnCalc_3 = new JButton("3");
+		btnCalc_3 = new JButton("3");
 		panel_1.add(btnCalc_3);
 
 		JPanel panel_0 = new JPanel();
 		pNum.add(panel_0);
 		panel_0.setLayout(null);
 
-		 btnCalc_0 = new JButton("0");
+		btnCalc_0 = new JButton("0");
 		btnCalc_0.setBounds(0, 0, 257, 73);
 		panel_0.add(btnCalc_0);
 
-		 btnCalc_00 = new JButton("00");
+		btnCalc_00 = new JButton("00");
 		btnCalc_00.setBounds(269, 0, 125, 73);
 		panel_0.add(btnCalc_00);
 
@@ -163,11 +175,11 @@ public class PCalc extends JPanel {
 		pcalcmain.add(pcalc_btns);
 		pcalc_btns.setLayout(null);
 
-		 btnCalc_del = new JButton("\u2190");
+		btnCalc_del = new JButton("\u2190");
 		btnCalc_del.setBounds(0, 0, 169, 80);
 		pcalc_btns.add(btnCalc_del);
 
-		 btnCalc_C = new JButton("C");
+		btnCalc_C = new JButton("C");
 		btnCalc_C.setBounds(0, 90, 169, 80);
 		pcalc_btns.add(btnCalc_C);
 
@@ -175,11 +187,11 @@ public class PCalc extends JPanel {
 		btnCalc_Input.setBounds(0, 180, 169, 145);
 		pcalc_btns.add(btnCalc_Input);
 
-		 btnCalc_Apply = new JButton("\uC815\uC0B0");
+		btnCalc_Apply = new JButton("\uC815\uC0B0");
 		btnCalc_Apply.setBounds(0, 335, 169, 80);
 		pcalc_btns.add(btnCalc_Apply);
 
-		 btnCalc_Cancel = new JButton("\uB2EB\uAE30");
+		btnCalc_Cancel = new JButton("\uB2EB\uAE30");
 		btnCalc_Cancel.setBounds(0, 425, 169, 80);
 		pcalc_btns.add(btnCalc_Cancel);
 
@@ -196,11 +208,11 @@ public class PCalc extends JPanel {
 		lbCashState.setHorizontalAlignment(SwingConstants.CENTER);
 		panel.add(lbCashState);
 
-		 lbCashCheck = new JLabel("\uC815\uC0B0 \uD604\uAE08");
+		lbCashCheck = new JLabel("\uC815\uC0B0 \uD604\uAE08");
 		lbCashCheck.setHorizontalAlignment(SwingConstants.CENTER);
 		panel.add(lbCashCheck);
 
-		 lbCalcResult = new JLabel("\uCC28\uC561");
+		lbCalcResult = new JLabel("\uCC28\uC561");
 		lbCalcResult.setHorizontalAlignment(SwingConstants.CENTER);
 		panel.add(lbCalcResult);
 
@@ -209,18 +221,23 @@ public class PCalc extends JPanel {
 		panel_2.setLayout(new GridLayout(0, 1, 0, 10));
 
 		tfCashState = new JTextField();
-		tfCashState.setEnabled(false);
+		tfCashState.setEditable(false);
+		tfCashState.setForeground(Color.BLACK);
+		tfCashState.setFont(new Font("굴림", Font.BOLD, 20));
 		panel_2.add(tfCashState);
 		tfCashState.setColumns(10);
 
 		tfCashCheck = new JTextField("0");
-		tfCashCheck.setEnabled(false);
+		tfCashCheck.setEditable(false);
+		tfCashCheck.setForeground(Color.BLACK);
+		tfCashCheck.setFont(new Font("굴림", Font.BOLD, 20));
 		panel_2.add(tfCashCheck);
 		tfCashCheck.setColumns(10);
 
 		tfCalcResult = new JTextField("0");
-				
-		tfCalcResult.setEnabled(false);
+		tfCalcResult.setEditable(false);
+		tfCalcResult.setForeground(Color.RED);
+		tfCalcResult.setFont(new Font("굴림", Font.BOLD, 20));
 		panel_2.add(tfCalcResult);
 		tfCalcResult.setColumns(10);
 	}

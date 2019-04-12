@@ -2,9 +2,9 @@ package com.kitri.pos.calc;
 
 import java.sql.*;
 
-/*
-  DBManger : DB의 연결, 연결해제 메소드를 가진 클래스
-*/
+
+//  DBManger : DB의 연결, 연결해제 메소드를 가진 클래스
+
 
 public class DBManager {
 
