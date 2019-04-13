@@ -12,7 +12,6 @@ import javax.swing.border.LineBorder;
 
 public class Administrator extends JFrame implements ActionListener, MouseListener {
 
-
 	/**
 	 * 
 	 */
@@ -23,7 +22,7 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 	private JTextField nameTf; // 이름 입력
 	private JTextField notice; // 상태창
 	private ForcePos frame; // 메인프레임
-	private UserDao userDao; 
+	private UserDao userDao;
 	private JComboBox<String> authority; // 권한
 	Vector<String> userColumn;
 	Vector<UserDto> data;
@@ -37,7 +36,9 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 	private JTextField unameTf;
 	private boolean result; // 인서트 결과값 저장
 	DefaultTableModel tm;
-	
+	UserList userList;
+	UserDto userDto;
+
 //	String colName[] = { "유저코드", "", "", "", "" };
 //	Object data[][] = { { "1", "개나리", "주간1" }, { "2", "노오란", "야간1" }, { "3", "꽃그늘", "주간2" },
 //			{ "4", "최아래", "야간2" } };
@@ -56,10 +57,10 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 			public void run() {
 
 				try {
-					
+
 					Administrator administrator = new Administrator();
 					administrator.setVisible(true);
-					
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -101,7 +102,9 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 	// 수정, 삭제용 생성자
 	public Administrator(String id, UserList userList) {
 
+		this.userList = userList;
 		userDao = new UserDao();
+		userDao.getMemberList();
 
 	}
 
@@ -273,42 +276,45 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 		pRegister.add(prInput);
 //---------------------------------------------------------------------//
 
-		userDao = new UserDao();
-		data = userDao.getMemberList();
-		data = new Vector<UserDto>(data);
+//		userDao = new UserDao();
+//		data = userDao.getMemberList();
+//		data = new Vector<UserDto>(data);
+//
+//		userColumn = new Vector<String>();
+//		userColumn.addElement("유저코드");
+//		userColumn.addElement("pw");
+//		userColumn.addElement("id");
+//		userColumn.addElement("aurthority");
+//		userColumn.addElement("name");
+//
+//		tm = new DefaultTableModel(userColumn, data);
+//		
+//		int size = data.size();
+//		
+//		for (int i = 0; i < size; i++) {
+//			Vector<String> row = new Vector<String>();
+//			// 행
+//
+//			// 숫자를 문자로 변환 행에 추가
+//			row.addElement(Integer.toString(data.get(i).getUserCode()));
+//			row.addElement(data.get(i).getPw());
+//			row.addElement(data.get(i).getId());
+//			row.addElement(data.get(i).getAuthority());
+//			row.addElement(data.get(i).getName());
+//
+//			tm.addRow(row);
+//		}
 
-		userColumn = new Vector<String>();
-		userColumn.addElement("유저코드");
-		userColumn.addElement("pw");
-		userColumn.addElement("id");
-		userColumn.addElement("aurthority");
-		userColumn.addElement("name");
+// Jtable 내용 갱신
+//		public void jtableRefresh() {
 
-		tm = new DefaultTableModel(userColumn, data);
-		
-		int size = data.size();
-		
-		for (int i = 0; i < size; i++) {
-			Vector<String> row = new Vector<String>();
-			// 행
+//			userDao = new UserDao();
+//			DefaultTableModel model = new DefaultTableModel(data, userColumn);
+//			jTable.setModel(model);
 
-			// 숫자를 문자로 변환 행에 추가
-			row.addElement(Integer.toString(data.get(i).getUserCode()));
-			row.addElement(data.get(i).getPw());
-			row.addElement(data.get(i).getId());
-			row.addElement(data.get(i).getAuthority());
-			row.addElement(data.get(i).getName());
+//		}
 
-			tm.addRow(row);
-			table = new JTable(tm);
-		}
-		
-
-		
-		table.setRowHeight(60);
-		tableCellCenter(table);
-
-		// 행과 열의 데이터를 뽑아옴.
+// 행과 열의 데이터를 뽑아옴.
 //		Object ob = table.getValueAt(0, 0);
 //		System.out.println(ob);
 		// 열의 이름을 뽑아옴.
@@ -317,11 +323,15 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 //		str = table.getColumnName(1);
 //		System.out.println(str);
 //		table.getColumn("유저코드").setPreferredWidth(5);
-		
+
 		pTable.setLayout(null);
 		JScrollPane scrollPane = new JScrollPane(table);
 		pTable.add(scrollPane);
 		scrollPane.setBounds(0, 5, 1144, 528);
+
+		table = new JTable(tm);
+		table.setRowHeight(60);
+		tableCellCenter(table);
 
 		// 카드레이아웃담당.
 		pMonitor.setLayout(card);
@@ -480,19 +490,19 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 
 //		BufferedReader in;
 //		in = new BufferedReader(new InputStreamReader(System.in));
-		UserDto userdto = new UserDto();
+		UserDto userDto = new UserDto();
 
 		try {
 
 //			System.out.print("유저코드 입력 바람.");
 //			int user_code = Integer.parseInt(in.readLine());
 //			System.out.println("패스워드 입력바람");
-			userdto.setPw(passTf.getText());
+			userDto.setPw(passTf.getText());
 //			System.out.println("아이디 입력바람");
-			userdto.setId(userTf.getText());
+			userDto.setId(userTf.getText());
 //			System.out.println("권한 입력바람");
-			userdto.setAuthority(auth); // string
-			userdto.setName(nameTf.getText());
+			userDto.setAuthority(auth); // string
+			userDto.setName(nameTf.getText());
 //			System.out.println("이름 입력바람");
 
 		} catch (NumberFormatException e) {
@@ -504,7 +514,7 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 
 //		dto.setUserCode(userCode);
 
-		return userdto;
+		return userDto;
 
 	}
 
@@ -570,7 +580,7 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 		return result;
 	}
 
-	// 회원등록유효성검사.
+	// 회원등록 유효성검사.
 	private void insertUser() {
 
 		getViewData();
@@ -583,23 +593,51 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 			JOptionPane.showMessageDialog(this, "등록이 실패되었습니다.");
 		}
 	}
-//
-//	private boolean updateUser() {
-//		boolean result = true;
-//
-//		userDto = getViewData();
-//		userDao = new UserDao();
-//
-//		if (result) {
-//			JOptionPane.showMessageDialog(this, "수정이 완료되었습니다.");
-////			dispose();
-//		} else {
-//			JOptionPane.showMessageDialog(this, "수정이 실패되었습니다.");
-//			result = false;
-//		}
-//		return result;
-//	}
 
+	@SuppressWarnings("unused")
+	private void updateUser() {
+
+		userDto = getViewData();
+		userDao = new UserDao();
+		
+		boolean result;
+		try {
+			result = userDao.updateMember(userDto);
+			if (result) {
+				JOptionPane.showMessageDialog(this, "수정이 완료되었습니다.");
+			} else {
+				JOptionPane.showMessageDialog(this, "수정이 실패되었습니다.");
+				
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private void deleteUser() {
+		String id = userTf.getText();
+		
+		
+		if(id.length()==0) {
+			JOptionPane.showMessageDialog(this, "id 입력");
+			return;
+		}
+		
+		UserDao userDao = new UserDao();
+		boolean result = userDao.deleteMember(id);
+		
+		if(result) {
+			JOptionPane.showMessageDialog(this, "삭제완료");
+			
+		} else {
+			JOptionPane.showMessageDialog(this, "삭제실패");
+		}
+		
+	}
+	
+	
+	
 	public void tfClear() {
 		userTf.setText("");
 		passTf.setText("");
@@ -620,15 +658,21 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 		// 회원수정이라고 하죠.
 		if (ob.equals("유저수정")) {
 			card.show(pMonitor, "ppRegister");
+			updateUser();
 		}
 
 		// 유저를 지워보도록 하죠.
 		if (ob.equals("유저삭제")) {
-			userDao = new UserDao();
-			// 테이블에서 내가 선택한 행번호
-			int number = table.getSelectedRow();
-		
-			//TODO 여기까지작업했습니당..!! 	
+			// TODO 여기까지작업했습니당..!!
+			int x = JOptionPane.showConfirmDialog(this, "정말 삭제 하시겠습니까?", "삭제",JOptionPane.YES_NO_CANCEL_OPTION);
+			
+			if(x == JOptionPane.OK_OPTION) {
+				deleteUser();
+			} else {
+				JOptionPane.showMessageDialog(this, "삭제를 취소하였습니다.");
+			}
+
+			
 //			userdao.deleteMember(id, pw);
 //			System.out.println(number);
 //			DefaultTableModel tm = (DefaultTableModel) table.getModel();
@@ -677,8 +721,11 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 //		tm = (DefaultTableModel) table.getModel();
 //		System.out.println("선택한 행/열 번호 : " + table.getSelectedRow() +  table.getSelectedColumn());
 
-		// 행의 번호를 뽑아옴.
-//		int numberRow = table.getSelectedRow();
+// 행의 번호를 뽑아옴.
+		int numberRow = table.getSelectedRow();
+		String cValue = (String) tm.getValueAt(numberRow, 0);
+		new Administrator(cValue, userList);
+
 		// 열의 번호를 뽑아옴.
 //		int numberColumn = table.getSelectedColumn();
 		// 열의 이름을 뽑아옴.
@@ -686,7 +733,6 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 //		int colum[] = table.getSelectedColumns();
 //		System.out.println(colum);
 // 		행과 열의 값을 뽑아옴.
-//		String cValue = (String) tm.getValueAt(numberRow, numberColumn);
 //		System.out.println(cValue);
 
 	}

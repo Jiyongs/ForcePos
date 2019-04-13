@@ -2,6 +2,9 @@ package com.kitri.pos;
 
 import java.sql.*;
 import java.util.Vector;
+
+import javax.swing.table.DefaultTableModel;
+
 import com.kitri.pos.db.DBManager;
 
 //유저등록할때 받아야하는 값
@@ -12,7 +15,7 @@ public class UserDao {
 	// 회원리스트 클래스
 	UserList mList;
 	UserDto userDto;
-	
+
 	// DB연결시 필요
 	Connection con = null;
 	PreparedStatement ps = null;
@@ -36,9 +39,7 @@ public class UserDao {
 
 		con = DBManager.getConnection();
 
-		String select = "select * " + 
-						"from members " + 
-						"order by name asc";
+		String select = "select * " + "from members " + "order by name asc";
 
 		try {
 
@@ -87,8 +88,7 @@ public class UserDao {
 
 		con = DBManager.getConnection();
 
-		String update = "update members set name= ?, pw= ? " + 
-						"where id = ? and pw = ?";
+		String update = "update members set name= ?, pw= ? " + "where id = ? and pw = ?";
 
 		try {
 
@@ -114,22 +114,55 @@ public class UserDao {
 		return result;
 	}
 
+	public void userSelectAll(DefaultTableModel tm) throws SQLException {
+
+		con = DBManager.getConnection();
+
+		String select = "select *" + "from members " + "order by name ase";
+
+		try {
+			ps = con.prepareStatement(select);
+			rs = ps.executeQuery();
+
+			for (int i = 0; i < tm.getRowCount();) {
+				tm.removeRow(0);
+			}
+
+			while (rs.next()) {
+				Object data[] = {
+
+						rs.getInt(1), 
+						rs.getString(2), 
+						rs.getString(3), 
+						rs.getString(4), 
+						rs.getString(5) };
+
+				tm.addRow(data);
+			}
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}finally {
+
+			DBManager.dbClose(ps, con);
+		}
+
+	}
+
 	// 회원정보삭제
-	public boolean deleteMember(int user_code) throws SQLException {
+	public boolean deleteMember(String id)) throws SQLException {
 
 		boolean result = false;
 
 		con = DBManager.getConnection();
 
-		String delete = "delete" + 
-						"from members " + 
-						"where user_code = ?";
+		String delete = "delete" + "from members " + "where id = ?";
 
 		try {
 
 			ps = con.prepareStatement(delete);
 
-			ps.setInt(1, user_code);
+			ps.setString(1, id);
 
 			int r = ps.executeUpdate();
 
@@ -154,8 +187,8 @@ public class UserDao {
 
 		con = DBManager.getConnection();
 
-		String insert = "insert into members(user_code, pw, id, authority, name) " + 
-						"values(USER_CODE_SEQ.NEXTVAL, ?, ?, ?, ?)";
+		String insert = "insert into members(user_code, pw, id, authority, name) "
+				+ "values(USER_CODE_SEQ.NEXTVAL, ?, ?, ?, ?)";
 		try {
 
 			ps = con.prepareStatement(insert);
