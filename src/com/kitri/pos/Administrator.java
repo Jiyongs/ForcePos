@@ -6,6 +6,8 @@ import javax.swing.table.*;
 import java.util.Vector;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.SQLException;
+
 import javax.swing.border.LineBorder;
 
 public class Administrator extends JFrame implements ActionListener, MouseListener {
@@ -23,6 +25,8 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 	private ForcePos frame; // 메인프레임
 	private UserDao userDao; 
 	private JComboBox<String> authority; // 권한
+	Vector<String> userColumn;
+	Vector<UserDto> data;
 //	private JRadioButton job1, job2; // 콤보박스안에 직원, 관리자
 //	String arrJob[] = { "직원", "관리자" };
 	private String auth = "F"; // 직원 권한 고정
@@ -97,7 +101,7 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 	// 수정, 삭제용 생성자
 	public Administrator(String id, UserList userList) {
 
-//		UserDao userDao = new UserDao();
+		userDao = new UserDao();
 
 	}
 
@@ -270,35 +274,37 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 //---------------------------------------------------------------------//
 
 		userDao = new UserDao();
-		Vector<UserDto> result = new Vector<UserDto>();
-		result = userDao.getMemberList();
+		data = userDao.getMemberList();
+		data = new Vector<UserDto>(data);
 
-		Vector<String> userColumn = new Vector<String>();
-
+		userColumn = new Vector<String>();
 		userColumn.addElement("유저코드");
 		userColumn.addElement("pw");
 		userColumn.addElement("id");
 		userColumn.addElement("aurthority");
 		userColumn.addElement("name");
 
-		tm = new DefaultTableModel(userColumn, 0);
+		tm = new DefaultTableModel(userColumn, data);
 		
-		int size = result.size();
+		int size = data.size();
+		
 		for (int i = 0; i < size; i++) {
 			Vector<String> row = new Vector<String>();
 			// 행
 
 			// 숫자를 문자로 변환 행에 추가
-			row.addElement(Integer.toString(result.get(i).getUserCode()));
-			row.addElement(result.get(i).getPw());
-			row.addElement(result.get(i).getId());
-			row.addElement(result.get(i).getAuthority());
-			row.addElement(result.get(i).getName());
+			row.addElement(Integer.toString(data.get(i).getUserCode()));
+			row.addElement(data.get(i).getPw());
+			row.addElement(data.get(i).getId());
+			row.addElement(data.get(i).getAuthority());
+			row.addElement(data.get(i).getName());
 
 			tm.addRow(row);
 			table = new JTable(tm);
 		}
+		
 
+		
 		table.setRowHeight(60);
 		tableCellCenter(table);
 
@@ -618,11 +624,11 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 
 		// 유저를 지워보도록 하죠.
 		if (ob.equals("유저삭제")) {
+			userDao = new UserDao();
 			// 테이블에서 내가 선택한 행번호
-//			int number = table.getSelectedRow();
+			int number = table.getSelectedRow();
 		
 			//TODO 여기까지작업했습니당..!! 	
-			userDao = new UserDao();
 //			userdao.deleteMember(id, pw);
 //			System.out.println(number);
 //			DefaultTableModel tm = (DefaultTableModel) table.getModel();
@@ -636,11 +642,16 @@ public class Administrator extends JFrame implements ActionListener, MouseListen
 
 			insertUser();
 			UserDto re = getViewData();
-			UserDao userdao = new UserDao();
+			userDao = new UserDao();
 
 			if (result) {
-				userdao.insertMember(re);
-				userdao.getMemberList();
+				try {
+					userDao.insertMember(re);
+					userDao.getMemberList();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 
 		}

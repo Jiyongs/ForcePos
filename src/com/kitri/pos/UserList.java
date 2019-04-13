@@ -24,7 +24,7 @@ public class UserList implements MouseListener {
 	public UserList() {
 
 		UserDao dao = new UserDao();
-		row = dao.getMemberList();
+		row = dao.getMemberList(); // 테이블의 값들을 select 
 		
 		cols = new Vector<String>(getColum());
 
