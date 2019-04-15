@@ -2,11 +2,11 @@ package com.kitri.pos;
 
 public class UserDto {
 
-	private int user_code; // ìœ ì €ì½”ë“œ
-	private String pw; // íŒ¨ìŠ¤ì›Œë“œ
-	private String id; // ì•„ì´ë””
-	private String authority; // ê¶Œí•œ
-	private String name; // ì´ë¦„
+	private int user_code; // À¯ÀúÄÚµå
+	private String pw; // ÆĞ½º¿öµå
+	private String id; // ¾ÆÀÌµğ
+	private String authority; // ±ÇÇÑ
+	private String name; // ÀÌ¸§
 
 	public int getUserCode() {
 		return user_code;
@@ -32,7 +32,7 @@ public class UserDto {
 		this.name = name;
 	}
 
-	public void setUserCode(int userCode) {
+	public void setUserCode(int user_code) {
 		this.user_code = user_code;
 	}
 

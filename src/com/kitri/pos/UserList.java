@@ -10,52 +10,53 @@ public class UserList {
 	Vector<UserDto> data;
 	Vector<String> userColumn;
 	
-	UserDao userDao;
 	
 	//====================//
 	Administrator administrator;
+	UserDao userDao;
 
 
-	// ê¸°ë³¸ìƒì„±ì
+	// ±âº»»ı¼ºÀÚ
 	public UserList() {
 
 //		UserDao dao = new UserDao();
-//		row = dao.getMemberList(); // í…Œì´ë¸”ì˜ ê°’ë“¤ì„ select 
+//		row = dao.getMemberList(); // Å×ÀÌºíÀÇ °ªµéÀ» select 
 //		cols = new Vector<String>(getColum());
 //		jTable = new JTable(model);
-//		jTable.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.PLAIN, 20));
+//		jTable.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
 //		pane = new JScrollPane(jTable);
 //		jTable.addMouseListener(this);
+//
+//		userDao = new UserDao();
+//		data = userDao.getMemberList();
+//		data = new Vector<UserDto>(data);
+//
+//		userColumn = new Vector<String>();
+//		userColumn.addElement("À¯ÀúÄÚµå");
+//		userColumn.addElement("pw");
+//		userColumn.addElement("id");
+//		userColumn.addElement("aurthority");
+//		userColumn.addElement("name");
+//
+//		
+//		int size = data.size();
+//		
+//		for (int i = 0; i < size; i++) {
+//			// Çà
+//			Vector<String> row = new Vector<String>();
+//		
+//
+//			// ¼ıÀÚ¸¦ ¹®ÀÚ·Î º¯È¯ Çà¿¡ Ãß°¡
+//			row.addElement(data.get(i).getUserCode() +"");
+//			row.addElement(data.get(i).getPw());
+//			row.addElement(data.get(i).getId());
+//			row.addElement(data.get(i).getAuthority());
+//			row.addElement(data.get(i).getName());
+//
+//			administrator.tm = new DefaultTableModel(userColumn, data);
+//			administrator.tm.addRow(row);
 
-		userDao = new UserDao();
-		data = userDao.getMemberList();
-		data = new Vector<UserDto>(data);
-
-		userColumn = new Vector<String>();
-		userColumn.addElement("ìœ ì €ì½”ë“œ");
-		userColumn.addElement("pw");
-		userColumn.addElement("id");
-		userColumn.addElement("aurthority");
-		userColumn.addElement("name");
-
-		administrator.tm = new DefaultTableModel(userColumn, data);
-		
-		int size = data.size();
-		
-		for (int i = 0; i < size; i++) {
-			// í–‰
-			Vector<String> row = new Vector<String>();
-		
-
-			// ìˆ«ìë¥¼ ë¬¸ìë¡œ ë³€í™˜ í–‰ì— ì¶”ê°€
-			row.addElement(Integer.toString(data.get(i).getUserCode()));
-			row.addElement(data.get(i).getPw());
-			row.addElement(data.get(i).getId());
-			row.addElement(data.get(i).getAuthority());
-			row.addElement(data.get(i).getName());
-
-			administrator.tm.addRow(row);
 
 		}
 	}
-}
+//}

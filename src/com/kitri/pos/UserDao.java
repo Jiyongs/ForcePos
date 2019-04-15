@@ -7,39 +7,35 @@ import javax.swing.table.DefaultTableModel;
 
 import com.kitri.pos.db.DBManager;
 
-//ìœ ì €ë“±ë¡í• ë•Œ ë°›ì•„ì•¼í•˜ëŠ” ê°’
-//ìœ ì € ID, ìœ ì € íŒ¨ìŠ¤ì›Œë“œ, ì´ë¦„ , ê¶Œí•œ
+//À¯Àúµî·ÏÇÒ¶§ ¹Ş¾Æ¾ßÇÏ´Â °ª
+//À¯Àú ID, À¯Àú ÆĞ½º¿öµå, ÀÌ¸§ , ±ÇÇÑ
 
 public class UserDao {
 
-	// íšŒì›ë¦¬ìŠ¤íŠ¸ í´ë˜ìŠ¤
-	UserList mList;
+	// È¸¿ø¸®½ºÆ® Å¬·¡½º
+
 	UserDto userDto;
 
-	// DBì—°ê²°ì‹œ í•„ìš”
+	// DB¿¬°á½Ã ÇÊ¿ä
 	Connection con = null;
 	PreparedStatement ps = null;
 	ResultSet rs = null;
 
-	// ê¸°ë³¸ìƒì„±ì
+	// ±âº»»ı¼ºÀÚ
 	public UserDao() {
 
 	}
 
-	//
-	public UserDao(UserList mList) {
-		this.mList = mList;
-	}
-	// ë¦¬ìŠ¤íŠ¸ì— ë‹´ì€ ê°’ë“¤ì„ ì–»ì–´ì˜¨ë‹¤.
+	// ¸®½ºÆ®¿¡ ´ãÀº °ªµéÀ» ¾ò¾î¿Â´Ù.
 
-	// íšŒì› ê²€ìƒ‰
+	// È¸¿ø °Ë»ö
 	public Vector<UserDto> getMemberList() {
-		// ë³´ì—¬ì§€ëŠ” í…Œì´ë¸”ì— ë„£ëŠ” ê°’ë“¤ : ìœ ì €ì½”ë“œ, íŒ¨ìŠ¤ì›Œë“œ, ì•„ì´ë””, ê¶Œí•œ, ì´ë¦„
+		// º¸¿©Áö´Â Å×ÀÌºí¿¡ ³Ö´Â °ªµé : À¯ÀúÄÚµå, ÆĞ½º¿öµå, ¾ÆÀÌµğ, ±ÇÇÑ, ÀÌ¸§
 		Vector<UserDto> row = new Vector<UserDto>();
 
 		con = DBManager.getConnection();
 
-		String select = "select * " + "from members " + "order by name asc";
+		String select = "select * " + " from members " + " order by user_code asc";
 
 		try {
 
@@ -48,7 +44,7 @@ public class UserDao {
 
 			while (rs.next()) {
 
-				int user_code = rs.getInt(1);
+				int USER_CODE_SEQ = rs.getInt(1);
 				String pw = rs.getString(2);
 				String id = rs.getString(3);
 				String authority = rs.getNString(4);
@@ -56,17 +52,18 @@ public class UserDao {
 
 				userDto = new UserDto();
 
-				userDto.setUserCode(user_code);
+				userDto.setUserCode(USER_CODE_SEQ);
 				userDto.setPw(pw);
 				userDto.setId(id);
 				userDto.setAuthority(authority);
 				userDto.setName(name);
 
 				row.add(userDto);
+//				row.clear();
 			}
 
 		} catch (SQLException e1) {
-			System.out.println("í…Œì´ë¸” ì¶œë ¥ ì˜¤ë¥˜");
+			System.out.println("Å×ÀÌºí Ãâ·Â ¿À·ù");
 			e1.printStackTrace();
 		} finally {
 			try {
@@ -79,16 +76,17 @@ public class UserDao {
 
 		// TODO Auto-generated method stub
 		return row;
+
 	}
 
-	// íšŒì›ìˆ˜ì •
+	// È¸¿ø¼öÁ¤
 	public boolean updateMember(UserDto userDto) throws SQLException {
 
 		boolean result = false;
 
 		con = DBManager.getConnection();
 
-		String update = "update members set name= ?, pw= ? " + "where id = ? and pw = ?";
+		String update = "update members set name= ?, pw= ? " + "where id = ?";
 
 		try {
 
@@ -97,16 +95,16 @@ public class UserDao {
 			ps.setString(1, userDto.getName());
 			ps.setString(2, userDto.getPw());
 			ps.setString(3, userDto.getId());
-			ps.setString(4, userDto.getPw());
+//			ps.setString(4, userDto.getPw());
 
 			int r = ps.executeUpdate();
 
 			if (r > 0) {
-				System.out.println("DB ìˆ˜ì •ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.");
+				System.out.println("DB ¼öÁ¤ÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù.");
 				result = true;
 			}
 		} catch (SQLException e) {
-			System.out.println("DB ìˆ˜ì •ì´ ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤.");
+			System.out.println("DB ¼öÁ¤ÀÌ ½ÇÆĞÇß½À´Ï´Ù.");
 			e.printStackTrace();
 		} finally {
 			DBManager.dbClose(ps, con);
@@ -118,45 +116,45 @@ public class UserDao {
 
 		con = DBManager.getConnection();
 
-		String select = "select *" + "from members " + "order by name ase";
+		String select = "select *" + "from members " + "order by user_code asc";
 
 		try {
 			ps = con.prepareStatement(select);
 			rs = ps.executeQuery();
 
 			for (int i = 0; i < tm.getRowCount();) {
-				tm.removeRow(0);
+				tm.removeRow(i);
 			}
 
 			while (rs.next()) {
 				Object data[] = {
 
-						rs.getInt(1), 
-						rs.getString(2), 
-						rs.getString(3), 
-						rs.getString(4), 
-						rs.getString(5) };
+						rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)
+
+				};
 
 				tm.addRow(data);
 			}
+
 		} catch (SQLException e) {
 
 			e.printStackTrace();
-		}finally {
+
+		} finally {
 
 			DBManager.dbClose(ps, con);
 		}
 
 	}
 
-	// íšŒì›ì •ë³´ì‚­ì œ
-	public boolean deleteMember(String id)) throws SQLException {
+	// È¸¿øÁ¤º¸»èÁ¦
+	public boolean deleteMember(String id) throws SQLException {
 
 		boolean result = false;
 
 		con = DBManager.getConnection();
 
-		String delete = "delete" + "from members " + "where id = ?";
+		String delete = "delete" + " from members " + " where id = ?";
 
 		try {
 
@@ -180,7 +178,7 @@ public class UserDao {
 		return result;
 	}
 
-	// íšŒì›ë“±ë¡
+	// È¸¿øµî·Ï
 	public boolean insertMember(UserDto userdto) throws SQLException {
 
 		boolean result = false;
@@ -198,10 +196,10 @@ public class UserDao {
 			ps.setString(3, userdto.getAuthority());
 			ps.setString(4, userdto.getName());
 
-			int r = ps.executeUpdate(); // ì‹¤í–‰ >> ì €ì¥
+			int r = ps.executeUpdate(); // ½ÇÇà >> ÀúÀå
 
 			if (r > 0) {
-				System.out.println("íšŒì›ê°€ì… ì„±ê³µ ");
+				System.out.println("È¸¿ø°¡ÀÔ ¼º°ø ");
 				result = true;
 			}
 

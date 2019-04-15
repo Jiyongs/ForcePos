@@ -7,6 +7,7 @@ import java.awt.event.*;
 import javax.swing.border.EtchedBorder;
 
 
+
 public class ForcePos extends JFrame implements ActionListener {
 
 	/**
@@ -19,22 +20,21 @@ public class ForcePos extends JFrame implements ActionListener {
 	private RoundedButton rb_1;
 	private JButton exitB;
 	private JButton loginB;
-	private MainFrame main; // ë©”ì¸ í”„ë ˆì„
-	private boolean loginCheck; // ì•„ì´ë””ì™€ íŒ¨ìŠ¤ì›Œë“œê°€ ì¼ì¹˜í•˜ëŠ”ì§€ í™•ì¸í•´ì£¼ëŠ” í•„ë“œ
-//	int count = 0;
+	private MainFrame main; // ¸ŞÀÎ ÇÁ·¹ÀÓ
+	private boolean loginCheck; // ¾ÆÀÌµğ¿Í ÆĞ½º¿öµå°¡ ÀÏÄ¡ÇÏ´ÂÁö È®ÀÎÇØÁÖ´Â ÇÊµå
 
 	/*
 	 * private String img;
 	 * 
-	 * public void inputIcon() { mageIcon ë³€ê²½í• ì•„ì´ì½˜ = new ImageIcon("ì´ë¯¸ì§€.png"); Image
-	 * ë³€ê²½í• ì´ë¯¸ì§€ = ë³€ê²½í• ì•„ì´ì½˜.getImage(); //ImageIconì„ Imageë¡œ ë³€í™˜. Image ë³€ê²½ëœì´ë¯¸ì§€ =
-	 * ë³€ê²½í• ì´ë¯¸ì§€.getScaledInstance(ê°€ë¡œ, ì„¸ë¡œ, java.awt.Image.SCALE_SMOOTH); ImageIcon
-	 * ë³€ê²½ëœì•„ì´ì½˜ = new ImageIcon(ë³€ê²½ëœì´ë¯¸ì§€); //Imageë¡œ ImageIcon ìƒì„± img =
+	 * public void inputIcon() { mageIcon º¯°æÇÒ¾ÆÀÌÄÜ = new ImageIcon("ÀÌ¹ÌÁö.png"); Image
+	 * º¯°æÇÒÀÌ¹ÌÁö = º¯°æÇÒ¾ÆÀÌÄÜ.getImage(); //ImageIconÀ» Image·Î º¯È¯. Image º¯°æµÈÀÌ¹ÌÁö =
+	 * º¯°æÇÒÀÌ¹ÌÁö.getScaledInstance(°¡·Î, ¼¼·Î, java.awt.Image.SCALE_SMOOTH); ImageIcon
+	 * º¯°æµÈ¾ÆÀÌÄÜ = new ImageIcon(º¯°æµÈÀÌ¹ÌÁö); //Image·Î ImageIcon »ı¼º img =
 	 * System.getProperty("user.dir"); System.out.println(img); ImageIcon icon = new
 	 * ImageIcon("userIcon.png"); Image image = icon.getImage(); Image image2 =
 	 * image.getScaledInstance(250, 250, Image.SCALE_AREA_AVERAGING); ImageIcon
 	 * icon2 = new ImageIcon(image2); System.out.println(icon2);
-	 * lblNewLabel.setIcon(new ImageIcon()); ë””ë ‰í† ë¦¬ ê²½ë¡œì— íŒŒì¼ì´ ìˆëŠ”ì§€ í™•ì¸í•˜ëŠ” êµ¬ë¬¸ File f = new
+	 * lblNewLabel.setIcon(new ImageIcon()); µğ·ºÅä¸® °æ·Î¿¡ ÆÄÀÏÀÌ ÀÖ´ÂÁö È®ÀÎÇÏ´Â ±¸¹® File f = new
 	 * File("D:\\Workspace\\Project\\userIcon.png"); System.out.println(f.exists());
 	 * Toolkit tk = Toolkit.getDefaultToolkit(); image =
 	 * tk.getImage("D:\\Workspace\\Project\\userIcon.png");
@@ -44,13 +44,13 @@ public class ForcePos extends JFrame implements ActionListener {
 	 * @Override public void paint(Graphics g) { g.drawImage(image, 0, 0, null);
 	 * super.paintComponents(g); } };
 	 * 
-	 * add("Center", jpanel); add("North", new JLabel("íŒ¨ë„ì— ì´ë¯¸ì§€ ë¶™ì´ê¸°"));
+	 * add("Center", jpanel); add("North", new JLabel("ÆĞ³Î¿¡ ÀÌ¹ÌÁö ºÙÀÌ±â"));
 	 * setBounds(200, 200, 300, 300); contentPane.add(jpanel); setVisible(true);
 	 * 
 	 * }
 	 */
 
-	// ìƒì„±ì
+	// »ı¼ºÀÚ
 	public ForcePos() {
 		super("ForcePos");
 
@@ -63,7 +63,7 @@ public class ForcePos extends JFrame implements ActionListener {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		// ë°°ê²½í™”ë©´ íŒ¨ë„
+		// ¹è°æÈ­¸é ÆĞ³Î
 		JPanel background = new JPanel() {
 
 			/**
@@ -73,10 +73,10 @@ public class ForcePos extends JFrame implements ActionListener {
 
 			@Override
 			public void paintComponent(Graphics g) {
-				Dimension d = getSize(); // íŒ¨ë„ì˜ í¬ê¸°ë¥¼ ì–»ì–´ì˜´
-				ImageIcon image = new ImageIcon("E:\\javadata\\Workspace\\javase\\pos\\src\\image\\Background.png"); // ì´ë¯¸ì§€ì–»ì–´ì˜´.
-				g.drawImage(image.getImage(), 0, 0, d.width, d.height, null); // Jpanelì˜ í¬ê¸°ì— ë§ê²Œ ì´ë¯¸ì§€ë¥¼ ê·¸ë¦°ë‹¤.
-				setOpaque(false); // ë°°ê²½ì„ íˆ¬ëª…í•˜ê²Œ ì„¤ì •í•´ì¤Œ
+				Dimension d = getSize(); // ÆĞ³ÎÀÇ Å©±â¸¦ ¾ò¾î¿È
+				ImageIcon image = new ImageIcon("E:\\javadata\\Workspace\\javase\\pos\\src\\image\\Background.png"); // ÀÌ¹ÌÁö¾ò¾î¿È.
+				g.drawImage(image.getImage(), 0, 0, d.width, d.height, null); // JpanelÀÇ Å©±â¿¡ ¸Â°Ô ÀÌ¹ÌÁö¸¦ ±×¸°´Ù.
+				setOpaque(false); // ¹è°æÀ» Åõ¸íÇÏ°Ô ¼³Á¤ÇØÁÜ
 				super.paintComponent(g);
 			}
 		};
@@ -100,7 +100,7 @@ public class ForcePos extends JFrame implements ActionListener {
 		Forcepos.setFont(new Font("Consolas", Font.BOLD, 70));
 		title.add(Forcepos, BorderLayout.CENTER);
 
-		// ë¡œê·¸ì¸ í™”ë©´ íŒ¨ë„ ì„¤ì •
+		// ·Î±×ÀÎ È­¸é ÆĞ³Î ¼³Á¤
 		JPanel user = new JPanel() {
 			/**
 			 * 
@@ -119,14 +119,14 @@ public class ForcePos extends JFrame implements ActionListener {
 		user.setBounds(328, 129, 153, 165);
 		background.add(user);
 
-		// ìœ ì € íŒ¨ë„
+		// À¯Àú ÆĞ³Î
 		JPanel userP = new JPanel();
 		userP.setOpaque(false);
 		userP.setBounds(497, 129, 475, 165);
 		background.add(userP);
 		userP.setLayout(new BorderLayout(0, 0));
 
-		// íŒ¨ìŠ¤ì›Œë“œ íŒ¨ë„ ì„¤ì •
+		// ÆĞ½º¿öµå ÆĞ³Î ¼³Á¤
 		JPanel pass = new JPanel() {
 			/**
 			 * 
@@ -147,34 +147,34 @@ public class ForcePos extends JFrame implements ActionListener {
 		pass.setBounds(328, 320, 153, 156);
 		background.add(pass);
 
-		// íŒ¨ìŠ¤ì›Œë“œ íŒ¨ë„
+		// ÆĞ½º¿öµå ÆĞ³Î
 		JPanel passP = new JPanel();
 		passP.setBounds(497, 320, 475, 156);
 		background.add(passP);
 		passP.setLayout(new BorderLayout(0, 0));
 
-		// ë¹„ë°€ë²ˆí˜¸í…ìŠ¤íŠ¸í•„ë“œ
+		// ºñ¹Ğ¹øÈ£ÅØ½ºÆ®ÇÊµå
 		passTf = new JPasswordField(6);
 		passP.add(passTf, BorderLayout.CENTER);
 		passTf.setHorizontalAlignment(SwingConstants.CENTER);
-		passTf.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.ITALIC, 40));
+		passTf.setFont(new Font("¸¼Àº °íµñ", Font.ITALIC, 40));
 
-		// ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥ë°›ëŠ”
+		// ºñ¹Ğ¹øÈ£¸¦ ÀÔ·Â¹Ş´Â
 		passTf.setText("");
 		passTf.setColumns(10);
 		passTf.addActionListener(this);
 
-		// ë²„íŠ¼ ë‘ê°œ
+		// ¹öÆ° µÎ°³
 		JPanel SouthButt = new JPanel();
 		SouthButt.setOpaque(false);
 		SouthButt.setBounds(388, 518, 518, 73);
 		background.add(SouthButt);
 		SouthButt.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 0));
 
-		// ë¡œê·¸ì¸ ë²„íŠ¼
-		// ë‘¥ê¸€ê²Œ ë§Œë“œëŠ” ë²„íŠ¼ í´ë˜ìŠ¤ ê°ì²´ ìƒì„±í›„ ëŒ€ì…
+		// ·Î±×ÀÎ ¹öÆ°
+		// µÕ±Û°Ô ¸¸µå´Â ¹öÆ° Å¬·¡½º °´Ã¼ »ı¼ºÈÄ ´ëÀÔ
 		loginB = new JButton("\uB85C\uADF8\uC778 ");
-		RoundedButton rb = new RoundedButton("ë¡œê·¸ì¸");
+		RoundedButton rb = new RoundedButton("·Î±×ÀÎ");
 		rb.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
 		loginB = rb;
 
@@ -187,13 +187,13 @@ public class ForcePos extends JFrame implements ActionListener {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
-		loginB.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.PLAIN, 50));
+		loginB.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 50));
 		SouthButt.add(loginB);
 
-		// ì¢…ë£Œ ë²„íŠ¼
-		// ë‘¥ê¸€ê²Œ ë§Œë“œëŠ” ë²„íŠ¼ í´ë˜ìŠ¤ ê°ì²´ ìƒì„±í›„ ëŒ€ì…
+		// Á¾·á ¹öÆ°
+		// µÕ±Û°Ô ¸¸µå´Â ¹öÆ° Å¬·¡½º °´Ã¼ »ı¼ºÈÄ ´ëÀÔ
 		exitB = new JButton("\uC885\uB8CC");
-		rb_1 = new RoundedButton("ì¢…   ë£Œ");
+		rb_1 = new RoundedButton("Á¾   ·á");
 		rb_1.setBorder(new EtchedBorder(EtchedBorder.RAISED, new Color(255, 127, 80), new Color(255, 127, 80)));
 		exitB = rb_1;
 
@@ -203,83 +203,82 @@ public class ForcePos extends JFrame implements ActionListener {
 		exitB.setIconTextGap(1);
 		exitB.setMinimumSize(new Dimension(73, 23));
 		exitB.setMaximumSize(new Dimension(73, 23));
-		exitB.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.PLAIN, 50));
+		exitB.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 50));
 		SouthButt.add(exitB);
 
-		// ìœ ì € í…ìŠ¤íŠ¸í•„ë“œ
+		// À¯Àú ÅØ½ºÆ®ÇÊµå
 		userTf = new JTextField(6);
 		userTf.setBounds(497, 129, 475, 165);
 		background.add(userTf);
 		userTf.setHorizontalAlignment(SwingConstants.CENTER);
-		userTf.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.ITALIC, 40));
+		userTf.setFont(new Font("¸¼Àº °íµñ", Font.ITALIC, 40));
 
-		// ì•„ì´ë””ë¥¼ ì…ë ¥ë°›ëŠ”
+		// ¾ÆÀÌµğ¸¦ ÀÔ·Â¹Ş´Â
 		userTf.setText("");
 		userTf.setColumns(10);
 		setResizable(false);
 
-// ë¦¬ìŠ¤ë„ˆ ë“±ë¡
+		// ¸®½º³Ê µî·Ï
 //		inputIcon();
 		userTf.addActionListener(this);
+//		passTf.addActionListener(this);
 		loginB.addActionListener(this);
 		exitB.addActionListener(this);
 
+
 	}
 	
-	// ë¡œê·¸ì¸ ì„±ê³µ / ì‹¤íŒ¨ íŒë‹¨ ë©”ì†Œë“œ
-		public boolean isLogin() {
-			return loginCheck;
-		}
-
-// ì•„ì´ë”” ë¹„ë°€ë²ˆí˜¸ ìœ íš¨ì„± ê²€ì‚¬
+// ¾ÆÀÌµğ ºñ¹Ğ¹øÈ£ À¯È¿¼º °Ë»ç
 // userTf.setText("");
-//ê´€ë¦¬ì,ì§ì›ì˜ ë²ˆí˜¸ë¥¼ ë¯¸ë¦¬ ì„¤ì •í•œ í›„ ì…ë ¥ë°›ê²Œ í•¨.
+//°ü¸®ÀÚ,Á÷¿øÀÇ ¹øÈ£¸¦ ¹Ì¸® ¼³Á¤ÇÑ ÈÄ ÀÔ·Â¹Ş°Ô ÇÔ.
 
 	public boolean isLoginCheck() {
 		
 			loginCheck = false;
-
-	
+			
 		if(userTf.getText().isEmpty()) {
-			JOptionPane.showMessageDialog(this, "ì•„ì´ë””ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”", "ì•„ì´ë”” ì…ë ¥ ì˜¤ë¥˜", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "¾ÆÀÌµğ¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.", "¾ÆÀÌµğ ÀÔ·Â ¿À·ù", JOptionPane.ERROR_MESSAGE);
+//			loginCheck = false;
 		}
 		
-		if (userTf.getText().equals("ê°œë‚˜ë¦¬") && new String(passTf.getText()).equals("1234")) {
+		if(passTf.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(this, "ÆĞ½º¿öµå¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.", "ÆĞ½º¿öµå ÀÔ·Â ¿À·ù", JOptionPane.ERROR_MESSAGE);
+		}
+		
+		if (userTf.getText().equals("°³³ª¸®") && new String(passTf.getText()).equals("1234")) {
 			String str = userTf.getText();
-			JOptionPane.showMessageDialog(null, str + "ë‹˜ í™˜ì˜í•©ë‹ˆë‹¤.");
+			JOptionPane.showMessageDialog(null, str + "´Ô È¯¿µÇÕ´Ï´Ù.");
 			loginCheck = true;
 		} 
 		
-//		} else if(userTf.getText().equals("ê°œë‚˜ë¦¬") && !new String(passTf.getText()).equals("1234") && passTf.getText() != null) {
+//		} else if(userTf.getText().equals("°³³ª¸®") && !new String(passTf.getText()).equals("1234") && passTf.getText() != null) {
 //			loginCheck = false;
-//			JOptionPane.showMessageDialog(null, "ë¹„ë°€ë²ˆí˜¸ë¥¼ ì œëŒ€ë¡œ ì…ë ¥í•´ì£¼ì„¸ìš”.");
-//		} else if(!userTf.getText().equals("ê°œë‚˜ë¦¬") && !new String(passTf.getText()).equals("1234")) {
+//			JOptionPane.showMessageDialog(null, "ºñ¹Ğ¹øÈ£¸¦ Á¦´ë·Î ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+//		} else if(!userTf.getText().equals("°³³ª¸®") && !new String(passTf.getText()).equals("1234")) {
 //			loginCheck = false;
-//			JOptionPane.showMessageDialog(null, "ì•„ì´ë””ê°€ í‹€ë¦½ë‹ˆë‹¤.");
+//			JOptionPane.showMessageDialog(null, "¾ÆÀÌµğ°¡ Æ²¸³´Ï´Ù.");
 //		} else {
 //			loginCheck = false;
-//			JOptionPane.showMessageDialog(null, "ì•„ì´ë””ì™€ ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”.");
+//			JOptionPane.showMessageDialog(null, "¾ÆÀÌµğ¿Í ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.");
 //		}
 		return loginCheck;
 
 	}
 
-	
 
 	public void showFrame() {
 		main = new MainFrame();
 		main.setVisible(true);
 		this.setVisible(false);
-//		dispose();
 	}
 
-	// ë¡œê·¸ì¸ ì°½ì—ì„œ ë©”ì¸í”„ë ˆì„ìœ¼ë¡œ ì—°ê²° ë©”ì†Œë“œ
+	// ·Î±×ÀÎ Ã¢¿¡¼­ ¸ŞÀÎÇÁ·¹ÀÓÀ¸·Î ¿¬°á ¸Ş¼Òµå
 //	public void setMain(MainFrame main) {
 //		this.main = main;
 //		frame.setMain(main);
 //	}
 
-	// ì‹¤í–‰
+	// ½ÇÇà
 	public static void main(String[] args) {
 
 		EventQueue.invokeLater(new Runnable() {
@@ -287,7 +286,6 @@ public class ForcePos extends JFrame implements ActionListener {
 				try {
 					ForcePos frame = new ForcePos();
 					frame.setVisible(true);
-//					MainFrame main = new MainFrame(); // ë©”ì¸í”„ë ˆì„ ê°ì²´ìƒì„±
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -297,7 +295,7 @@ public class ForcePos extends JFrame implements ActionListener {
 	}
 
 //	public boolean isId() {
-//		userTf.getText().equals("ê°œë‚˜ë¦¬");
+//		userTf.getText().equals("°³³ª¸®");
 //		return true;
 //	}
 
@@ -306,30 +304,20 @@ public class ForcePos extends JFrame implements ActionListener {
 
 		Object ob = e.getSource();
 
-		if (loginCheck) {
+		if (!loginCheck) {
 			passTf.requestFocus();
 		}
-		
-		if (ob == loginB) {
-			isLoginCheck();
-		}
 
-		
-//		boolean id = userTf.getText().equals("ê°œë‚˜ë¦¬");
-//		boolean pass = passTf.getText().equals("1234");	
-		// TODO í…ìŠ¤íŠ¸í•„ë“œì—ì„œ ë§ˆìš°ìŠ¤í´ë¦­ ì‹œ í•„ë“œ ì´ˆê¸°í™” ì§„í–‰í•´ì•¼í•¨
-//		if () {
-//			isLoginCheck();
-//			passTf.requestFocus();	
-//		}
-		
-//		if (pass) {
-//			isLoginCheck();
-//		}
+		if (ob == loginB) {
+			if(!isLoginCheck()) {
+				return;
+			} else {
+				showFrame();
+			}
+		}
 
 		if (ob == exitB) {
 			System.exit(0);
 		}
-
 	}
 }

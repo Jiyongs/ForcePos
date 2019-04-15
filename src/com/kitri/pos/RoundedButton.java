@@ -4,7 +4,7 @@ import java.awt.*;
 
 import javax.swing.*;
 
-//ë²„íŠ¼ë‘¥ê¸€ê²Œ ë§Œë“¤ì–´ì£¼ëŠ” í´ë˜ìŠ¤ 
+//¹öÆ°µÕ±Û°Ô ¸¸µé¾îÁÖ´Â Å¬·¡½º 
 public class RoundedButton extends JButton {
 
 	public RoundedButton() {
