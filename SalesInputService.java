@@ -59,6 +59,7 @@ public class SalesInputService implements KeyListener, ActionListener {
 			} else {
 				JOptionPane.showMessageDialog(sales, "수정할 상품을 선택해주세요", "선택오류", JOptionPane.ERROR_MESSAGE);
 			}
+			totalApply();
 		} else if (ob == sales.sBtnPdCancel) {
 			int row = sales.viewSalesInput.table.getSelectedRow();
 			if (!Integer.toString(row).equals(null)) {
@@ -74,57 +75,94 @@ public class SalesInputService implements KeyListener, ActionListener {
 				JOptionPane.showMessageDialog(sales, "취소할 상품을 선택해주세요", "선택오류", JOptionPane.ERROR_MESSAGE);
 			}
 		} else if (ob == sales.sBtnPay) {
+			if(sales.viewSalesInput.model.getRowCount()>0) {
 			sales.payment_1.setVisible(true);
 			sales.payment_1.tfP1BeforePrice.setText(sales.viewSalesInput.total_price_input.getText());
-			sales.payment_1.tfP1Afterprice.setText(sales.viewSalesInput.total_price_input.getText());
-			
+			sales.payment_1.tfP1DiscountPercent.setText("0");
+//			String item = String.valueOf(sales.payment_1.cbP1Cooperation.getSelectedItem());
+//			cooperDCProcess(item);
+			}else {
+				JOptionPane.showMessageDialog(sales, "선택한 상품이 없습니다.", "상품미선정", JOptionPane.ERROR_MESSAGE);
+			}
 		} else if (ob == sales.payment_1.cbP1Cooperation) {
 			String item = String.valueOf(sales.payment_1.cbP1Cooperation.getSelectedItem());
 			System.out.println(item);
-			
+
 			cooperDCProcess(item);
-			
-			
-		} 
+		} else if (ob == sales.payment_1.btnP1Apply) {
+			cpCalc();
+
+		} else if (ob == sales.payment_1.btnP1Before) {
+			sales.payment_1.setVisible(false);
+			sales.payment_2.setVisible(false);
+			sales.payment_4.setVisible(false);
+			sales.payment_3.setVisible(false);
+		} else if (ob == sales.payment_1.btnP1Next) {
+			if (sales.payment_1.tfP1Afterprice.getText().equals(""))
+				JOptionPane.showMessageDialog(sales.payment_1, "할인을 적용하시오.", "할인미적용", JOptionPane.ERROR_MESSAGE);
+			else {
+			sales.payment_1.setVisible(false);
+			sales.payment_2.setVisible(true);
+		}
+		}
+	}
+//			} else if() {
+
+	public void cpCalc() {
+		sales.payment_1.tfP1Afterprice
+				.setText(Integer.toString((int) (((Integer.parseInt(sales.payment_1.tfP1BeforePrice.getText())
+						* ((100 - Integer.parseInt(sales.payment_1.tfP1DiscountPercent.getText())))) / 100))));
+	}
+
+	public void cooperDCProcess(String item) {
+
+		if (item.equals("없음")) {
+			sales.payment_1.tfP1DiscountPercent.setText("0");
+//			sales.payment_1.tfP1Afterprice.setText(
+//					sales.payment_1.tfP1BeforePrice.getText());
+		} else {
+			double dis_pct_dob = salesInputDao.searchByCP(item);
+			int dis_int = (int) (dis_pct_dob * 100);
+			sales.payment_1.tfP1DiscountPercent.setText(Integer.toString(dis_int));
+//		sales.payment_1.tfP1Afterprice.setText(Integer.toString((int)(Integer.parseInt(
+//				sales.payment_1.tfP1BeforePrice.getText()) * (1-dis_pct_dob))));
+
+		}
+		sales.payment_1.tfP1Afterprice.setText("");
 
 	}
-	
-	public void cooperDCProcess(String item) {
-	
-		if(item.equals("없음")){
-			sales.payment_1.tfP1DiscountPercent.setText("0");
-			sales.payment_1.tfP1Afterprice.setText(
-					sales.payment_1.tfP1BeforePrice.getText());
-		}else {
-		double dis_pct_dob = salesInputDao.searchByCP(item);
-		int dis_int = (int)(dis_pct_dob * 100);
-		sales.payment_1.tfP1DiscountPercent.setText(Integer.toString(dis_int));
-		sales.payment_1.tfP1Afterprice.setText(Integer.toString((int)(Integer.parseInt(
-				sales.payment_1.tfP1BeforePrice.getText()) * (1-dis_pct_dob))));
-		}
-		
-			
-		
-	}
-	
 
 	public void listAdd(Vector<PosDto> salesList) {
 		int size = salesList.size();
 
-		for (int i = 0; i < size; i++) {
-			Vector<String> rows = new Vector<String>();
+//		for (int i = 0; i < size; i++) {
+//			Vector<String> rows = new Vector<String>();
+//
+//			rows.addElement(Integer.toString(salesList.get(i).getListNum()));
+//			rows.addElement(salesList.get(i).getProductCode());
+//			rows.addElement(salesList.get(i).getProductName());
+//			rows.addElement(Integer.toString(salesList.get(i).getPrice()));
+//			rows.addElement(String.valueOf(salesList.get(i).getSellCount()));
+//			rows.addElement(String.valueOf(salesList.get(i).getPricensellCount()));
+////			rows.addElement(salesList.get(i).getRealExp());
+//
+//			sales.viewSalesInput.model.addRow(rows);
+//			System.out.println("반영완료");
+//		}
 
-			rows.addElement(Integer.toString(salesList.get(i).getListNum()));
-			rows.addElement(salesList.get(i).getProductCode());
-			rows.addElement(salesList.get(i).getProductName());
-			rows.addElement(Integer.toString(salesList.get(i).getPrice()));
-			rows.addElement(String.valueOf(salesList.get(i).getSellCount()));
-			rows.addElement(String.valueOf(salesList.get(i).getPricensellCount()));
+		Vector<String> rows = new Vector<String>();
+
+		rows.addElement(Integer.toString(salesList.get(0).getListNum()));
+		rows.addElement(salesList.get(0).getProductCode());
+		rows.addElement(salesList.get(0).getProductName());
+		rows.addElement(Integer.toString(salesList.get(0).getPrice()));
+		rows.addElement(String.valueOf(salesList.get(0).getSellCount()));
+		rows.addElement(String.valueOf(salesList.get(0).getPricensellCount()));
 //			rows.addElement(salesList.get(i).getRealExp());
 
-			sales.viewSalesInput.model.addRow(rows);
-			System.out.println("반영완료");
-		}
+		sales.viewSalesInput.model.addRow(rows);
+		System.out.println("반영완료");
+
 	}
 
 	public boolean checkOverlap(String identifier, int col) {

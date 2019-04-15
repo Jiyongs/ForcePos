@@ -62,7 +62,7 @@ public class Sales extends JFrame implements ActionListener {
 //	결제창 버튼	
 	JButton btnP1Before;
 	JButton btnP1Next;
-
+//	JButton btnP1Apply;
 //	결제 2
 	JButton btnP2Before;
 	JButton btnP2Next;
@@ -295,8 +295,6 @@ public class Sales extends JFrame implements ActionListener {
 		viewSalesCustomer.enroll.addActionListener(this);
 		viewSalesCustomer.search.addActionListener(this);
 ////		결제1 이벤트 등록
-		payment_1.btnP1Before.addActionListener(this);
-		payment_1.btnP1Next.addActionListener(this);
 
 //		결제2 이벤트 등록
 		payment_2.btnP2Before.addActionListener(this);
@@ -330,7 +328,9 @@ public class Sales extends JFrame implements ActionListener {
 		sBtnPdChange.addActionListener(salesInputService);
 		sBtnPdCancel.addActionListener(salesInputService);
 		payment_1.cbP1Cooperation.addActionListener(salesInputService);
-		
+		payment_1.btnP1Apply.addActionListener(salesInputService);
+		payment_1.btnP1Before.addActionListener(salesInputService);
+		payment_1.btnP1Next.addActionListener(salesInputService);
 		
 	}
 
@@ -373,14 +373,7 @@ public class Sales extends JFrame implements ActionListener {
 
 		} else if (ob == sBtnPay) {// 결제 1창 연결
 			payment_1.setVisible(true);
-		} else if (ob == payment_1.btnP1Before) {
-			payment_1.setVisible(false);
-			payment_2.setVisible(false);
-			payment_4.setVisible(false);
-			payment_3.setVisible(false);
-		} else if (ob == payment_1.btnP1Next) {
-			payment_1.setVisible(false);
-			payment_2.setVisible(true);
+		
 		} else if (ob == payment_2.btnP2Before) {// 결제2 창 연결
 			payment_1.setVisible(true);
 			payment_2.setVisible(false);

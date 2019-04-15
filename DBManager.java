@@ -1,10 +1,10 @@
-package com.kitri.pos.calc;
+package com.kitri.pos.sales;
 
 import java.sql.*;
 
-
-//  DBManger : DB의 연결, 연결해제 메소드를 가진 클래스
-
+/*
+  DBManger : DB의 연결, 연결해제 메소드를 가진 클래스
+*/
 
 public class DBManager {
 
@@ -23,7 +23,7 @@ public class DBManager {
 			System.out.println("Database에 연결되었습니다.\n");
 
 		} catch (ClassNotFoundException cnfe) {
-			System.out.println("DB 드라이버 로딩 실패 :" + cnfe.toString());
+			System.out.println(" DB 드라이버 로딩 실패 :" + cnfe.toString());
 		} catch (SQLException sqle) {
 			System.out.println("DB 접속실패 : " + sqle.toString());
 		} catch (Exception e) {
@@ -39,7 +39,7 @@ public class DBManager {
 	// ps : PreparedStatement
 	// conn : Connection
 
-	// <DB 연결 해제 1> 메소드 : ps + conn
+	// <DB �뿰寃� �빐�젣 1> 硫붿냼�뱶 : ps + conn
 	public static void dbClose(PreparedStatement ps, Connection conn) throws SQLException {
 		if (ps != null)
 			ps.close();
@@ -48,7 +48,7 @@ public class DBManager {
 		System.out.println("자원반납, DB Close!!");
 	}
 
-	// <DB 연결 해제 2> 메소드 : st + conn
+	// <DB �뿰寃� �빐�젣 2> 硫붿냼�뱶 : st + conn
 	public static void dbClose(Statement st, Connection conn) throws SQLException {
 		if (st != null)
 			st.close();
@@ -57,7 +57,7 @@ public class DBManager {
 		System.out.println("자원반납, DB Close!!");
 	}
 
-	// <DB 연결 해제 3> 메소드 : rs + ps + conn
+	// <DB �뿰寃� �빐�젣 3> 硫붿냼�뱶 : rs + ps + conn
 	public static void dbClose(ResultSet rs, PreparedStatement ps, Connection conn) throws SQLException {
 		if (rs != null)
 			rs.close();
@@ -68,7 +68,7 @@ public class DBManager {
 		System.out.println("자원반납, DB Close!!");
 	}
 
-	// <DB 연결 해제 4> 메소드 : rs + st + conn
+	// <DB �뿰寃� �빐�젣 4> 硫붿냼�뱶 : rs + st + conn
 	public static void dbClose(ResultSet rs, Statement st, Connection conn) throws SQLException {
 		if (rs != null)
 			rs.close();

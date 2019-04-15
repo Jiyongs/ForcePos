@@ -31,7 +31,7 @@ public class Payment_1 extends JFrame {
 	Payment_2 payment_2 = new Payment_2();
 	Payment_3 payment_3 = new Payment_3();
 	JComboBox cbP1Cooperation;
-
+	JButton btnP1Apply;
 	/**
 	 * Launch the application.
 	 */
@@ -78,7 +78,7 @@ public class Payment_1 extends JFrame {
 		cbP1Cooperation.addItem("LG");
 		
 
-		JButton btnP1Apply = new JButton("\uC801\uC6A9");
+		btnP1Apply = new JButton("\uC801\uC6A9");
 		btnP1Apply.setBounds(350, 100, 150, 50);
 		payment_1.add(btnP1Apply);
 
