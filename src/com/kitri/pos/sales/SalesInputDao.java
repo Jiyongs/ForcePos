@@ -19,6 +19,9 @@ public class SalesInputDao {
 	int i = 1;
 	
 	
+	
+	
+	
 	public boolean costomerRef(String phoneNum) {
 		
 		
@@ -45,31 +48,37 @@ public class SalesInputDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		return false;
 		
 	}
 	
-	public double searchByCP(String item) {
+	
+	
+	public void searchByCP(String item) {
 		
 
 		conn = DBManager.getConnection();
 		
 		try {
-			String query = "select discount_pct from discount where cooperate_name = lower(?)";
+			String query = "select discount_code, cooperate_name, discount_pct from discount where cooperate_name = lower(?)";
 			
 			ps = conn.prepareStatement(query);
 			ps.setString(1, item);
 			rs = ps.executeQuery();
 			
 			while(rs.next()) {
-			dis = Double.parseDouble(rs.getString(1));
+				posDto.setDiscountCode(rs.getString(1));
+				posDto.setCooperateName(rs.getString(2));
+				posDto.setDiscountPct(rs.getFloat(3));
+			
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		return dis;
+		
 		
 	}
 

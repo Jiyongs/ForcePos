@@ -66,8 +66,9 @@ public class Payment_2 extends JFrame {
 		
 		
 		tfP2SM = new JTextField();
+		tfP2SM.setEditable(false);
 		tfP2SM.setHorizontalAlignment(SwingConstants.CENTER);
-		tfP2SM.setText("010 - **** - **** \uB2D8\uC758 \uBA64\uBC84\uC27D\uC774 \uD655\uC778\uB418\uC5C8\uC2B5\uB2C8\uB2E4.");
+		tfP2SM.setText("");
 		tfP2SM.setBounds(150, 20, 300, 30);
 		payment_2.add(tfP2SM);
 		tfP2SM.setColumns(10);

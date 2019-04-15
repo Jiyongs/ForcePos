@@ -64,8 +64,8 @@ public class Payment_1 extends JFrame {
 		payment_1.setLayout(null);
 
 		tfP1SM = new JTextField();
+		tfP1SM.setEditable(false);
 		tfP1SM.setHorizontalAlignment(SwingConstants.CENTER);
-		tfP1SM.setText("할인 없음.");
 		tfP1SM.setBounds(150, 20, 300, 30);
 		payment_1.add(tfP1SM);
 		tfP1SM.setColumns(10);
@@ -73,6 +73,7 @@ public class Payment_1 extends JFrame {
 		cbP1Cooperation = new JComboBox();
 		cbP1Cooperation.setBounds(100, 100, 200, 50);
 		payment_1.add(cbP1Cooperation);
+		
 		cbP1Cooperation.addItem("없음");
 		cbP1Cooperation.addItem("SK");
 		cbP1Cooperation.addItem("KT");

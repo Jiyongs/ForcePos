@@ -90,17 +90,21 @@ public class ViewSalesCustomer extends JPanel {
 		header.add("이름");
 		header.add("연락처");
 		header.add("포인트");
-
-		tmodel = new DefaultTableModel(header,0) {
-			
-	            // Jtable 내용 편집 안되게
-	            public boolean isCellEditable(int i, int c) {
-	                return false;
-	            }
-	        };
-	
 		
-	
+		
+//		String header[] = {"멤버쉽 ID", "이름", "연락처", "포인트"};
+//		String contents[][] = {
+//				{"1", "이종영", "010-1234-1234", "30000"},
+//				{"2", "신지영", "010-2345-2345", "3000"},
+//				{"3", "박광규", "010-1111-2222", "30000"},
+//				{"4", "노정탁", "010-1324-1324", "30000"},
+//				{"5", "김의연", "010-1324-3333", "30000"},
+//				{"6", "김형섭", "010-2432-2432", "1000000000"}
+//		
+//		};
+		
+		tmodel = new DefaultTableModel(header,0);
+		
 		tableResult = new JTable(tmodel);
 		tableResult.setRowHeight(30);
 		tableResult.setSize(new Dimension(1144, 535));

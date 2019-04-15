@@ -21,6 +21,7 @@ public class Payment_4 extends JFrame {
 	JButton btnP4Cancel;
 	JButton btnP4Payment;
 	JButton btnP4PrintReceipt;
+	JTextArea taP4details;
 
 	/**
 	 * Launch the application.
@@ -52,25 +53,25 @@ public class Payment_4 extends JFrame {
 		Payment_4.setLayout(null);
 		
 		btnP4PrintReceipt = new JButton("\uC601\uC218\uC99D \uCD9C\uB825");
-		btnP4PrintReceipt.setBounds(350, 70, 150, 50);
+		btnP4PrintReceipt.setBounds(394, 70, 150, 50);
 		Payment_4.add(btnP4PrintReceipt);
 
 		btnP4Before = new JButton("\uC774\uC804\uC73C\uB85C");
-		btnP4Before.setBounds(100, 341, 150, 50);
+		btnP4Before.setBounds(394, 300, 150, 50);
 		Payment_4.add(btnP4Before);
 
 		btnP4Cancel = new JButton("\uAC70\uB798\uCDE8\uC18C");
-		btnP4Cancel.setBounds(350, 130, 150, 50);
+		btnP4Cancel.setBounds(394, 130, 150, 50);
 		Payment_4.add(btnP4Cancel);
 
 		btnP4Payment = new JButton("\uACB0\uC81C");
-		btnP4Payment.setBounds(350, 190, 150, 100);
+		btnP4Payment.setBounds(394, 190, 150, 100);
 		Payment_4.add(btnP4Payment);
 
-		JTextArea taP3details = new JTextArea();
-		taP3details.setText(
+		taP4details = new JTextArea();
+		taP4details.setText(
 				"\uD560\uC778\uC720\uBB34 : \"\"\\n*\uC774\uC804\uACB0\uC81C\uAE08\uC561 : \"\"\\n\uCE74\uB4DC\uB791 \uD604\uAE08\uC740 \uC5B4\uB514\uC11C \uAD6C\uBD84?");
-		taP3details.setBounds(50, 10, 250, 320);
-		Payment_4.add(taP3details);
+		taP4details.setBounds(50, 10, 300, 360);
+		Payment_4.add(taP4details);
 	}
 }

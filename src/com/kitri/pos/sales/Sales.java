@@ -298,15 +298,11 @@ public class Sales extends JFrame implements ActionListener {
 
 //		결제2 이벤트 등록
 		payment_2.btnP2Before.addActionListener(this);
-		payment_2.btnP2Next.addActionListener(this);
 		payment_2.btnP2Cancel.addActionListener(this);
-		payment_2.btnP2Reference.addActionListener(salesInputService);
-		payment_2.btnP2Apply.addActionListener(salesInputService);
 
 //		결제3 이벤트 등록
 		payment_3.btnP3Before.addActionListener(this);
 		payment_3.btnP3Cancel.addActionListener(this);
-		payment_3.btnP3Next.addActionListener(this);
 
 //		결제 4 이벤트 등록
 		payment_4.btnP4Before.addActionListener(this);
@@ -324,12 +320,25 @@ public class Sales extends JFrame implements ActionListener {
 		
 		viewSalesInput.code_input.addKeyListener(salesInputService);
 		viewSalesInput.product_name_input.addKeyListener(salesInputService);
+		
 		sBtnPdChange.addActionListener(salesInputService);
 		sBtnPdCancel.addActionListener(salesInputService);
+		
 		payment_1.cbP1Cooperation.addActionListener(salesInputService);
 		payment_1.btnP1Apply.addActionListener(salesInputService);
 		payment_1.btnP1Before.addActionListener(salesInputService);
 		payment_1.btnP1Next.addActionListener(salesInputService);
+		
+		payment_2.btnP2Next.addActionListener(salesInputService);
+		payment_2.btnP2Reference.addActionListener(salesInputService);
+		payment_2.btnP2Apply.addActionListener(salesInputService);
+//		payment_2.tfP2phoneNum.addKeyListener(salesInputService);
+//		payment_2.tfP2UsePoint.addKeyListener(salesInputService);
+		
+		payment_3.btnP3Input.addActionListener(salesInputService);
+		payment_3.btnP3Next.addActionListener(salesInputService);
+		
+		
 		
 	}
 
@@ -378,9 +387,7 @@ public class Sales extends JFrame implements ActionListener {
 			payment_2.setVisible(false);
 			payment_3.setVisible(false);
 			payment_4.setVisible(false);
-		} else if (ob == payment_2.btnP2Next) {
-			payment_3.setVisible(true);
-			payment_2.setVisible(false);
+		
 		} else if (ob == payment_2.btnP2Cancel) {// 결제4창 연결
 			payment_2.setVisible(false);
 		} else if (ob == payment_3.btnP3Before) {
@@ -389,9 +396,7 @@ public class Sales extends JFrame implements ActionListener {
 			payment_3.setVisible(false);
 			payment_2.setVisible(true);
 
-		} else if (ob == payment_3.btnP3Next) {
-			payment_3.setVisible(false);
-			payment_4.setVisible(true);
+		
 		} else if (ob == payment_4.btnP4Cancel) {// 결제 3창 연결
 			payment_4.setVisible(false);
 		} else if (ob == payment_4.btnP4Before) {

@@ -4,7 +4,6 @@ public class PosDto {
 
 	// 필드 선언
 
-	private int userCode; // 유저코드
 	private String attendCode; // 출결코드
 	private String loginTime; // 출근시간
 	private String logoutTime; // 퇴근시간
@@ -15,37 +14,61 @@ public class PosDto {
 	// ===================================//
 	private String cooperateName; // 제휴사
 	private String company; // 제조사
-	private String productCode; // 상품코드
-	private String productName; // 상품이름
 	private String levelCode; // 분류코드
 	private String majorLevel; // 대분류
 	private String mediumLevel; // 중분류
 	private String minorLevel; // 소분류
-	private int price; // 가격
 	private int purchase; // 매입가
 	private int volume; // 수량
 	private String realExp; // 유통기한
 	// ===================================//
-	private String sellId; // 판매아이디
-	private String sellDate; // 판매일자
-	private int sellCount; // 판매수량
 	private String countDate; // 정산날짜
 	private int comsCalc; // 현금결제금액
 	private int cashPrice;
-	private String discountPct; // 할인율
+	private float discountPct; // 할인율
 	private int currentMoney; // 현재시제
 	private int totalCalc; // 차액
 	private String phone; // 핸드폰번호
 	private int point; // 포인트
 	private String payment;
 	private int cardPrice; // 카드결제금액
-	private String inDate; // 입고날짜
 	private int totalPrice;
 	private String discountCode; // 할인코드
-	// =====================================//
 
+	
+	private int listNum; // 상품등록창에서 행번호@@@@
+	
+	public int getListNum() {
+		return listNum;
+	}
+
+	public void setListNum(int listNum) {
+		this.listNum = listNum;
+	}
+
+	private String sellId; // 판매아이디
+	private int userCode; // 유저코드
+	private String productName; // 상품이름
+	private String productCode; // 상품코드
+	private int price; // 가격
+	private int sellCount; // 판매수량
+	private String inDate; // 입고날짜
+	private String sellDate; // 판매일자
+	private int pricensellCount;
+	
 	private String membershipId; // 맴버쉽아이디
 	private String memberName; //멤버쉽 회원 이름
+	
+	// =====================================//
+
+	public int getPricensellCount() {
+		return pricensellCount;
+	}
+
+	public void setPricensellCount(int pricensellCount) {
+		this.pricensellCount = pricensellCount;
+	}
+
 
 
 	public String getMemberName() {
@@ -272,11 +295,11 @@ public class PosDto {
 		this.cashPrice = cashPrice;
 	}
 
-	public String getDiscountPct() {
+	public float getDiscountPct() {
 		return discountPct;
 	}
 
-	public void setDiscountPct(String discountPct) {
+	public void setDiscountPct(float discountPct) {
 		this.discountPct = discountPct;
 	}
 

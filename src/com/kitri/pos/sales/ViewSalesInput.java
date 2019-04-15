@@ -18,9 +18,11 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 
 public class ViewSalesInput extends JPanel {
-	private JTextField code_input;
-	private JTextField product_name_input;
-	private JTextField total_price_input;
+	public JTextField code_input;
+	public JTextField product_name_input;
+	public JTextField total_price_input;
+	public DefaultTableModel model;
+	JTable table;
 
 	/**
 	 * Create the panel.
@@ -35,35 +37,34 @@ public class ViewSalesInput extends JPanel {
 		add(backgroundpanel);
 		backgroundpanel.setLayout(null);
 		
-		String header[] = {"번호", "상품명", "단가", "수량", "금액", "상품코드", "유통기한"};
+		String header[] = {"번호", "상품코드", "상품명", "단가", "수량", "금액"};
 		String contents[][]= {
-				{"1", "바나나킥", "1000", "1", "1000", "FIS-105", "21.04.05"}	
+				
 		};
-		DefaultTableModel model = new DefaultTableModel(contents, header);
-		JTable table = new JTable(new DefaultTableModel(
-			new Object[][] {
-				{"1", "\uBC14\uB098\uB098\uD0A5", "1000", "1", "1000", "FIS-105", "21.04.05"},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-			},
-			new String[] {
-				"\uBC88\uD638", "\uC0C1\uD488\uBA85", "\uB2E8\uAC00", "\uC218\uB7C9", "\uAE08\uC561", "\uC0C1\uD488\uCF54\uB4DC", "\uC720\uD1B5\uAE30\uD55C"
+		
+		
+		
+		model = new DefaultTableModel(contents, header) {
+			@Override
+			public boolean isCellEditable(int row,int column) {
+//				if (column == 1) {
+//					return true;
+//				} else {
+					return false;
+//				}
 			}
-		));
+		};
+		
+		table = new JTable(model);
+		
+		
+		table.setFillsViewportHeight(true);
 		table.setBorder(new LineBorder(new Color(0, 0, 0)));
 		table.setBackground(Color.WHITE);
 		table.setRowMargin(10);
 		table.setRowHeight(30);
 		JScrollPane enroll = new JScrollPane(table);
+		enroll.setEnabled(false);
 		enroll.setBounds(0, 0, 1144, 380);
 		backgroundpanel.add(enroll);
 
@@ -105,6 +106,9 @@ public class ViewSalesInput extends JPanel {
 		searchpanel.add(product_name_input);
 		
 		total_price_input = new JTextField();
+		total_price_input.setHorizontalAlignment(SwingConstants.CENTER);
+		total_price_input.setFont(new Font("굴림", Font.BOLD, 18));
+		total_price_input.setEditable(false);
 		total_price_input.setColumns(10);
 		total_price_input.setBounds(866, 41, 205, 40);
 		searchpanel.add(total_price_input);
