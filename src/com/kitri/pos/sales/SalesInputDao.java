@@ -9,7 +9,7 @@ import java.util.Vector;
 
 public class SalesInputDao {
 
-//	ViewSalesInput viewSalesInput;
+	SalesInputService salesInputService;
 	PosDto posDto = null;
 	Double dis;
 	Connection conn = null;
@@ -17,6 +17,37 @@ public class SalesInputDao {
 	ResultSet rs = null;
 	PreparedStatement ps = null;
 	int i = 1;
+	
+	
+	public boolean costomerRef(String phoneNum) {
+		
+		
+		conn = DBManager.getConnection();
+		
+				
+		try {
+			
+			String query = "select Membership_id, name, point from Membership where phone = ?";
+			ps = conn.prepareStatement(query);
+			ps.setString(1, phoneNum);
+			rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				
+				posDto.setMembershipId(rs.getString(1));
+				posDto.setMemberName(rs.getString(2));
+				posDto.setPoint(rs.getInt(3));
+				
+				return true;
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+		
+	}
 	
 	public double searchByCP(String item) {
 		

@@ -11,17 +11,29 @@ import com.kitri.pos.sales.SalesDao;
 
 public class Sales extends JFrame implements ActionListener {
 
+	
+	
+	//////////////////////////////////////////////////
+	
 	SalesDao salesDao = new SalesDao();
 	private JPanel contentPane;
 	private JTextField notice;
 	private JPanel pMonitor;
-
 //	카드 레이아웃에 붙일 패널
 	ViewSalesCustomer viewSalesCustomer = new ViewSalesCustomer();
 	ViewSalesDisuse viewSalesDisues = new ViewSalesDisuse();
-	ViewSalesInput viewSalesInput = new ViewSalesInput();
+	static ViewSalesInput viewSalesInput = new ViewSalesInput();
 	ViewSalesChange viewSalesChange = new ViewSalesChange();
 
+	//JT
+	SalesInputService salesInputService = new SalesInputService(this);
+	
+	
+	
+	
+	
+	
+	
 	DealCancel dealCancel = new DealCancel();
 
 	Payment_1 payment_1 = new Payment_1();
@@ -50,7 +62,7 @@ public class Sales extends JFrame implements ActionListener {
 //	결제창 버튼	
 	JButton btnP1Before;
 	JButton btnP1Next;
-
+//	JButton btnP1Apply;
 //	결제 2
 	JButton btnP2Before;
 	JButton btnP2Next;
@@ -270,31 +282,26 @@ public class Sales extends JFrame implements ActionListener {
 		pMonitor.add("ViewSalesChange", viewSalesChange);
 
 //		처음에 보여줄 패널 설정
-		cardLayout.show(pMonitor, "Enroll");
+		cardLayout.show(pMonitor, "ViewSalesInput");
 
 //		각 버튼에 이벤트 등록하기
 		sBtnCustomer.addActionListener(this);
 		sBtnDisuse.addActionListener(this);
 		sBtnPdInput.addActionListener(this);
-		sBtnPdChange.addActionListener(this);
-		sBtnPdCancel.addActionListener(this);
 		sBtnPdHold.addActionListener(this);
-		sBtnPay.addActionListener(this);
+		sBtnPay.addActionListener(salesInputService);
 		sBtnCancel.addActionListener(this);
 
 		viewSalesCustomer.enroll.addActionListener(this);
 		viewSalesCustomer.search.addActionListener(this);
 ////		결제1 이벤트 등록
-		payment_1.btnP1Before.addActionListener(this);
-		payment_1.btnP1Next.addActionListener(this);
 
 //		결제2 이벤트 등록
 		payment_2.btnP2Before.addActionListener(this);
 		payment_2.btnP2Next.addActionListener(this);
 		payment_2.btnP2Cancel.addActionListener(this);
-		payment_2.btnP2Register.addActionListener(this);
-		payment_2.btnP2Save.addActionListener(this);
-		payment_2.btnP2Apply.addActionListener(this);
+		payment_2.btnP2Reference.addActionListener(salesInputService);
+		payment_2.btnP2Apply.addActionListener(salesInputService);
 
 //		결제3 이벤트 등록
 		payment_3.btnP3Before.addActionListener(this);
@@ -312,6 +319,18 @@ public class Sales extends JFrame implements ActionListener {
 		;
 		receipt.print.addActionListener(this);
 		;
+		
+		//JT상품검색
+		
+		viewSalesInput.code_input.addKeyListener(salesInputService);
+		viewSalesInput.product_name_input.addKeyListener(salesInputService);
+		sBtnPdChange.addActionListener(salesInputService);
+		sBtnPdCancel.addActionListener(salesInputService);
+		payment_1.cbP1Cooperation.addActionListener(salesInputService);
+		payment_1.btnP1Apply.addActionListener(salesInputService);
+		payment_1.btnP1Before.addActionListener(salesInputService);
+		payment_1.btnP1Next.addActionListener(salesInputService);
+		
 	}
 
 	@Override
@@ -331,13 +350,11 @@ public class Sales extends JFrame implements ActionListener {
 			cardLayout.show(pMonitor, "ViewSalesCustomer");
 			showAll();
 
-		} else if (ob == sBtnPay) {
-			payment_1.setVisible(true);
-		} 
+		} else if (ob == sBtnCustomer) {
+			cardLayout.show(pMonitor, "ViewSalesCustomer");
 		
-		
-		else if (ob == viewSalesCustomer.search) {
-
+		} else if (ob == viewSalesCustomer.search) { 
+			
 //			회원 검색할 때 조건
 			String name;
 			String cellphone;
@@ -355,14 +372,7 @@ public class Sales extends JFrame implements ActionListener {
 
 		} else if (ob == sBtnPay) {// 결제 1창 연결
 			payment_1.setVisible(true);
-		} else if (ob == payment_1.btnP1Before) {
-			payment_1.setVisible(false);
-			payment_2.setVisible(false);
-			payment_4.setVisible(false);
-			payment_3.setVisible(false);
-		} else if (ob == payment_1.btnP1Next) {
-			payment_1.setVisible(false);
-			payment_2.setVisible(true);
+		
 		} else if (ob == payment_2.btnP2Before) {// 결제2 창 연결
 			payment_1.setVisible(true);
 			payment_2.setVisible(false);
@@ -401,20 +411,12 @@ public class Sales extends JFrame implements ActionListener {
 			receipt.setVisible(false);
 		} else if (ob == viewSalesCustomer.enroll) {
 			enrollprocess();
-			showAll();
-		} else if (ob == viewSalesCustomer.delete) {
-			deleteprocess();
 		}
 
 	}
 
-	private void deleteprocess() {
-		
-		
-	}
 
 	private void enrollprocess() {
-		SalesDao.clearRows(viewSalesCustomer.tmodel.getRowCount(), viewSalesCustomer.tmodel);
 		String name;
 		String cellphone;
 		name = viewSalesCustomer.name.getText().trim();
@@ -422,16 +424,18 @@ public class Sales extends JFrame implements ActionListener {
 		salesDao.register(name, cellphone);
 		viewSalesCustomer.name.setText("");
 		viewSalesCustomer.cellphone.setText("");
+
 	}
 
 	private void searchNameProcess() {
 
 		SalesDao salesDao = new SalesDao();
-		SalesDao.clearRows(viewSalesCustomer.tmodel.getRowCount(), viewSalesCustomer.tmodel);
 		Vector<PosDto> results = new Vector<PosDto>();
 		String name;
+		String cellphone;
 
 		name = viewSalesCustomer.name.getText().trim();
+		cellphone = viewSalesCustomer.cellphone.getText().trim();
 		results = salesDao.search(name);
 		int size = results.size();
 		for (int i = 0; i < size; i++) {
@@ -449,14 +453,16 @@ public class Sales extends JFrame implements ActionListener {
 	private void searchNameProcess1() {
 
 		SalesDao salesDao = new SalesDao();
-		SalesDao.clearRows(viewSalesCustomer.tmodel.getRowCount(), viewSalesCustomer.tmodel);
 		Vector<PosDto> results = new Vector<PosDto>();
+		String name;
 		String cellphone;
 
+		name = viewSalesCustomer.name.getText().trim();
 		cellphone = viewSalesCustomer.cellphone.getText().trim();
 		results = salesDao.search1(cellphone);
 		int size = results.size();
 
+		
 		for (int i = 0; i < size; i++) {
 			Vector<String> rows = new Vector<String>(); // 행
 
@@ -474,7 +480,6 @@ public class Sales extends JFrame implements ActionListener {
 	private void searchNameProcess2() {
 
 		SalesDao salesDao = new SalesDao();
-		SalesDao.clearRows(viewSalesCustomer.tmodel.getRowCount(), viewSalesCustomer.tmodel);
 		Vector<PosDto> results = new Vector<PosDto>();
 		String name;
 		String cellphone;
@@ -485,10 +490,12 @@ public class Sales extends JFrame implements ActionListener {
 		int size = results.size();
 		for (int i = 0; i < size; i++) {
 			Vector<String> rows = new Vector<String>(); // 행
+
 			rows.addElement(results.get(i).getMembershipId());
 			rows.addElement(results.get(i).getMemberName());
 			rows.addElement(results.get(i).getPhone());
 			rows.addElement(Integer.toString(results.get(i).getPoint()));
+
 			viewSalesCustomer.tmodel.addRow(rows);
 
 		}
@@ -496,9 +503,7 @@ public class Sales extends JFrame implements ActionListener {
 	}
 
 	private void showAll() {
-
 		SalesDao salesDao = new SalesDao();
-		SalesDao.clearRows(viewSalesCustomer.tmodel.getRowCount(), viewSalesCustomer.tmodel);
 		Vector<PosDto> results = new Vector<PosDto>();
 		results = salesDao.searchAll();
 
@@ -506,11 +511,14 @@ public class Sales extends JFrame implements ActionListener {
 
 		for (int i = 0; i < size; i++) {
 			Vector<String> rows = new Vector<String>(); // 행
+
 			rows.addElement(results.get(i).getMembershipId());
 			rows.addElement(results.get(i).getMemberName());
 			rows.addElement(results.get(i).getPhone());
 			rows.addElement(Integer.toString(results.get(i).getPoint()));
+
 			viewSalesCustomer.tmodel.addRow(rows);
+
 		}
 
 	}

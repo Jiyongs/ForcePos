@@ -75,13 +75,13 @@ public class SalesInputService implements KeyListener, ActionListener {
 				JOptionPane.showMessageDialog(sales, "취소할 상품을 선택해주세요", "선택오류", JOptionPane.ERROR_MESSAGE);
 			}
 		} else if (ob == sales.sBtnPay) {
-			if(sales.viewSalesInput.model.getRowCount()>0) {
-			sales.payment_1.setVisible(true);
-			sales.payment_1.tfP1BeforePrice.setText(sales.viewSalesInput.total_price_input.getText());
-			sales.payment_1.tfP1DiscountPercent.setText("0");
+			if (sales.viewSalesInput.model.getRowCount() > 0) {
+				sales.payment_1.setVisible(true);
+				sales.payment_1.tfP1BeforePrice.setText(sales.viewSalesInput.total_price_input.getText());
+				sales.payment_1.tfP1DiscountPercent.setText("0");
 //			String item = String.valueOf(sales.payment_1.cbP1Cooperation.getSelectedItem());
 //			cooperDCProcess(item);
-			}else {
+			} else {
 				JOptionPane.showMessageDialog(sales, "선택한 상품이 없습니다.", "상품미선정", JOptionPane.ERROR_MESSAGE);
 			}
 		} else if (ob == sales.payment_1.cbP1Cooperation) {
@@ -101,17 +101,58 @@ public class SalesInputService implements KeyListener, ActionListener {
 			if (sales.payment_1.tfP1Afterprice.getText().equals(""))
 				JOptionPane.showMessageDialog(sales.payment_1, "할인을 적용하시오.", "할인미적용", JOptionPane.ERROR_MESSAGE);
 			else {
-			sales.payment_1.setVisible(false);
-			sales.payment_2.setVisible(true);
+				sales.payment_1.setVisible(false);
+				sales.payment_2.setVisible(true);
+			}
+		} else if (ob == sales.payment_2.btnP2Reference) {
+			membershipRef();
+		} else if (ob == sales.payment_2.btnP2Apply) {
+
+			if (sales.payment_2.tfP2UsePoint.getText().equals("")) {
+				JOptionPane.showMessageDialog(sales.payment_2, "사용할 포인트를 입력하시오.", "입력오류", JOptionPane.ERROR_MESSAGE);
+
+			} else if (Integer.parseInt(sales.payment_2.tfP2point.getText()) < Integer
+					.parseInt(sales.payment_2.tfP2UsePoint.getText())) {
+				JOptionPane.showMessageDialog(sales.payment_2, "포인트가 충분하지않습니다.", "입력오류", JOptionPane.ERROR_MESSAGE);
+
+			} else if (Integer.parseInt(sales.payment_2.tfP2UsePoint.getText()) > Integer
+					.parseInt(sales.payment_1.tfP1Afterprice.getText())) {
+				JOptionPane.showMessageDialog(sales.payment_2, "총 가격만큼만 사용할 수 있습니다.", "입력오류",
+						JOptionPane.WARNING_MESSAGE);
+				sales.payment_2.tfP2UsePoint.setText(sales.payment_1.tfP1Afterprice.getText());
+
+			} else {
+
+				int total = Integer.parseInt(sales.payment_1.tfP1Afterprice.getText())
+						- Integer.parseInt(sales.payment_2.tfP2UsePoint.getText());
+				sales.payment_2.tfP2Aftertotal.setText(Integer.toString(total));
+			}
+
 		}
-		}
+
 	}
-//			} else if() {
+
+	public void membershipRef() {
+		if (sales.payment_2.tfP2phoneNum.getText().equals("")) {
+			JOptionPane.showMessageDialog(sales.payment_2, "번호를 입력하시오.", "입력오류", JOptionPane.WARNING_MESSAGE);
+		} else {
+
+			if (salesInputDao.costomerRef(sales.payment_2.tfP2phoneNum.getText()) == true) {
+				sales.payment_2.tfP2SM.setText(salesInputDao.posDto.getMemberName() + "("
+						+ salesInputDao.posDto.getMembershipId() + ")님의 멤버쉽이 확인되었습니다.");
+				sales.payment_2.tfP2point.setText(String.valueOf(salesInputDao.posDto.getPoint()));
+			} else {
+				sales.payment_2.tfP2SM.setText(sales.payment_2.tfP2phoneNum.getText() + "님의 멤버쉽을 찾을 수 없습니다.");
+			}
+		}
+
+	}
 
 	public void cpCalc() {
 		sales.payment_1.tfP1Afterprice
 				.setText(Integer.toString((int) (((Integer.parseInt(sales.payment_1.tfP1BeforePrice.getText())
 						* ((100 - Integer.parseInt(sales.payment_1.tfP1DiscountPercent.getText())))) / 100))));
+		sales.payment_1.tfP1SM.setText("할인이 적용되었습니다.");
 	}
 
 	public void cooperDCProcess(String item) {
