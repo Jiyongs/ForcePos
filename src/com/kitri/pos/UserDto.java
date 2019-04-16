@@ -1,7 +1,7 @@
 package com.kitri.pos;
 
 public class UserDto {
-
+	
 	private int user_code; // 유저코드
 	private String pw; // 패스워드
 	private String id; // 아이디

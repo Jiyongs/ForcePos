@@ -22,6 +22,8 @@ public class ForcePos extends JFrame implements ActionListener {
 	private JButton loginB;
 	private MainFrame main; // 메인 프레임
 	private boolean loginCheck; // 아이디와 패스워드가 일치하는지 확인해주는 필드
+	UserDao userDao;
+	Administrator administrator;
 
 	/*
 	 * private String img;
@@ -53,6 +55,7 @@ public class ForcePos extends JFrame implements ActionListener {
 	// 생성자
 	public ForcePos() {
 		super("ForcePos");
+		
 
 		getContentPane().setLayout(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -183,10 +186,6 @@ public class ForcePos extends JFrame implements ActionListener {
 		loginB.setSize(new Dimension(10, 10));
 		loginB.setIconTextGap(1);
 		loginB.setBackground(new Color(28, 94, 94));
-		loginB.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
 		loginB.setFont(new Font("맑은 고딕", Font.PLAIN, 50));
 		SouthButt.add(loginB);
 
@@ -251,20 +250,14 @@ public class ForcePos extends JFrame implements ActionListener {
 			loginCheck = true;
 		} 
 		
-//		} else if(userTf.getText().equals("개나리") && !new String(passTf.getText()).equals("1234") && passTf.getText() != null) {
-//			loginCheck = false;
-//			JOptionPane.showMessageDialog(null, "비밀번호를 제대로 입력해주세요.");
-//		} else if(!userTf.getText().equals("개나리") && !new String(passTf.getText()).equals("1234")) {
-//			loginCheck = false;
-//			JOptionPane.showMessageDialog(null, "아이디가 틀립니다.");
-//		} else {
-//			loginCheck = false;
-//			JOptionPane.showMessageDialog(null, "아이디와 비밀번호를 입력해주세요.");
-//		}
 		return loginCheck;
 
 	}
 
+	public String showLabel() {
+		return userTf.getText();
+	}
+	
 
 	public void showFrame() {
 		main = new MainFrame();
@@ -294,11 +287,8 @@ public class ForcePos extends JFrame implements ActionListener {
 
 	}
 
-//	public boolean isId() {
-//		userTf.getText().equals("개나리");
-//		return true;
-//	}
 
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
@@ -308,14 +298,24 @@ public class ForcePos extends JFrame implements ActionListener {
 			passTf.requestFocus();
 		}
 
+		//로그인 버튼을 눌렀을 경우
 		if (ob == loginB) {
-			if(!isLoginCheck()) {
-				return;
-			} else {
-				showFrame();
-			}
-		}
+		
+			String id = userTf.getText();
+			String pw = passTf.getText();		
 
+			//DB에 있는 아이디와 비밀번호가 일치할 경우 
+			userDao = new UserDao();
+			if(userDao.pass(id, pw) == true) {
+				JOptionPane.showMessageDialog(this, id + "님 환영합니다.");
+					showFrame();
+			} else {
+				System.out.println("입장 불가");
+				JOptionPane.showMessageDialog(this, "ID 또는 PASSWORD 확인바랍니다!","ID/PW 입력 오류 ", JOptionPane.WARNING_MESSAGE);
+			}
+			
+		}
+		//종료 버튼 
 		if (ob == exitB) {
 			System.exit(0);
 		}

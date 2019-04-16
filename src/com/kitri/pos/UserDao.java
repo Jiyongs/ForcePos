@@ -15,7 +15,6 @@ public class UserDao {
 	// 회원리스트 클래스
 
 	UserDto userDto;
-
 	// DB연결시 필요
 	Connection con = null;
 	PreparedStatement ps = null;
@@ -24,6 +23,57 @@ public class UserDao {
 	// 기본생성자
 	public UserDao() {
 
+	}
+
+// 로그인 대상 검색
+	public boolean pass(String id, String pw) {
+
+//		boolean result = false;
+//		String pass;
+
+		con = DBManager.getConnection();
+
+
+		try {
+
+			String select = "SELECT user_code, pw, id, authority FROM members where id = ? and pw = ?";
+			ps = con.prepareStatement(select);
+
+			ps.setString(1, id);
+			ps.setString(2, pw);
+		
+			
+			System.out.println(id);
+			System.out.println(pw);
+	
+			rs = ps.executeQuery();
+
+//			System.out.println(rs);
+			while (rs.next()) {
+			
+				userDto = new UserDto();
+				
+				userDto.setUserCode(rs.getInt(1));
+				userDto.setPw(rs.getString(2));
+				userDto.setId(rs.getString(3));
+				userDto.setAuthority(rs.getString(4));
+				
+				return true;
+			}
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		} finally {
+			try {
+				DBManager.dbClose(rs, ps, con);
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
+		}
+
+		return false;
 	}
 
 	// 리스트에 담은 값들을 얻어온다.
@@ -86,7 +136,7 @@ public class UserDao {
 
 		con = DBManager.getConnection();
 
-		String update = "update members set name= ?, pw= ? " + "where id = ?";
+		String update = "update members set name = ?, pw = ?, authority = ? where id = ?";
 
 		try {
 
@@ -94,7 +144,8 @@ public class UserDao {
 
 			ps.setString(1, userDto.getName());
 			ps.setString(2, userDto.getPw());
-			ps.setString(3, userDto.getId());
+			ps.setString(3, userDto.getAuthority());
+			ps.setString(4, userDto.getId());
 //			ps.setString(4, userDto.getPw());
 
 			int r = ps.executeUpdate();
@@ -129,7 +180,11 @@ public class UserDao {
 			while (rs.next()) {
 				Object data[] = {
 
-						rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)
+						rs.getInt(1), 
+						rs.getString(2), 
+						rs.getString(3), 
+						rs.getString(4), 
+						rs.getString(5)
 
 				};
 

@@ -7,19 +7,21 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.Font;
+import java.awt.event.*;
+
 import javax.swing.SwingConstants;
 import java.awt.Color;
 import javax.swing.JButton;
 import java.awt.CardLayout;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class MainFrame extends JFrame implements ActionListener {
 
+	
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField notice;
 	private Administrator administrator ;
+	JLabel idLabel; // 라벨 
 
 	//실행 메소드
 	public static void main(String[] args) {
@@ -41,8 +43,13 @@ public class MainFrame extends JFrame implements ActionListener {
 		administrator.setVisible(true);
 		this.setVisible(false);
 	}
+	
+
+	
 
 	public MainFrame() {
+		
+	
 		setFont(new Font("맑은 고딕", Font.BOLD, 20));
 		setTitle("Force.pos");
 		setAlwaysOnTop(true);
@@ -89,7 +96,10 @@ public class MainFrame extends JFrame implements ActionListener {
 		contentPane.add(pMainBtn);
 		pMainBtn.setLayout(null);
 
-		JLabel idLabel = new JLabel("\uAD00\uB9AC\uC790");
+		
+		String str = "안녕";
+		//접근자 라벨
+		idLabel = new JLabel();
 		idLabel.setBackground(new Color(105, 105, 105));
 		idLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		idLabel.setFont(new Font("맑은 고딕", Font.BOLD, 20));
@@ -180,10 +190,12 @@ public class MainFrame extends JFrame implements ActionListener {
 		
 		//리스너 등록 
 		mBtnAccount.addActionListener(this);
+		
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
 		Object ob = e.getActionCommand();
 
 		if (ob.equals("계정")) {
