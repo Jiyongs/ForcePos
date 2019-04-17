@@ -118,10 +118,14 @@ public class CalcService implements ActionListener {
 			if (Cmain.pCalc.tfCashCheck.getText().equals("") || Cmain.pCalc.tfCalcResult.getText().equals("")) {
 				JOptionPane.showMessageDialog(cmain, "정산처리할 값이 부족합니다.", "Error", JOptionPane.ERROR_MESSAGE);
 			} else {
+//				if())
+			
+				if(JOptionPane.showConfirmDialog(Cmain.pCalc, "정산하시겠습니까?", "정산확인", JOptionPane.OK_CANCEL_OPTION) == 0) {
 				calcDao.posDto.setComsCalc(Integer.parseInt(Cmain.pCalc.tfCashState.getText()));
 				calcDao.posDto.setCurrentMoney(Integer.parseInt(Cmain.pCalc.tfCashCheck.getText()));
 				calcDao.posDto.setTotalCalc(Integer.parseInt(Cmain.pCalc.tfCalcResult.getText()));
 				calcDao.calc_Apply();
+				}
 			
 			
 		}
