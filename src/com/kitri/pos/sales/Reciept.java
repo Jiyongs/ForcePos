@@ -1,4 +1,4 @@
-package com.kitri.pos;
+package com.kitri.pos.sales;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;

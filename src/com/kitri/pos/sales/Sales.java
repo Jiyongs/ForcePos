@@ -338,7 +338,7 @@ public class Sales extends JFrame implements ActionListener {
 		payment_3.btnP3Input.addActionListener(salesInputService);
 		payment_3.btnP3Next.addActionListener(salesInputService);
 		
-		
+		payment_4.btnP4Payment.addActionListener(salesInputService);
 		
 	}
 

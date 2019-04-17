@@ -1,18 +1,9 @@
 package com.kitri.pos.calc;
 
-import java.awt.Button;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.JOptionPane;
-import javax.swing.event.CellEditorListener;
-import javax.swing.event.ChangeEvent;
-
-import com.sun.org.apache.xalan.internal.xsltc.compiler.util.ErrorMsg;
-
-import javafx.scene.control.DialogEvent;
 
 public class CalcService implements ActionListener {
 	Cmain cmain;
@@ -27,12 +18,13 @@ public class CalcService implements ActionListener {
 	String sumStr;
 	int row = -1;
 	int column = -1;
-	CalcDao dao;
+	CalcDao calcDao;
 
 	public CalcService(Cmain cmain) {
 		super();
 		// @@@@@@@@@@@@@@@
 		this.cmain = cmain;
+		calcDao = new CalcDao();
 
 	}
 
@@ -74,10 +66,12 @@ public class CalcService implements ActionListener {
 		if (ob == cmain.mBtnCalc) {
 
 			cmain.card.show(cmain.pMonitor, "Calc");
-			dao = new CalcDao();
-			Cmain.pCalc.tfCashState.setText(Integer.toString(dao.inputComs_Calc()));
+			
+			Cmain.pCalc.tfCashState.setText(Integer.toString(calcDao.inputComs_Calc()));
 
 		} else if (isNumber(obStr) == true) {
+			if(Cmain.pCalc.cashTable.getSelectedColumn() == 1) {
+				
 			row = Cmain.pCalc.cashTable.getSelectedRow();
 			column = Cmain.pCalc.cashTable.getSelectedColumn();
 			if (Cmain.pCalc.model.isCellEditable(row, column) == false) {
@@ -91,16 +85,9 @@ public class CalcService implements ActionListener {
 				Cmain.pCalc.cashTable.setValueAt(numStr, row, column);
 			}
 			cashCaclEach();
-
-
-//			테이블에 선택한 칸에 입력되게끔.calculator.numL.setText(numStr);
-
-		} else if (ob == Cmain.pCalc.btnCalc_Input) {
-//			입력된 값 추가와 동시에 입력된 값으로 금액계산함
-			
-			cashCaclEach();
-
+			}
 		} else if (ob == Cmain.pCalc.btnCalc_del) {
+			if(Cmain.pCalc.cashTable.getSelectedColumn() == 1) {
 //			맨뒤 한숫자 삭제
 			row = Cmain.pCalc.cashTable.getSelectedRow();
 			column = Cmain.pCalc.cashTable.getSelectedColumn();
@@ -117,39 +104,38 @@ public class CalcService implements ActionListener {
 				Cmain.pCalc.model.setValueAt("0", row, column);
 			}
 			cashCaclEach();
-
+			}
 		} else if (ob == Cmain.pCalc.btnCalc_C) {
+			if(Cmain.pCalc.cashTable.getSelectedColumn() == 1) {
 			row = Cmain.pCalc.cashTable.getSelectedRow();
 			column = Cmain.pCalc.cashTable.getSelectedColumn();
 			if(row == -1) 
 				return;
 			Cmain.pCalc.cashTable.setValueAt("0", row, column);
 			cashCaclEach();
-
+			}
 		} else if (ob == Cmain.pCalc.btnCalc_Apply) {
 			if (Cmain.pCalc.tfCashCheck.getText().equals("") || Cmain.pCalc.tfCalcResult.getText().equals("")) {
 				JOptionPane.showMessageDialog(cmain, "정산처리할 값이 부족합니다.", "Error", JOptionPane.ERROR_MESSAGE);
 			} else {
-			dao.calc_Apply(Integer.parseInt(Cmain.pCalc.tfCashState.getText()),
-					Integer.parseInt(Cmain.pCalc.tfCashCheck.getText()),
-					Integer.parseInt(Cmain.pCalc.tfCalcResult.getText()));
+				calcDao.posDto.setComsCalc(Integer.parseInt(Cmain.pCalc.tfCashState.getText()));
+				calcDao.posDto.setCurrentMoney(Integer.parseInt(Cmain.pCalc.tfCashCheck.getText()));
+				calcDao.posDto.setTotalCalc(Integer.parseInt(Cmain.pCalc.tfCalcResult.getText()));
+				calcDao.calc_Apply();
+			
+			
 		}
-//			Cmain.판매창.card.show(~~)
-//			System.out.println(Integer.parseInt(Cmain.pCalc.tfCashState.getText()));
-//			System.out.println("2");
-//			System.out.println(Integer.parseInt(Cmain.pCalc.tfCashCheck.getText()));
-//			System.out.println("3");
-//			System.out.println(Integer.parseInt(Cmain.pCalc.tfCalcResult.getText()));
 
 	}else if(ob==Cmain.pCalc.btnCalc_Cancel){
-			cmain.card.show(cmain.pMonitor, "Test");
-			System.out.println("정산창 비활성화, 판매창 활성화");
+		cmain.card.show(cmain.pMonitor, "Test");
+		System.out.println("정산창 비활성화, 판매창 활성화");
+
 
 		}
 
 	}
 
-	boolean isNumber(String obStr) {
+	public boolean isNumber(String obStr) {
 		boolean flag = true;
 		int num = obStr.charAt(0) - 48;
 		if (num < 0 || num > 9) {
@@ -157,5 +143,10 @@ public class CalcService implements ActionListener {
 		}
 		return flag;
 	}
+
+//	public void isNumError(boolean b) {
+//		if(b == false)
+//		JOptionPane.showMessageDialog(cmain, "숫자만 입력가능합니다.", "입력오류", JOptionPane.ERROR_MESSAGE);
+//	}
 
 }

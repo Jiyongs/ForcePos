@@ -10,7 +10,11 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.plaf.OptionPaneUI;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.html.Option;
+
+import com.kitri.pos.calc.Cmain;
+import com.kitri.pos.calc.PCalc;
 
 public class SalesInputService implements KeyListener, ActionListener {
 
@@ -18,8 +22,9 @@ public class SalesInputService implements KeyListener, ActionListener {
 	SalesInputDao salesInputDao;
 	public static boolean key;
 	Vector<PosDto> salesList;
-
+	Vector<Object> getgoods;
 	int overlapRow;
+	boolean memshipcheck = false;
 
 	public SalesInputService(Sales sales) {
 		super();
@@ -88,7 +93,9 @@ public class SalesInputService implements KeyListener, ActionListener {
 				JOptionPane.showMessageDialog(sales, "선택한 상품이 없습니다.", "상품미선정", JOptionPane.ERROR_MESSAGE);
 			}
 		} else if (ob == sales.payment_1.cbP1Cooperation) {
+
 			String item = String.valueOf(sales.payment_1.cbP1Cooperation.getSelectedItem());
+
 			cooperDCProcess(item);
 		} else if (ob == sales.payment_1.btnP1Apply) {
 			cpCalc();
@@ -108,97 +115,184 @@ public class SalesInputService implements KeyListener, ActionListener {
 			}
 		} else if (ob == sales.payment_2.btnP2Reference) {
 			membershipRef();
-			System.out.println(salesInputDao.posDto.getMembershipId());
+
 		} else if (ob == sales.payment_2.btnP2Apply) {
+			if (!sales.payment_2.tfP2point.getText().equals("")) {
+				if (sales.payment_2.tfP2UsePoint.getText().trim().equals("")) {
+					JOptionPane.showMessageDialog(sales.payment_2, "사용할 포인트를 입력하시오.", "입력오류",
+							JOptionPane.ERROR_MESSAGE);
+					
+				} else if (isNumber(sales.payment_2.tfP2UsePoint.getText().trim()) == false) {
+					JOptionPane.showMessageDialog(sales.payment_2, "숫자만 입력가능 합니다.", "입력오류", JOptionPane.ERROR_MESSAGE);
+					sales.payment_2.tfP2UsePoint.setText("");
+				} else if (Integer.parseInt(sales.payment_2.tfP2point.getText().trim()) < Integer
+						.parseInt(sales.payment_2.tfP2UsePoint.getText())) {
+					JOptionPane.showMessageDialog(sales.payment_2, "포인트가 충분하지않습니다.", "입력오류", JOptionPane.ERROR_MESSAGE);
+					sales.payment_2.tfP2UsePoint.setText("");
+				} else if (Integer.parseInt(sales.payment_2.tfP2UsePoint.getText().trim()) > Integer
+						.parseInt(sales.payment_1.tfP1Afterprice.getText())) {
+					JOptionPane.showMessageDialog(sales.payment_2, "총 가격만큼만 사용할 수 있습니다.", "입력오류",
+							JOptionPane.WARNING_MESSAGE);
+					sales.payment_2.tfP2UsePoint.setText(sales.payment_1.tfP1Afterprice.getText());
 
-			if (sales.payment_2.tfP2UsePoint.getText().equals("")) {
-				JOptionPane.showMessageDialog(sales.payment_2, "사용할 포인트를 입력하시오.", "입력오류", JOptionPane.ERROR_MESSAGE);
+				} else {
 
-			} else if (Integer.parseInt(sales.payment_2.tfP2point.getText()) < Integer
-					.parseInt(sales.payment_2.tfP2UsePoint.getText())) {
-				JOptionPane.showMessageDialog(sales.payment_2, "포인트가 충분하지않습니다.", "입력오류", JOptionPane.ERROR_MESSAGE);
-
-			} else if (Integer.parseInt(sales.payment_2.tfP2UsePoint.getText()) > Integer
-					.parseInt(sales.payment_1.tfP1Afterprice.getText())) {
-				JOptionPane.showMessageDialog(sales.payment_2, "총 가격만큼만 사용할 수 있습니다.", "입력오류",
-						JOptionPane.WARNING_MESSAGE);
-				sales.payment_2.tfP2UsePoint.setText(sales.payment_1.tfP1Afterprice.getText());
-
+					int total = Integer.parseInt(sales.payment_1.tfP1Afterprice.getText())
+							- Integer.parseInt(sales.payment_2.tfP2UsePoint.getText());
+					sales.payment_2.tfP2Aftertotal.setText(Integer.toString(total));
+				}
 			} else {
-
-				int total = Integer.parseInt(sales.payment_1.tfP1Afterprice.getText())
-						- Integer.parseInt(sales.payment_2.tfP2UsePoint.getText());
-				sales.payment_2.tfP2Aftertotal.setText(Integer.toString(total));
+				JOptionPane.showMessageDialog(sales.payment_2, "먼저 멤버쉽조회를 해주십시오.", "조회오류", JOptionPane.WARNING_MESSAGE);
 			}
-
 		} else if (ob == sales.payment_2.btnP2Next) {
+			if (memshipcheck == false) {
+				salesInputDao.posDto.setMembershipId("nomember");
+			}
 			sales.payment_3.setVisible(true);
 			sales.payment_2.setVisible(false);
 			sales.payment_3.lbP3PaymentView.setText(sales.payment_2.tfP2Aftertotal.getText());
 			sales.payment_3.lbP3PointView
 					.setText(String.valueOf((Integer.parseInt(sales.payment_3.lbP3PaymentView.getText()) / 100)));
 			sales.payment_3.lbP3FinalPayView.setText("0");
+			
 
+			
+			
 		} else if (ob == sales.payment_3.btnP3Input) {
 			int card = 0;
 			int cash = 0;
-			if (!sales.payment_3.tfP3CardP.getText().equals("")) {
-				card = Integer.valueOf(sales.payment_3.tfP3CardP.getText());
 
-			}
-			salesInputDao.posDto.setCardPrice(card);
-			if (!sales.payment_3.tfP3CashP.getText().equals("")) {
-				cash = Integer.valueOf(sales.payment_3.tfP3CashP.getText());
-			}
-			salesInputDao.posDto.setCashPrice(cash);
 
-//				int card = Integer.valueOf(sales.payment_3.tfP3CardP.getText());
-//				int cash = Integer.valueOf(sales.payment_3.tfP3CashP.getText());
-			if (sales.payment_3.tfP3CardP.getText().equals("") && sales.payment_3.tfP3CashP.getText().equals("")) {
+			if (sales.payment_3.tfP3CardP.getText().trim().equals("")
+					&& sales.payment_3.tfP3CashP.getText().trim().equals("")) {
 				JOptionPane.showMessageDialog(sales.payment_3, "현금 또는 카드를 선택해주십시오.", "결제유형오류",
 						JOptionPane.ERROR_MESSAGE);
-			} else if (card + cash > Integer.parseInt(sales.payment_3.lbP3PaymentView.getText())
-					|| (card + cash < Integer.parseInt(sales.payment_3.lbP3PaymentView.getText()))) {
-				sales.payment_3.lbP3FinalPayView.setText(String.valueOf(card + cash));
-				JOptionPane.showMessageDialog(sales.payment_3, "결제금액과 맞지않습니다.", "결제금액대소오류",
-						JOptionPane.WARNING_MESSAGE);
-			} else {
-				salesInputDao.posDto.setTotalPrice(card + cash);
-				sales.payment_3.lbP3FinalPayView.setText(String.valueOf(salesInputDao.posDto.getTotalPrice()));
-				sales.payment_3.tfP3SM.setText("결제금액이 충족되었습니다");
-			}
 
-		} else if (ob == sales.payment_3.btnP3Next) {
+			} else if (isNumber(sales.payment_3.tfP3CardP.getText().trim()) != true || isNumber(sales.payment_3.tfP3CashP.getText().trim()) != true) {
+				JOptionPane.showMessageDialog(sales.payment_3, "숫자만 입력해주십시오.", "입력오류오류", JOptionPane.WARNING_MESSAGE);
+
+			} else {
+
+				if(!sales.payment_3.tfP3CardP.getText().trim().equals("")) {
+					card = Integer.parseInt(sales.payment_3.tfP3CardP.getText().trim());
+					salesInputDao.posDto.setCardPrice(card);
+				System.out.println(salesInputDao.posDto.getCardPrice());
+				}
+		
+				if(!sales.payment_3.tfP3CashP.getText().trim().equals("")) {
+					cash = Integer.parseInt(sales.payment_3.tfP3CashP.getText().trim());
+					salesInputDao.posDto.setCashPrice(cash);
+					System.out.println(salesInputDao.posDto.getCashPrice());
+				}
+				if (card + cash != Integer.parseInt(sales.payment_3.lbP3PaymentView.getText())) {
+					System.out.println(card+cash);
+					sales.payment_3.lbP3FinalPayView.setText(String.valueOf(card + cash));
+					JOptionPane.showMessageDialog(sales.payment_3, "결제금액과 맞지않습니다.", "결제금액대소오류",
+							JOptionPane.WARNING_MESSAGE);
+				} else {
+					salesInputDao.posDto.setTotalPrice(card + cash);
+					sales.payment_3.lbP3FinalPayView.setText(String.valueOf(salesInputDao.posDto.getTotalPrice()));
+					sales.payment_3.tfP3SM.setText("결제금액이 충족되었습니다");
+				}
+			}
+//----------------------------------------------------------------------------------------------
+
+		} else if (ob == sales.payment_3.btnP3Next){
+			
 			if (!sales.payment_3.tfP3SM.getText().equals("")) {
 				sales.payment_3.setVisible(false);
 				sales.payment_4.setVisible(true);
+				
 				payNPrint();
 			} else {
 				JOptionPane.showMessageDialog(sales.payment_3, "결제조건이 충족되지 않았습니다.", "조건부족", JOptionPane.ERROR_MESSAGE);
 			}
+		} else if (ob == sales.payment_4.btnP4Payment) {
+			if (JOptionPane.showConfirmDialog(sales.payment_4, "결제하시겠습니까?", "결제확인", JOptionPane.OK_CANCEL_OPTION,
+					JOptionPane.QUESTION_MESSAGE) == 0) {
+				paymentProcess();
+				JOptionPane.showMessageDialog(sales.payment_4, "결제가완료되었습니다.", "결제완료", JOptionPane.INFORMATION_MESSAGE);
+	
+				sales.payment_1.dispose();
+				sales.payment_2.dispose();
+				sales.payment_3.dispose();
+				sales.payment_4.dispose();
+				sales.viewSalesInput.total_price_input.setText("");
+				clearRows(sales.viewSalesInput.table.getRowCount(), sales.viewSalesInput.model);
+			}
 		}
 
+	}
+
+	public void StocksProcess() {
+
+		getgoods = new Vector<Object>();
+		int size = sales.viewSalesInput.table.getRowCount();
+		for (int i = 0; i < size; i++) {
+			getgoods.addElement(sales.viewSalesInput.table.getValueAt(i, 1));// p_code
+			getgoods.addElement(sales.viewSalesInput.table.getValueAt(i, 6));// in_date
+			getgoods.addElement(sales.viewSalesInput.table.getValueAt(i, 4));// p_cnt
+			getgoods.addElement(sales.viewSalesInput.table.getValueAt(i, 2));// p_name
+			getgoods.addElement(sales.viewSalesInput.table.getValueAt(i, 3));// p_price
+		}
+
+		salesInputDao.registerHisDetail(size, getgoods);
+		salesInputDao.reflectStocks(size, getgoods);
+//		Vector<String> rows = new Vector<String>();
+//
+//		rows.addElement(Integer.toString(salesList.get(0).getListNum()));
+//		rows.addElement(salesList.get(0).getProductCode());
+//		rows.addElement(salesList.get(0).getProductName());
+//		rows.addElement(Integer.toString(salesList.get(0).getPrice()));
+//		rows.addElement(String.valueOf(salesList.get(0).getSellCount()));
+//		rows.addElement(String.valueOf(salesList.get(0).getPricensellCount()));
+////			rows.addElement(salesList.get(i).getRealExp());
+//
+//		sales.viewSalesInput.model.addRow(rows);
+//		System.out.println("반영완료");
+
+	}
+
+	private void paymentProcess() {
+		salesInputDao.registerHistory();
+		StocksProcess();
+
+//		if()유저이름이 없다면 멤버쉽등록이 안됬으므로 포인트처리 생략
+		if(memshipcheck == true)
+		pointreflect();
+
+	}
+
+	private void pointreflect() {
+		
+		int point = Integer.parseInt(sales.payment_2.tfP2point.getText());
+		int savePoint = Integer.parseInt(sales.payment_3.lbP3PointView.getText());
+		int usePoint = 0;
+		if(!sales.payment_2.tfP2UsePoint.getText().equals(""))
+		usePoint = Integer.parseInt(sales.payment_2.tfP2UsePoint.getText());
+		
+		salesInputDao.posDto.setPoint(point - usePoint + savePoint);
+		salesInputDao.pointUpdate();	
 	}
 
 	private void payNPrint() {
 		sales.payment_4.taP4details.setText("판매코드 : " + salesInputDao.posDto.getSellId() + "\t판매일자 : "
 				+ salesInputDao.posDto.getSellDate() + "\n\t판매원코드 : " + salesInputDao.posDto.getUserCode()
 				+ "\n==========================================\n");
-		
-	
+
 		int x = sales.viewSalesInput.table.getRowCount();
-		for(int i = 0 ; i<x;i++) {
-			for(int j = 1; j<6 ; j++) {
+		for (int i = 0; i < x; i++) {
+			for (int j = 1; j < 6; j++) {
 				sales.payment_4.taP4details.append(sales.viewSalesInput.model.getValueAt(i, j) + "\t");
 			}
 			sales.payment_4.taP4details.append("\n");
 		}
-			
+
 //			salesList.get(i).getProductName()+ " "+
 //			Integer.toString(salesList.get(i).getPrice())+ " "+
 //			String.valueOf(salesList.get(i).getSellCount())+ " "+
 //			String.valueOf(salesList.get(i).getPricensellCount())+ "\n");
-		
+
 //		int cnt = sales.viewSalesInput.table.getRowCount();
 //		for(int i = 0; i < cnt ; i++) {
 ////			Vector<String> rows = new Vector<String>();
@@ -210,33 +304,24 @@ public class SalesInputService implements KeyListener, ActionListener {
 //							String.valueOf(salesList.get(i).getSellCount())+ " "+
 //							String.valueOf(salesList.get(i).getPricensellCount())+ "\n");
 //		}
-		
-		
-				
 
-				
-				
-				
-				
-				
-		sales.payment_4.taP4details.append("\n==========================================\n" + salesInputDao.posDto.getDiscountCode()
-				+ salesInputDao.posDto.getMembershipId() + "\n"
+		sales.payment_4.taP4details.append("\n==========================================\n"
 				+ (salesInputDao.posDto.getDiscountCode().equals("d4") ? "\n"
 						: "할인코드 : " + salesInputDao.posDto.getDiscountCode() + " 제휴사 : "
 								+ salesInputDao.posDto.getCooperateName() + " 할인율 : "
 								+ sales.payment_1.tfP1DiscountPercent.getText() + "\n"));
 
-		if (salesInputDao.posDto.getMembershipId() == null) {
-			
-		}else {
+		if (salesInputDao.posDto.getMembershipId().equals("nomember")) {
+
+		} else {
 			if (sales.payment_2.tfP2UsePoint.getText().isEmpty()) {
 				sales.payment_4.taP4details.append("멤버쉽 : " + salesInputDao.posDto.getMembershipId() + "\t적립된 포인트 : "
-						+ sales.payment_3.lbP3PointView.getText() + "\n\t현재 포인트 : "
+						+ sales.payment_3.lbP3PointView.getText() + "\n\t\t현재 포인트 : "
 						+ (salesInputDao.posDto.getPoint() + Integer.parseInt(sales.payment_3.lbP3PointView.getText()))
 						+ "\n");
 			} else {
 				sales.payment_4.taP4details.append("멤버쉽 : " + salesInputDao.posDto.getMembershipId() + "\t사용포인트 : "
-						+ sales.payment_2.tfP2UsePoint.getText() + "\n\t적립된 포인트 : "
+						+ sales.payment_2.tfP2UsePoint.getText() + "\n적립된 포인트 : "
 						+ sales.payment_3.lbP3PointView.getText() + "\t현재 포인트 : "
 						+ (salesInputDao.posDto.getPoint() - Integer.parseInt(sales.payment_2.tfP2UsePoint.getText())
 								+ Integer.parseInt(sales.payment_3.lbP3PointView.getText()))
@@ -245,12 +330,12 @@ public class SalesInputService implements KeyListener, ActionListener {
 
 		}
 
-		sales.payment_4.taP4details.append(
-				("\n----------------------------------------------------------------\n" + "\t 총결제금액 : " + salesInputDao.posDto.getTotalPrice() + "\n"
-						+ (salesInputDao.posDto.getCardPrice() == 0 ? ""
-								: "\t 카드결제금액 : " + salesInputDao.posDto.getCardPrice() + "\n")
-						+ (salesInputDao.posDto.getCashPrice() == 0 ? ""
-								: "\t 현금결제금액 : " + salesInputDao.posDto.getCashPrice() + "\n")));
+		sales.payment_4.taP4details.append(("\n----------------------------------------------------------------\n"
+				+ "\t 총결제금액 : " + salesInputDao.posDto.getTotalPrice() + "\n"
+				+ (salesInputDao.posDto.getCardPrice() == 0 ? ""
+						: "\t 카드결제금액 : " + salesInputDao.posDto.getCardPrice() + "\n")
+				+ (salesInputDao.posDto.getCashPrice() == 0 ? ""
+						: "\t 현금결제금액 : " + salesInputDao.posDto.getCashPrice() + "\n")));
 
 	}
 
@@ -263,6 +348,7 @@ public class SalesInputService implements KeyListener, ActionListener {
 				sales.payment_2.tfP2SM.setText(salesInputDao.posDto.getMemberName() + "("
 						+ salesInputDao.posDto.getMembershipId() + ")님의 멤버쉽이 확인되었습니다.");
 				sales.payment_2.tfP2point.setText(String.valueOf(salesInputDao.posDto.getPoint()));
+				memshipcheck = true;
 			} else {
 				sales.payment_2.tfP2SM.setText(sales.payment_2.tfP2phoneNum.getText() + "님의 멤버쉽을 찾을 수 없습니다.");
 			}
@@ -297,6 +383,9 @@ public class SalesInputService implements KeyListener, ActionListener {
 	}
 
 	public void listAdd(Vector<PosDto> salesList) {
+		if(salesList ==null)
+			JOptionPane.showMessageDialog(sales, "상품이 존재하지않습니다.", "상품없음", JOptionPane.ERROR_MESSAGE);
+			else {
 		int size = salesList.size();
 
 //		for (int i = 0; i < size; i++) {
@@ -322,13 +411,13 @@ public class SalesInputService implements KeyListener, ActionListener {
 		rows.addElement(Integer.toString(salesList.get(0).getPrice()));
 		rows.addElement(String.valueOf(salesList.get(0).getSellCount()));
 		rows.addElement(String.valueOf(salesList.get(0).getPricensellCount()));
-//			rows.addElement(salesList.get(i).getRealExp());
+		rows.addElement(salesList.get(0).getInDate());
 
 		sales.viewSalesInput.model.addRow(rows);
 		System.out.println("반영완료");
 
 	}
-
+	}
 	public boolean checkOverlap(String identifier, int col) {
 		System.out.println("check" + identifier);
 		int h = sales.viewSalesInput.model.getRowCount();
@@ -355,7 +444,7 @@ public class SalesInputService implements KeyListener, ActionListener {
 				System.out.println("코드로검색" + sales.viewSalesInput.code_input.getText().length());
 //@@@@@				listAdd(salesInputDao.searchBy(sales.viewSalesInput.code_input.getText().trim().toUpperCase()));
 //@@@@@				salesList = salesInputDao.searchBy(sales.viewSalesInput.code_input.getText().trim().toUpperCase());
-				listAdd(salesList = salesInputDao.searchBy(sales.viewSalesInput.code_input.getText().trim().toUpperCase()));
+				listAdd(salesInputDao.searchBy(sales.viewSalesInput.code_input.getText().trim().toUpperCase()));
 
 			} else {
 				// 수량 변경
@@ -410,9 +499,12 @@ public class SalesInputService implements KeyListener, ActionListener {
 
 	public boolean isNumber(String obStr) {
 		boolean flag = true;
-		int num = obStr.charAt(0) - 48;
-		if (num < 0 || num > 9) {
-			flag = false;
+		int len = obStr.length();
+		int num;
+		for (int i = 0; i < len; i++) {
+			num = obStr.charAt(i) - 48;
+			if (num < 0 || num > 9)
+				flag = false;
 		}
 		return flag;
 	}
@@ -421,5 +513,13 @@ public class SalesInputService implements KeyListener, ActionListener {
 		if (b == false)
 			JOptionPane.showMessageDialog(p, "숫자만 입력가능합니다.", "입력오류", JOptionPane.ERROR_MESSAGE);
 	}
+	
+	public static void clearRows(int rowCount, DefaultTableModel model) {
+	      if (rowCount > 0) {
+	         for (int i = rowCount - 1; i >= 0; i--) {
+	            model.removeRow(i);
+	         }
+	      }
+	   }
 
 }

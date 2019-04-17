@@ -37,7 +37,7 @@ public class ViewSalesInput extends JPanel {
 		add(backgroundpanel);
 		backgroundpanel.setLayout(null);
 		
-		String header[] = {"번호", "상품코드", "상품명", "단가", "수량", "금액"};
+		String header[] = {"번호", "상품코드", "상품명", "단가", "수량", "금액", "입고"};
 		String contents[][]= {
 				
 		};

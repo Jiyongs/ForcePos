@@ -1,4 +1,4 @@
-package com.kitri.pos.sales;
+package com.kitri.pos.calc;
 
 public class PosDto {
 
@@ -47,7 +47,7 @@ public class PosDto {
 	}
 
 	private String sellId; // 판매아이디
-	private int userCode = 1; // 유저코드
+	private int userCode; // 유저코드
 	private String productName; // 상품이름
 	private String productCode; // 상품코드
 	private int price; // 가격

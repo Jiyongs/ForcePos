@@ -237,7 +237,6 @@ public class Cmain extends JFrame {
 		pCalc.btnCalc_8.addActionListener(calcService);
 		pCalc.btnCalc_9.addActionListener(calcService);
 		pCalc.btnCalc_00.addActionListener(calcService);
-		pCalc.btnCalc_Input.addActionListener(calcService);
 		pCalc.btnCalc_del.addActionListener(calcService);
 		pCalc.btnCalc_C.addActionListener(calcService);
 		pCalc.btnCalc_Apply.addActionListener(calcService);

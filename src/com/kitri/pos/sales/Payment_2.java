@@ -2,6 +2,8 @@ package com.kitri.pos.sales;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -16,18 +18,21 @@ public class Payment_2 extends JFrame {
 
 	private JPanel contentPane;
 	private final JPanel payment_2 = new JPanel();
-	private JTextField tfP2SM;
-	private JTextField tfP2PhoneNum;
-	private JTextField tfP2Point;
-	private JButton btnP2Before;
-	private JButton btnP2Next;
-	private JLabel lbP2AfterPoint;
-	private JButton btnP2Cancel;
-	private JLabel lbP2point;
-	private JLabel lbP2UsePoint;
-	private JButton btnP2Register;
-	private JButton btnP2Save;
-	private JButton btnP2Apply;
+//	Payment_1 payment_1 = new Payment_1();
+//	Payment_3 payment_3 = new Payment_3();
+	JTextField tfP2SM;
+	JTextField tfP2phoneNum;
+	JTextField tfP2UsePoint;
+	JButton btnP2Before;
+	JButton btnP2Next;
+	JLabel lbP2Aftertotal;
+	JButton btnP2Cancel;
+	JLabel lbP2point;
+	JLabel lbP2UsePoint;
+	JButton btnP2Apply;
+	JButton btnP2Reference;
+	JTextField tfP2Aftertotal;
+	JTextField tfP2point;
 	
 
 	/**
@@ -61,25 +66,28 @@ public class Payment_2 extends JFrame {
 		
 		
 		tfP2SM = new JTextField();
+		tfP2SM.setEditable(false);
 		tfP2SM.setHorizontalAlignment(SwingConstants.CENTER);
-		tfP2SM.setText("010 - **** - **** \uB2D8\uC758 \uBA64\uBC84\uC27D\uC774 \uD655\uC778\uB418\uC5C8\uC2B5\uB2C8\uB2E4.");
+		tfP2SM.setText("");
 		tfP2SM.setBounds(150, 20, 300, 30);
 		payment_2.add(tfP2SM);
 		tfP2SM.setColumns(10);
 		
-		JButton btnP2Reference = new JButton("\uC870\uD68C");
-		btnP2Reference.setBounds(350, 70, 150, 50);
+		btnP2Reference = new JButton("\uC870\uD68C");
+		btnP2Reference.setBounds(398, 70, 140, 50);
 		payment_2.add(btnP2Reference);
 		
-		tfP2PhoneNum = new JTextField();
-		tfP2PhoneNum.setBounds(100, 70, 150, 40);
-		payment_2.add(tfP2PhoneNum);
-		tfP2PhoneNum.setColumns(10);
+		tfP2phoneNum = new JTextField();
+		tfP2phoneNum.setHorizontalAlignment(SwingConstants.CENTER);
+		tfP2phoneNum.setBounds(212, 76, 150, 40);
+		payment_2.add(tfP2phoneNum);
+		tfP2phoneNum.setColumns(10);
 		
-		tfP2Point = new JTextField();
-		tfP2Point.setColumns(10);
-		tfP2Point.setBounds(100, 205, 150, 40);
-		payment_2.add(tfP2Point);
+		tfP2UsePoint = new JTextField();
+		tfP2UsePoint.setHorizontalAlignment(SwingConstants.CENTER);
+		tfP2UsePoint.setColumns(10);
+		tfP2UsePoint.setBounds(212, 205, 150, 40);
+		payment_2.add(tfP2UsePoint);
 		
 		btnP2Before = new JButton("\uC774\uC804\uC73C\uB85C");
 		btnP2Before.setBounds(12, 341, 150, 50);
@@ -89,40 +97,48 @@ public class Payment_2 extends JFrame {
 		btnP2Next.setBounds(412, 341, 150, 50);
 		payment_2.add(btnP2Next);
 		
-		JLabel lbP2CheckUser = new JLabel("\uB4F1\uB85D\uC720\uBB34(\uB4F1\uB85D,\uBBF8\uB4F1\uB85D)");
-		lbP2CheckUser.setHorizontalAlignment(SwingConstants.CENTER);
-		lbP2CheckUser.setBounds(100, 115, 150, 40);
-		payment_2.add(lbP2CheckUser);
+		JLabel lbP2phoneNum = new JLabel("전화번호");
+		lbP2phoneNum.setHorizontalAlignment(SwingConstants.CENTER);
+		lbP2phoneNum.setBounds(30, 76, 150, 40);
+		payment_2.add(lbP2phoneNum);
 		
-		lbP2AfterPoint = new JLabel("\uB0A8\uC740 \uAE08\uC561(Total?)");
-		lbP2AfterPoint.setHorizontalAlignment(SwingConstants.CENTER);
-		lbP2AfterPoint.setBounds(100, 285, 150, 40);
-		payment_2.add(lbP2AfterPoint);
+		lbP2Aftertotal = new JLabel("남은 금액");
+		lbP2Aftertotal.setHorizontalAlignment(SwingConstants.CENTER);
+		lbP2Aftertotal.setBounds(30, 277, 150, 40);
+		payment_2.add(lbP2Aftertotal);
 		
 		btnP2Cancel = new JButton("\uAC70\uB798\uCDE8\uC18C");
 		btnP2Cancel.setBounds(212, 341, 150, 50);
 		payment_2.add(btnP2Cancel);
 		
-		lbP2point = new JLabel("\uD3EC\uC778\uD2B8\uD604\uD669(Point)");
+		lbP2point = new JLabel("포인트현황");
 		lbP2point.setHorizontalAlignment(SwingConstants.CENTER);
-		lbP2point.setBounds(100, 155, 150, 40);
+		lbP2point.setBounds(30, 136, 150, 40);
 		payment_2.add(lbP2point);
 		
-		lbP2UsePoint = new JLabel("\uC801\uC6A9\uD560 \uD3EC\uC778\uD2B8(point)");
+		lbP2UsePoint = new JLabel("사용할 포인트");
 		lbP2UsePoint.setHorizontalAlignment(SwingConstants.CENTER);
-		lbP2UsePoint.setBounds(100, 245, 150, 40);
+		lbP2UsePoint.setBounds(30, 205, 150, 40);
 		payment_2.add(lbP2UsePoint);
 		
-		btnP2Register = new JButton("\uB4F1\uB85D");
-		btnP2Register.setBounds(350, 130, 150, 50);
-		payment_2.add(btnP2Register);
-		
-		btnP2Save = new JButton("\uC801\uB9BD");
-		btnP2Save.setBounds(350, 190, 150, 50);
-		payment_2.add(btnP2Save);
-		
 		btnP2Apply = new JButton("\uC801\uC6A9");
-		btnP2Apply.setBounds(350, 254, 150, 50);
+		btnP2Apply.setBounds(398, 199, 140, 50);
 		payment_2.add(btnP2Apply);
+		
+		tfP2Aftertotal = new JTextField();
+		tfP2Aftertotal.setEditable(false);
+		tfP2Aftertotal.setHorizontalAlignment(SwingConstants.CENTER);
+		tfP2Aftertotal.setColumns(10);
+		tfP2Aftertotal.setBounds(212, 276, 150, 40);
+		payment_2.add(tfP2Aftertotal);
+		
+		tfP2point = new JTextField();
+		tfP2point.setEditable(false);
+		tfP2point.setHorizontalAlignment(SwingConstants.CENTER);
+		tfP2point.setColumns(10);
+		tfP2point.setBounds(212, 136, 150, 40);
+		payment_2.add(tfP2point);
+		
+		
 	}
 }
