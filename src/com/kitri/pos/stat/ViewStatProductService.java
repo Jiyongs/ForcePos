@@ -1,21 +1,43 @@
-package com.kitri.pos.stat;
+ï»¿package com.kitri.pos.stat;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
 
-import com.kitri.pos.PosDto;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+import org.jfree.chart.*;
+import org.jfree.chart.plot.*;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.ui.RectangleInsets;
+import org.jfree.util.Rotation;
+
+import com.kitri.pos.db.PosDto;
+
+
 
 public class ViewStatProductService implements ActionListener {
 
+	Vector<PosDto> bests = null; // Best5 ìƒí’ˆ ê·¸ë˜í”„ìš© ì €ì¥ ë°±í„°
+
+	Vector<PosDto> results = null; // ê²€ìƒ‰ ê²°ê³¼ ìƒí’ˆ í…Œì´ë¸”ìš© ì €ì¥ ë°±í„°
+	StatDao statDao = new StatDao(); // Dao ê°ì²´
+
+	private String minorLevel = null; // ì½¤ë³´ ë°•ìŠ¤ ì €ì¥ ë³€ìˆ˜
+	private String year = null;
+	private String month = null;
+
 	private ViewStatProduct vp;
 
-	// [»ı¼ºÀÚ]
+	// [ìƒì„±ì]
 	public ViewStatProductService(ViewStatProduct vp) {
 		this.vp = vp;
+		setGraphbestProducts(); //ë¹ˆ ê·¸ë˜í”„ ë„ìš°ê¸°
 	}
 
-	// [ActionListener override]
+	// [ActionListener override/ì¡°íšŒë²„íŠ¼]
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object ob = e.getSource();
@@ -25,50 +47,110 @@ public class ViewStatProductService implements ActionListener {
 		}
 	}
 
-	// [±â´É ¸Ş¼Òµå]
-	// <Á¶È¸ ¹öÆ° Å¬¸¯> ÀÌº¥Æ®
+	// [ê¸°ëŠ¥ ë©”ì†Œë“œ]
+	// <ì¡°íšŒ ë²„íŠ¼ í´ë¦­> ë©”ì†Œë“œ
 	public void search() {
-		// TODO findProductSell()ÀÇ ÀÎÀÚ°ªÀ» ÇÊµå¿¡¼­ ¹Ş¾Æ¿À¸é µÊ & Á¶È¸ ¹öÆ° »ı¼º ÈÄ ÀÌº¥Æ® ÁöÁ¤ÇÑ °÷¿¡¼­ ¼öÇà
-				System.out.println("Á¶È¸ ¹öÆ°ÀÌ ´­·È½À´Ï´Ù.");
 
-				// ÄŞº¸¹Ú½ºÀÇ °ªÀ» °¡Á®¿È
-				// (½ÃÀÛ³âµµ)
-//				int startYear = Integer.parseInt(vm.comboYear.getActionCommand());
-				
-				
-				StatDao statDao = new StatDao(); // Dao °´Ã¼
-				Vector<PosDto> results = new Vector<PosDto>(); // select °á°ú°¡ ¼¼ÆÃµÈ Dto Vector   //@@@@@@@
+		// í…Œì´ë¸” í–‰ í™”ë©´ ë¦¬ì…‹
+		StatDao.clearRows(vp.tmodel.getRowCount(), vp.tmodel);
+		
+		// ì½¤ë³´ë°•ìŠ¤ì˜ ê°’ì„ ê°€ì ¸ì˜´
+		// (ì†Œë¶„ë¥˜, ì‹œì‘ë…„ë„, ëë…„ë„)
+		minorLevel = vp.comboMinorLevel.getItemAt(vp.comboMinorLevel.getSelectedIndex()).toString();
+		year = vp.comboYear.getItemAt(vp.comboYear.getSelectedIndex()).toString();
+		month = vp.comboMonth.getItemAt(vp.comboMonth.getSelectedIndex()).toString();
 
-				// select °á°ú ÀúÀå
-//				results = statDao.findMonthSell(startYear); // DB select °á°ú ÀúÀå º¯¼ö
-				results = statDao.findProductSell("¼ÒÁÖ", "2019", "05"); // DB select °á°ú ÀúÀå º¯¼ö
-				
-				// Å×ÀÌºí Çà ¼¼ÆÃ
-				int size = results.size();
+		results = new Vector<PosDto>(); // select ê²°ê³¼ê°€ ì„¸íŒ…ëœ Dto Vector
 
-				for(int i = 0; i < size; i++) {
-					Vector<String> rows = new Vector<String>(); // Çà
-//					String header[] = { "¸ÅÃâ¼øÀ§", "»óÇ°ÄÚµå", "»óÇ°ºĞ·ù", "»óÇ°¸í", "ÆÇ¸Å°¡", "ÆÇ¸Å¼ö·®", "¸ÅÃâÇÕ°è", "Á¦Á¶»ç" };
-					rows.addElement(Integer.toString(results.get(i).getRanking()));
-					rows.addElement(results.get(i).getProductCode());
-					rows.addElement(results.get(i).getMajorLevel());					
-					rows.addElement(results.get(i).getProductName());
-					rows.addElement(Integer.toString(results.get(i).getPrice()));
-					rows.addElement(Integer.toString(results.get(i).getPurchase()));
-					rows.addElement(Integer.toString(results.get(i).getSellCount()));
-					rows.addElement(Integer.toString(results.get(i).getStatTotalPrice()));		
-					rows.addElement(results.get(i).getCompany());		
-					
-					vp.tmodel.addRow(rows);
-				}
+		// select ê²°ê³¼ ì €ì¥
+		results = statDao.findProductSell(minorLevel, year, month); // DB select ê²°ê³¼ ì €ì¥ ë³€ìˆ˜
 
-				// °á°ú Å×ÀÌºí ¶ç¿ì±â
-				vp.spShowTable.setViewportView(vp.tableResult);
+		if (results.isEmpty()) { // ì¡°íšŒ ê²°ê³¼ ì—†ìœ¼ë©´, ì•Œë¦¼ì°½ ë‚ ë¦¼
+			JOptionPane.showMessageDialog(null, "ì¡°íšŒí•  ë°ì´í„°ê°€ ì—†ìŠµë‹ˆë‹¤.");
+		} else { // ì¡°íšŒ ê²°ê³¼ ìˆìœ¼ë©´, ê²°ê³¼ ë³´ì´ê¸°
+
+			// í…Œì´ë¸” í–‰ ì„¸íŒ…
+			int size = results.size();
+			for (int i = 0; i < size; i++) {
+				Vector<String> rows = new Vector<String>(); // í–‰
+				rows.addElement(Integer.toString(results.get(i).getRanking()));
+				rows.addElement(results.get(i).getProductCode());
+				rows.addElement(results.get(i).getMinorLevel());
+				rows.addElement(results.get(i).getProductName());
+				rows.addElement(Integer.toString(results.get(i).getPrice()));
+				rows.addElement(Integer.toString(results.get(i).getPurchase()));
+				rows.addElement(Integer.toString(results.get(i).getSellCount()));
+				rows.addElement(Integer.toString(results.get(i).getStatTotalPrice()));
+				rows.addElement(results.get(i).getCompany());
+
+				vp.tmodel.addRow(rows);
+			}
+
+			// ê²°ê³¼ í…Œì´ë¸” ë„ìš°ê¸°
+			vp.spShowTable.setViewportView(vp.tableResult);
+
+			// ê·¸ë˜í”„ë„ ê°™ì´ ë„ìš°ê¸°
+			setGraphbestProducts();
+
+		}
 	}
-	
-	// <±×·¡ÇÁ »ı¼º> ÀÌº¥Æ®
-//	public JFreeChart getChart() {
-//		return null;
-//	}
+
+	// <ì¡°ê±´ì— ë§ëŠ” Best5 ìƒí’ˆ ê·¸ë˜í”„ ì„¸íŒ…> ë©”ì†Œë“œ
+	public void setGraphbestProducts() {
+				
+		DefaultPieDataset pieDataset = null;
+		JFreeChart chart;
+		
+		bests = new Vector<PosDto>();
+		if(results != null) {
+			bests = statDao.findProductSellBestFive(minorLevel, year, month); // ë­í‚¹ 5 ë½‘ê¸° sqlë¬¸ ê²°ê³¼ ë‹´ìŒ
+
+			pieDataset = new DefaultPieDataset(); // íŒŒì´ ì°¨íŠ¸ ë°ì´í„°ì…‹ ìƒì„±
+
+			Vector<String> productName = new Vector<String>(); // ë”¸ê¸°ìƒŒë“œìœ„ì¹˜
+			Vector<Integer> totalSellPrice = new Vector<Integer>(); // 20000
+
+			// í–‰ ì„¸íŒ…
+			int size = bests.size();
+			for (int i = 0; i < size; i++) {
+
+				productName.addElement(bests.get(i).getProductName());
+				totalSellPrice.addElement(bests.get(i).getStatTotalPrice());
+
+				// ê°’, ë²”ë¡€, ì¹´í…Œê³ ë¦¬ ì§€ì •
+				pieDataset.setValue(productName.get(i), totalSellPrice.get(i));
+			}
+			
+			// 3d íŒŒì´ì°¨íŠ¸ ìƒì„± (ì¡°ê±´ë³„ ì´ë¦„ ì§€ì •)
+			chart = ChartFactory.createPieChart3D
+					(year + "." + month + " BEST 5", pieDataset, false, true,true);
+		} else {
+			//3d íŒŒì´ì°¨íŠ¸ ìƒì„± (ë¹ˆ ê·¸ë˜í”„ ìš©)
+			chart = ChartFactory.createPieChart3D
+					("BEST 5", pieDataset, false, true,true);			
+		}
+		chart.setBackgroundPaint(Color.lightGray); // ì°¨íŠ¸ ì œëª© ë°°ê²½ìƒ‰
+
+		PiePlot3D p = (PiePlot3D) chart.getPlot();
+		p.setBaseSectionOutlinePaint(Color.WHITE); // ì°¨íŠ¸ í…Œë‘ë¦¬ ìƒ‰
+		p.setDepthFactor(0.08f); // ì°¨íŠ¸ ë‘ê»˜
+		p.setLabelLinkPaint(Color.white); // ì°¨íŠ¸ ë¼ë²¨ì„  ìƒ‰
+		p.setLabelLinkStyle(PieLabelLinkStyle.QUAD_CURVE); // ì°¨íŠ¸ ë¼ë²¨ì„  ìŠ¤íƒ€ì¼
+		p.setForegroundAlpha(0.7f); // ì°¨íŠ¸ íˆ¬ëª…ë„
+		p.setBackgroundPaint(Color.DARK_GRAY); // ì°¨íŠ¸ ë°°ê²½ìƒ‰
+		p.setLabelBackgroundPaint(Color.WHITE);// ì°¨íŠ¸ ë¼ë²¨ ë°°ê²½ìƒ‰
+		p.setLabelFont(new Font("ë§‘ì€ê³ ë”•", Font.BOLD, 14)); // ì°¨íŠ¸ ê°’ í°íŠ¸
+
+		// ë§Œë“  ì°¨íŠ¸ë¡œ ì°¨íŠ¸ íŒë„¬ ìƒì„±
+		ChartPanel pChart = new ChartPanel(chart);
+		pChart.setVisible(true);
+		pChart.setSize(554, 451); // í¬ê¸° ì§€ì •
+
+		vp.pShowGraph.add("bestGraph", pChart);
+		vp.graphCard.show(vp.pShowGraph, "bestGraph");
+
+		vp.pShowGraph.setVisible(true);
+
+	}
 
 }

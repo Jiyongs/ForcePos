@@ -1,10 +1,10 @@
-package com.kitri.pos;
+ï»¿package com.kitri.pos;
 
 import java.awt.*;
 
 import javax.swing.*;
 
-//¹öÆ°µÕ±Û°Ô ¸¸µé¾îÁÖ´Â Å¬·¡½º 
+//ë²„íŠ¼ë‘¥ê¸€ê²Œ ë§Œë“¤ì–´ì£¼ëŠ” í´ë˜ìŠ¤ 
 public class RoundedButton extends JButton {
 
 	public RoundedButton() {

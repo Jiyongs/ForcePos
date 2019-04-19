@@ -1,78 +1,83 @@
-package com.kitri.pos.db;
+ï»¿package com.kitri.pos.db;
 
 import java.sql.*;
 
+/*
+  DBManger : DBì˜ ì—°ê²°, ì—°ê²°í•´ì œ ë©”ì†Œë“œë¥¼ ê°€ì§„ í´ë˜ìŠ¤
+*/
+
 public class DBManager {
-	// <DB ¿¬°á> ¸Ş¼Òµå : ¿¬°áµÈ DB »óÅÂ¸¦ ¸®ÅÏÇÔ
-		public static Connection getConnection() {
-			Connection conn = null;
-			try {
-				String user = "kitri";
-				String pw = "kitri";
-				String url = "jdbc:oracle:thin:@localhost:1521:orcl";
 
-				Class.forName("oracle.jdbc.driver.OracleDriver");
-				conn = DriverManager.getConnection(url, user, pw);
+	
+	// <DB ì—°ê²°> ë©”ì†Œë“œ : ì—°ê²°ëœ DB ìƒíƒœë¥¼ ë¦¬í„´í•¨
+	public static Connection getConnection() {
+		Connection conn = null;
+		try {
+			String user = "kitri";
+			String pw = "kitri";
+			String url = "jdbc:oracle:thin:@192.168.14.39:1521:orcl";
 
-				System.out.println("Database¿¡ ¿¬°áµÇ¾ú½À´Ï´Ù.\n");
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			conn = DriverManager.getConnection(url, user, pw);
 
-			} catch (ClassNotFoundException cnfe) {
-				System.out.println("DB µå¶óÀÌ¹ö ·Îµù ½ÇÆĞ :" + cnfe.toString());
-			} catch (SQLException sqle) {
-				System.out.println("DB Á¢¼Ó½ÇÆĞ : " + sqle.toString());
-			} catch (Exception e) {
-				System.out.println("Unkonwn error");
-				e.printStackTrace();
-			}
-			return conn;
+			System.out.println("Databaseì— ì—°ê²°ë˜ì—ˆìŠµë‹ˆë‹¤.\n");
+
+		} catch (ClassNotFoundException cnfe) {
+			System.out.println("DB ë“œë¼ì´ë²„ ë¡œë”© ì‹¤íŒ¨ :" + cnfe.toString());
+		} catch (SQLException sqle) {
+			System.out.println("DB ì ‘ì†ì‹¤íŒ¨ : " + sqle.toString());
+		} catch (Exception e) {
+			System.out.println("Unkonwn error");
+			e.printStackTrace();
 		}
+		return conn;
+	}
 
-		
-		// *rs : ResultSet
-		// st : Statement
-		// ps : PreparedStatement
-		// conn : Connection
+	
+	// *rs : ResultSet
+	// st : Statement
+	// ps : PreparedStatement
+	// conn : Connection
 
-		// <DB ¿¬°á ÇØÁ¦ 1> ¸Ş¼Òµå : ps + conn
-		public static void dbClose(PreparedStatement ps, Connection conn) throws SQLException {
-			if (ps != null)
-				ps.close();
-		
-			if (conn != null)
-				conn.close();
-			
-			
-			System.out.println("ÀÚ¿ø¹İ³³, DB Close!!");
-		}
+	// <DB ì—°ê²° í•´ì œ 1> ë©”ì†Œë“œ : ps + conn
+	public static void dbClose(PreparedStatement ps, Connection conn) throws SQLException {
+		if (ps != null)
+			ps.close();
+		if (conn != null)
+			conn.close();
+		System.out.println("ìì›ë°˜ë‚©, DB Close!!");
+	}
 
-		// <DB ¿¬°á ÇØÁ¦ 2> ¸Ş¼Òµå : st + conn
-		public static void dbClose(Statement st, Connection conn) throws SQLException {
-			if (st != null)
-				st.close();
-			if (conn != null)
-				conn.close();
-			System.out.println("ÀÚ¿ø¹İ³³, DB Close!!");
-		}
+	// <DB ì—°ê²° í•´ì œ 2> ë©”ì†Œë“œ : st + conn
+	public static void dbClose(Statement st, Connection conn) throws SQLException {
+		if (st != null)
+			st.close();
+		if (conn != null)
+			conn.close();
+		System.out.println("ìì›ë°˜ë‚©, DB Close!!");
+	}
 
-		// <DB ¿¬°á ÇØÁ¦ 3> ¸Ş¼Òµå : rs + ps + conn
-		public static void dbClose(ResultSet rs, PreparedStatement ps, Connection conn) throws SQLException {
-			if (rs != null)
-				rs.close();
-			if (ps != null)
-				ps.close();
-			if (conn != null)
-				conn.close();
-			System.out.println("ÀÚ¿ø¹İ³³, DB Close!!");
-		}
+	// <DB ì—°ê²° í•´ì œ 3> ë©”ì†Œë“œ : rs + ps + conn
+	public static void dbClose(ResultSet rs, PreparedStatement ps, Connection conn) throws SQLException {
+		if (rs != null)
+			rs.close();
+		if (ps != null)
+			ps.close();
+		if (conn != null)
+			conn.close();
+		System.out.println("ìì›ë°˜ë‚©, DB Close!!");
+	}
 
-		// <DB ¿¬°á ÇØÁ¦ 4> ¸Ş¼Òµå : rs + st + conn
-		public static void dbClose(ResultSet rs, Statement st, Connection conn) throws SQLException {
-			if (rs != null)
-				rs.close();
-			if (st != null)
-				st.close();
-			if (conn != null)
-				conn.close();
-			System.out.println("ÀÚ¿ø¹İ³³, DB Close!!");
-		}
+	// <DB ì—°ê²° í•´ì œ 4> ë©”ì†Œë“œ : rs + st + conn
+	public static void dbClose(ResultSet rs, Statement st, Connection conn) throws SQLException {
+		if (rs != null)
+			rs.close();
+		if (st != null)
+			st.close();
+		if (conn != null)
+			conn.close();
+		System.out.println("ìì›ë°˜ë‚©, DB Close!!");
+	}
+
+
 }

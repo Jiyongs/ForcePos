@@ -1,61 +1,38 @@
-package com.kitri.pos;
+ï»¿package com.kitri.pos;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.border.EtchedBorder;
-
-
+import com.kitri.pos.db.*;
+import com.kitri.pos.stock.StockDao;
+import com.kitri.pos.account.*;
 
 public class ForcePos extends JFrame implements ActionListener {
 
-	/**
-	 * 
-	 */
+	
+	public static PosDto usercodeDto = new PosDto();
+	public static PosDto expName = new PosDto();
+	public static PosDto exp = new PosDto();
+	public static PosDto selldto = new PosDto();
+	
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	final JTextField userTf;
 	final JTextField passTf;
-	private RoundedButton rb_1;
+	
+
 	private JButton exitB;
 	private JButton loginB;
-	private MainFrame main; // ¸ŞÀÎ ÇÁ·¹ÀÓ
-	private boolean loginCheck; // ¾ÆÀÌµğ¿Í ÆĞ½º¿öµå°¡ ÀÏÄ¡ÇÏ´ÂÁö È®ÀÎÇØÁÖ´Â ÇÊµå
-	UserDao userDao;
-	Administrator administrator;
+	public MainFrame mainFrame = new MainFrame(); // ë©”ì¸ í”„ë ˆì„
+	public StockDao stockDao = new StockDao();
+	public UserDao userDao;
+	public Administrator administrator;
 
-	/*
-	 * private String img;
-	 * 
-	 * public void inputIcon() { mageIcon º¯°æÇÒ¾ÆÀÌÄÜ = new ImageIcon("ÀÌ¹ÌÁö.png"); Image
-	 * º¯°æÇÒÀÌ¹ÌÁö = º¯°æÇÒ¾ÆÀÌÄÜ.getImage(); //ImageIconÀ» Image·Î º¯È¯. Image º¯°æµÈÀÌ¹ÌÁö =
-	 * º¯°æÇÒÀÌ¹ÌÁö.getScaledInstance(°¡·Î, ¼¼·Î, java.awt.Image.SCALE_SMOOTH); ImageIcon
-	 * º¯°æµÈ¾ÆÀÌÄÜ = new ImageIcon(º¯°æµÈÀÌ¹ÌÁö); //Image·Î ImageIcon »ı¼º img =
-	 * System.getProperty("user.dir"); System.out.println(img); ImageIcon icon = new
-	 * ImageIcon("userIcon.png"); Image image = icon.getImage(); Image image2 =
-	 * image.getScaledInstance(250, 250, Image.SCALE_AREA_AVERAGING); ImageIcon
-	 * icon2 = new ImageIcon(image2); System.out.println(icon2);
-	 * lblNewLabel.setIcon(new ImageIcon()); µğ·ºÅä¸® °æ·Î¿¡ ÆÄÀÏÀÌ ÀÖ´ÂÁö È®ÀÎÇÏ´Â ±¸¹® File f = new
-	 * File("D:\\Workspace\\Project\\userIcon.png"); System.out.println(f.exists());
-	 * Toolkit tk = Toolkit.getDefaultToolkit(); image =
-	 * tk.getImage("D:\\Workspace\\Project\\userIcon.png");
-	 * 
-	 * jpanel = new JPanel() {
-	 * 
-	 * @Override public void paint(Graphics g) { g.drawImage(image, 0, 0, null);
-	 * super.paintComponents(g); } };
-	 * 
-	 * add("Center", jpanel); add("North", new JLabel("ÆĞ³Î¿¡ ÀÌ¹ÌÁö ºÙÀÌ±â"));
-	 * setBounds(200, 200, 300, 300); contentPane.add(jpanel); setVisible(true);
-	 * 
-	 * }
-	 */
-
-	// »ı¼ºÀÚ
+	// ìƒì„±ì
 	public ForcePos() {
 		super("ForcePos");
-		
 
 		getContentPane().setLayout(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -66,256 +43,225 @@ public class ForcePos extends JFrame implements ActionListener {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		// ¹è°æÈ­¸é ÆĞ³Î
+		// ë°°ê²½í™”ë©´ íŒ¨ë„
 		JPanel background = new JPanel() {
-
-			/**
-			 * 
-			 */
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void paintComponent(Graphics g) {
-				Dimension d = getSize(); // ÆĞ³ÎÀÇ Å©±â¸¦ ¾ò¾î¿È
-				ImageIcon image = new ImageIcon("E:\\javadata\\Workspace\\javase\\pos\\src\\image\\Background.png"); // ÀÌ¹ÌÁö¾ò¾î¿È.
-				g.drawImage(image.getImage(), 0, 0, d.width, d.height, null); // JpanelÀÇ Å©±â¿¡ ¸Â°Ô ÀÌ¹ÌÁö¸¦ ±×¸°´Ù.
-				setOpaque(false); // ¹è°æÀ» Åõ¸íÇÏ°Ô ¼³Á¤ÇØÁÜ
+				Dimension d = getSize(); // íŒ¨ë„ì˜ í¬ê¸°ë¥¼ ì–»ì–´ì˜´
+				ImageIcon image = new ImageIcon(
+						"E:\\javadata\\workspace\\javase\\POS\\src\\image\\loginBackground.png"); // ì´ë¯¸ì§€ì–»ì–´ì˜´.
+				g.drawImage(image.getImage(), 0, 0, d.width, d.height, null); // Jpanelì˜ í¬ê¸°ì— ë§ê²Œ ì´ë¯¸ì§€ë¥¼ ê·¸ë¦°ë‹¤.
+				setOpaque(false); // ë°°ê²½ì„ íˆ¬ëª…í•˜ê²Œ ì„¤ì •í•´ì¤Œ
 				super.paintComponent(g);
 			}
 		};
+		background.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.PLAIN, 20));
 		background.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		background.setOpaque(false);
 
-		background.setBounds(0, 34, 1320, 633);
+		background.setBounds(0, 0, 1320, 725);
 		contentPane.add(background);
 		background.setLayout(null);
 
-		JPanel title = new JPanel();
-		title.setOpaque(false);
-		title.setBounds(12, 10, 1278, 83);
-		background.add(title);
-		title.setLayout(new BorderLayout(0, 0));
-
-		JLabel Forcepos = new JLabel("Forcepos");
-		Forcepos.setHorizontalTextPosition(SwingConstants.CENTER);
-		Forcepos.setForeground(new Color(0, 128, 128));
-		Forcepos.setHorizontalAlignment(SwingConstants.CENTER);
-		Forcepos.setFont(new Font("Consolas", Font.BOLD, 70));
-		title.add(Forcepos, BorderLayout.CENTER);
-
-		// ·Î±×ÀÎ È­¸é ÆĞ³Î ¼³Á¤
-		JPanel user = new JPanel() {
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
+		JPanel title = new JPanel() {
 			protected void paintComponent(Graphics g) {
 				Dimension d = getSize();
-				ImageIcon image = new ImageIcon("E:\\javadata\\Workspace\\javase\\pos\\src\\image\\Usericon.png");
+				ImageIcon image = new ImageIcon("E:\\javadata\\workspace\\javase\\POS\\src\\image\\LoginTitle.png");
 				g.drawImage(image.getImage(), 0, 0, d.width, d.height, null);
 				setOpaque(false);
 				super.paintComponent(g);
 			}
 		};
-		user.setBounds(328, 129, 153, 165);
-		background.add(user);
+		title.setOpaque(false);
+		title.setBounds(130, 144, 529, 199);
+		background.add(title);
+		title.setLayout(new BorderLayout(0, 0));
 
-		// À¯Àú ÆĞ³Î
+		// ìœ ì € íŒ¨ë„
 		JPanel userP = new JPanel();
 		userP.setOpaque(false);
-		userP.setBounds(497, 129, 475, 165);
+		userP.setBounds(211, 351, 369, 87);
 		background.add(userP);
 		userP.setLayout(new BorderLayout(0, 0));
 
-		// ÆĞ½º¿öµå ÆĞ³Î ¼³Á¤
-		JPanel pass = new JPanel() {
-			/**
-			 * 
-			 */
+		// ìœ ì € í…ìŠ¤íŠ¸í•„ë“œ
+		userTf = new JTextField(6) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void paintComponent(Graphics g) {
 				Dimension d = getSize();
-				ImageIcon image = new ImageIcon("E:\\javadata\\Workspace\\javase\\pos\\src\\image\\KEY.png");
+				ImageIcon image = new ImageIcon("E:\\javadata\\workspace\\javase\\POS\\src\\image\\idbg.png");
 				g.drawImage(image.getImage(), 0, 0, d.width, d.height, null);
 				setOpaque(false);
 				super.paintComponent(g);
 			};
 		};
-		pass.setOpaque(false);
 
-		pass.setBounds(328, 320, 153, 156);
-		background.add(pass);
+		userTf.setToolTipText("ID");
+		userTf.setBorder(null);
+		userTf.setBackground(new Color(242, 242, 242));// ****************************************************************
+		userP.add(userTf, BorderLayout.CENTER);
+		userTf.setHorizontalAlignment(SwingConstants.CENTER);
+		userTf.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.ITALIC, 40));
 
-		// ÆĞ½º¿öµå ÆĞ³Î
+		// ì•„ì´ë””ë¥¼ ì…ë ¥ë°›ëŠ”
+		userTf.setText("");
+		userTf.setColumns(10);
+
+		// ì´ë²¤íŠ¸ ë¦¬ìŠ¤ë„ˆ ë“±ë¡
+		userTf.addActionListener(this);
+
+		// íŒ¨ìŠ¤ì›Œë“œ íŒ¨ë„
 		JPanel passP = new JPanel();
-		passP.setBounds(497, 320, 475, 156);
+		passP.setBounds(211, 457, 369, 87);
 		background.add(passP);
 		passP.setLayout(new BorderLayout(0, 0));
 
-		// ºñ¹Ğ¹øÈ£ÅØ½ºÆ®ÇÊµå
-		passTf = new JPasswordField(6);
+		// ë¹„ë°€ë²ˆí˜¸í…ìŠ¤íŠ¸í•„ë“œ
+		passTf = new JPasswordField(6) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void paintComponent(Graphics g) {
+				Dimension d = getSize();
+				ImageIcon image = new ImageIcon("E:\\javadata\\workspace\\javase\\POS\\src\\image\\pwbg.png");
+				g.drawImage(image.getImage(), 0, 0, d.width, d.height, null);
+				setOpaque(false);
+				super.paintComponent(g);
+			};
+		};
+		passTf.setToolTipText("PASSWORD");
+		passTf.setBorder(null);
+		passTf.setBackground(new Color(242, 242, 242)); // ****************************************************************
 		passP.add(passTf, BorderLayout.CENTER);
 		passTf.setHorizontalAlignment(SwingConstants.CENTER);
-		passTf.setFont(new Font("¸¼Àº °íµñ", Font.ITALIC, 40));
+		passTf.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.ITALIC, 40));
 
-		// ºñ¹Ğ¹øÈ£¸¦ ÀÔ·Â¹Ş´Â
+		// ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥ë°›ëŠ”
 		passTf.setText("");
 		passTf.setColumns(10);
 		passTf.addActionListener(this);
+		passTf.addActionListener(this);
 
-		// ¹öÆ° µÎ°³
-		JPanel SouthButt = new JPanel();
-		SouthButt.setOpaque(false);
-		SouthButt.setBounds(388, 518, 518, 73);
-		background.add(SouthButt);
-		SouthButt.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 0));
+		// ë¡œê·¸ì¸ ë²„íŠ¼
+		// ë‘¥ê¸€ê²Œ ë§Œë“œëŠ” ë²„íŠ¼ í´ë˜ìŠ¤ ê°ì²´ ìƒì„±í›„ ëŒ€ì…
+		loginB = new JButton(new ImageIcon(ForcePos.class.getResource("/image/loginButton.png")));
+		loginB.setLocation(693, 243);
+		background.add(loginB);
 
-		// ·Î±×ÀÎ ¹öÆ°
-		// µÕ±Û°Ô ¸¸µå´Â ¹öÆ° Å¬·¡½º °´Ã¼ »ı¼ºÈÄ ´ëÀÔ
-		loginB = new JButton("\uB85C\uADF8\uC778 ");
-		RoundedButton rb = new RoundedButton("·Î±×ÀÎ");
-		rb.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
-		loginB = rb;
-
-		loginB.setForeground(new Color(240, 248, 255));
+		loginB.setBorderPainted(false);
+		loginB.setContentAreaFilled(false);
+		loginB.setFocusPainted(false);
 		loginB.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		loginB.setSize(new Dimension(10, 10));
+		loginB.setSize(new Dimension(200, 200));
 		loginB.setIconTextGap(1);
-		loginB.setBackground(new Color(28, 94, 94));
-		loginB.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 50));
-		SouthButt.add(loginB);
 
-		// Á¾·á ¹öÆ°
-		// µÕ±Û°Ô ¸¸µå´Â ¹öÆ° Å¬·¡½º °´Ã¼ »ı¼ºÈÄ ´ëÀÔ
-		exitB = new JButton("\uC885\uB8CC");
-		rb_1 = new RoundedButton("Á¾   ·á");
-		rb_1.setBorder(new EtchedBorder(EtchedBorder.RAISED, new Color(255, 127, 80), new Color(255, 127, 80)));
-		exitB = rb_1;
+		// ì¢…ë£Œ ë²„íŠ¼
+		// ë‘¥ê¸€ê²Œ ë§Œë“œëŠ” ë²„íŠ¼ í´ë˜ìŠ¤ ê°ì²´ ìƒì„±í›„ ëŒ€ì…
+		exitB = new JButton(new ImageIcon(ForcePos.class.getResource("/image/exit.png")));
+		exitB.setPreferredSize(new Dimension(100, 100));
+		exitB.setBounds(1170, 572, 160, 160);
+		background.add(exitB);
+		exitB.setBorderPainted(false);
+		exitB.setContentAreaFilled(false);
+		exitB.setFocusPainted(false);
 
-		exitB.setBackground(new Color(255, 99, 71));
-		exitB.setForeground(new Color(240, 248, 255));
 		exitB.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		exitB.setIconTextGap(1);
 		exitB.setMinimumSize(new Dimension(73, 23));
 		exitB.setMaximumSize(new Dimension(73, 23));
-		exitB.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 50));
-		SouthButt.add(exitB);
-
-		// À¯Àú ÅØ½ºÆ®ÇÊµå
-		userTf = new JTextField(6);
-		userTf.setBounds(497, 129, 475, 165);
-		background.add(userTf);
-		userTf.setHorizontalAlignment(SwingConstants.CENTER);
-		userTf.setFont(new Font("¸¼Àº °íµñ", Font.ITALIC, 40));
-
-		// ¾ÆÀÌµğ¸¦ ÀÔ·Â¹Ş´Â
-		userTf.setText("");
-		userTf.setColumns(10);
+		exitB.addActionListener(this);
+		loginB.addActionListener(this);
 		setResizable(false);
 
-		// ¸®½º³Ê µî·Ï
-//		inputIcon();
-		userTf.addActionListener(this);
-//		passTf.addActionListener(this);
-		loginB.addActionListener(this);
-		exitB.addActionListener(this);
-
-
 	}
-	
-// ¾ÆÀÌµğ ºñ¹Ğ¹øÈ£ À¯È¿¼º °Ë»ç
-// userTf.setText("");
-//°ü¸®ÀÚ,Á÷¿øÀÇ ¹øÈ£¸¦ ¹Ì¸® ¼³Á¤ÇÑ ÈÄ ÀÔ·Â¹Ş°Ô ÇÔ.
 
+	
+
+	
+
+// ì•„ì´ë”” ë¹„ë°€ë²ˆí˜¸ ìœ íš¨ì„± ê²€ì‚¬
 	public boolean isLoginCheck() {
-		
-			loginCheck = false;
-			
-		if(userTf.getText().isEmpty()) {
-			JOptionPane.showMessageDialog(this, "¾ÆÀÌµğ¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.", "¾ÆÀÌµğ ÀÔ·Â ¿À·ù", JOptionPane.ERROR_MESSAGE);
-//			loginCheck = false;
-		}
-		
-		if(passTf.getText().isEmpty()) {
-			JOptionPane.showMessageDialog(this, "ÆĞ½º¿öµå¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.", "ÆĞ½º¿öµå ÀÔ·Â ¿À·ù", JOptionPane.ERROR_MESSAGE);
-		}
-		
-		if (userTf.getText().equals("°³³ª¸®") && new String(passTf.getText()).equals("1234")) {
-			String str = userTf.getText();
-			JOptionPane.showMessageDialog(null, str + "´Ô È¯¿µÇÕ´Ï´Ù.");
+		boolean loginCheck = false;
+
+		if (userTf.getText().trim().isEmpty() || passTf.getText().trim().isEmpty()) {
+			JOptionPane.showMessageDialog(this, "IDì™€ ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥ ë°”ëë‹ˆë‹¤.", "ì…ë ¥ì˜¤ë¥˜", JOptionPane.ERROR_MESSAGE);
+		} else {
 			loginCheck = true;
-		} 
-		
+		}
 		return loginCheck;
-
 	}
 
-	public String showLabel() {
-		return userTf.getText();
-	}
-	
-
+	// ë©”ì¸í”„ë ˆì„ì„ ë³´ì—¬ì¤˜
 	public void showFrame() {
-		main = new MainFrame();
-		main.setVisible(true);
+
+		mainFrame.setVisible(true);
+
+		String auth = userDao.userDto.getAuthority().trim();
+//		System.out.println(auth);
+
+		if (auth.equals("F")) {
+			mainFrame.mBtnAccount.setEnabled(false);
+			mainFrame.mBtnStat.setEnabled(false);
+			
+		} else if (auth.equals("T")) {
+			mainFrame.mBtnAccount.setEnabled(true);
+			mainFrame.mBtnStat.setEnabled(true);
+		}
+
 		this.setVisible(false);
+
 	}
 
-	// ·Î±×ÀÎ Ã¢¿¡¼­ ¸ŞÀÎÇÁ·¹ÀÓÀ¸·Î ¿¬°á ¸Ş¼Òµå
-//	public void setMain(MainFrame main) {
-//		this.main = main;
-//		frame.setMain(main);
-//	}
-
-	// ½ÇÇà
+	// ì‹¤í–‰
 	public static void main(String[] args) {
 
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ForcePos frame = new ForcePos();
-					frame.setVisible(true);
+					ForcePos forcePos = new ForcePos();
+					forcePos.setVisible(true);
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
-
 	}
 
-
-	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
 		Object ob = e.getSource();
 
-		if (!loginCheck) {
-			passTf.requestFocus();
-		}
+	
 
-		//·Î±×ÀÎ ¹öÆ°À» ´­·¶À» °æ¿ì
-		if (ob == loginB) {
-		
-			String id = userTf.getText();
-			String pw = passTf.getText();		
-
-			//DB¿¡ ÀÖ´Â ¾ÆÀÌµğ¿Í ºñ¹Ğ¹øÈ£°¡ ÀÏÄ¡ÇÒ °æ¿ì 
-			userDao = new UserDao();
-			if(userDao.pass(id, pw) == true) {
-				JOptionPane.showMessageDialog(this, id + "´Ô È¯¿µÇÕ´Ï´Ù.");
-					showFrame();
-			} else {
-				System.out.println("ÀÔÀå ºÒ°¡");
-				JOptionPane.showMessageDialog(this, "ID ¶Ç´Â PASSWORD È®ÀÎ¹Ù¶ø´Ï´Ù!","ID/PW ÀÔ·Â ¿À·ù ", JOptionPane.WARNING_MESSAGE);
+		if (ob == loginB || ob == passTf) {
+			String id = userTf.getText().trim();
+			String pw = passTf.getText().trim();
+			if (isLoginCheck()) {
+				passTf.requestFocus();
 			}
-			
+			// DBì— ìˆëŠ” ì•„ì´ë””ì™€ ë¹„ë°€ë²ˆí˜¸ê°€ ì¼ì¹˜í•  ê²½ìš°
+			userDao = new UserDao();
+
+			if (userDao.pass(id, pw) == true) {
+				JOptionPane.showMessageDialog(this, "'" + id + "'" + " í™˜ì˜í•©ë‹ˆë‹¤.");
+				showFrame();
+				mainFrame.mBtnSale.setBackground(new Color(255, 69, 0));
+				mainFrame.monitor.show(mainFrame.pMonitor, "ViewSalesInput");
+				mainFrame.btn.show(mainFrame.pFBtn, "salebtn");
+				mainFrame.setExp();
+				
+			} else {
+				JOptionPane.showMessageDialog(this, "ì˜¬ë°”ë¥¸ ID, PASSWORD ì…ë ¥ë°”ëë‹ˆë‹¤.", "ì…ë ¥ì˜¤ë¥˜", JOptionPane.WARNING_MESSAGE);
+			}
 		}
-		//Á¾·á ¹öÆ° 
+
+		// ì¢…ë£Œ ë²„íŠ¼
 		if (ob == exitB) {
 			System.exit(0);
 		}

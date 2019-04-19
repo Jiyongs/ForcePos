@@ -1,46 +1,50 @@
-package com.kitri.pos.stat;
+ï»¿package com.kitri.pos.stat;
 
 import java.sql.*;
 import java.util.Vector;
 
-import com.kitri.pos.PosDto;
+import javax.swing.table.DefaultTableModel;
+
 import com.kitri.pos.db.DBManager;
+import com.kitri.pos.db.PosDto;
+
+
 
 /*
-	StatDao : Åë°è DB °ü·Ã ¸Ş¼Òµå Á¤ÀÇ
+	StatDao : í†µê³„ DB ê´€ë ¨ ë©”ì†Œë“œ ì •ì˜
 */
 
 public class StatDao {
 
-	// DB¿¬°áµÈ »óÅÂ(¼¼¼Ç)À» ´ãÀº °´Ã¼
+	// DBì—°ê²°ëœ ìƒíƒœ(ì„¸ì…˜)ì„ ë‹´ì€ ê°ì²´
 	Connection conn = null;
 
-	// Äõ¸®¹®¿¡ »ç¿ëÇÏ´Â state°´Ã¼
+	// ì¿¼ë¦¬ë¬¸ì— ì‚¬ìš©í•˜ëŠ” stateê°ì²´
 	PreparedStatement ps = null;
 
 	Statement st = null;
 	ResultSet rs = null;
 
-	// Äõ¸®¹® °á°ú (1Çà) ´ãÀ» PosDto °´Ã¼
+	// ì¿¼ë¦¬ë¬¸ ê²°ê³¼ (1í–‰) ë‹´ì„ PosDto ê°ì²´
 	PosDto posDto = null;
 
-	// [¸Ş¼Òµå]
+	// [ë©”ì†Œë“œ]
 
-	//////////////////////////////// »óÇ°º° Åë°è ////////////////////////////////
-	// <»óÇ°º° ¸ÅÃâ³»¿ª select> ¸Ş¼Òµå
-	// : ¼ÒºĞ·ù, ³â, ¿ù ÀÔ·Â¹Ş¾Æ ¸ÅÃâÇÕ°è ·©Å·¼øÀ¸·Î Á¶È¸
+	//////////////////////////////// ìƒí’ˆë³„ í†µê³„ ////////////////////////////////
+	// <ìƒí’ˆë³„ ë§¤ì¶œë‚´ì—­ select> ë©”ì†Œë“œ
+	// : ì†Œë¶„ë¥˜, ë…„, ì›” ì…ë ¥ë°›ì•„ ë§¤ì¶œí•©ê³„ ë­í‚¹ìˆœìœ¼ë¡œ ì¡°íšŒ
 	public Vector<PosDto> findProductSell(String minor_level, String year, String month) {
 
-		// Äõ¸®¹® °á°ú (¿©·¯ Çà) ´ãÀ» PosDto °´Ã¼
+		// ì¿¼ë¦¬ë¬¸ ê²°ê³¼ (ì—¬ëŸ¬ í–‰) ë‹´ì„ PosDto ê°ì²´
 		Vector<PosDto> list = new Vector<PosDto>();
 
 		int date = Integer.parseInt(year.concat(month).concat("01"));
 		try {
-			// DB ¿¬°á
+			// DB ì—°ê²°
 			conn = DBManager.getConnection();
 
-			// Äõ¸®¹® ¼¼ÆÃ
-			String query = "select row_number() over(order by p.price*v.sc desc) as ¸ÅÃâ¼øÀ§, p.product_code as »óÇ°ÄÚµå, p.minor_level as »óÇ°ºĞ·ù, p.product_name as »óÇ°¸í, p.price as ÆÇ¸Å°¡, p.purchase as ¸ÅÀÔ°¡, v.sc as ÆÇ¸Å¼ö·®,  p.price*v.sc as ¸ÅÃâÇÕ°è, p.company as Á¦Á¶»ç\r\n"
+			// ì¿¼ë¦¬ë¬¸ ì„¸íŒ…
+			String query = "select row_number() over(order by p.price*v.sc desc) as ë§¤ì¶œìˆœìœ„, p.product_code as ìƒí’ˆì½”ë“œ, p.minor_level as ìƒí’ˆë¶„ë¥˜, p.product_name as ìƒí’ˆëª…, p.price as íŒë§¤ê°€, p.purchase as ë§¤ì…ê°€, v.sc as íŒë§¤ìˆ˜ëŸ‰,  p.price*v.sc as ë§¤ì¶œí•©ê³„, p.company as ì œì¡°ì‚¬\r\n"
 					+ "from products p, (select product_code, sum(sell_count) sc\r\n"
 					+ "                                 from history_detail\r\n"
 					+ "                                 where to_char(sell_date,'yyyymm') = to_char(to_date(?),'yyyymm')\r\n"
@@ -50,10 +54,10 @@ public class StatDao {
 			ps.setInt(1, date);
 			ps.setString(2, minor_level);
 
-			// Äõ¸®¹® ½ÇÇà
+			// ì¿¼ë¦¬ë¬¸ ì‹¤í–‰
 			rs = ps.executeQuery();
 
-			// °á°ú ÀúÀå
+			// ê²°ê³¼ ì €ì¥
 			while (rs.next()) {
 				posDto = new PosDto();
 
@@ -80,40 +84,40 @@ public class StatDao {
 			}
 		}
 
-		// °á°ú ¸®ÅÏ
+		// ê²°ê³¼ ë¦¬í„´
 		return list;
 
 	}
 
-	// <»óÇ°º° ¸ÅÃâ³»¿ª BEST 5 select> ¸Ş¼Òµå
-	// : ¼ÒºĞ·ù, ³â, ¿ù ÀÔ·Â¹Ş¾Æ ¸ÅÃâÇÕ°è ·©Å· »óÀ§ 5À§±îÁö Á¶È¸
+	// <ìƒí’ˆë³„ ë§¤ì¶œë‚´ì—­ BEST 5 select> ë©”ì†Œë“œ
+	// : ì†Œë¶„ë¥˜, ë…„, ì›” ì…ë ¥ë°›ì•„ ë§¤ì¶œí•©ê³„ ë­í‚¹ ìƒìœ„ 5ìœ„ê¹Œì§€ ì¡°íšŒ
 	public Vector<PosDto> findProductSellBestFive(String minor_level, String year, String month) {
-		// Äõ¸®¹® °á°ú (¿©·¯ Çà) ´ãÀ» PosDto °´Ã¼
+		// ì¿¼ë¦¬ë¬¸ ê²°ê³¼ (ì—¬ëŸ¬ í–‰) ë‹´ì„ PosDto ê°ì²´
 		Vector<PosDto> list = new Vector<PosDto>();
 
-		// StringÀ¸·Î ÀÔ·ÂÇÑ ³¯Â¥¸¦ '³â¿ù' ÇÕÃÄ¼­ int·Î º¯È¯
+		// Stringìœ¼ë¡œ ì…ë ¥í•œ ë‚ ì§œë¥¼ 'ë…„ì›”' í•©ì³ì„œ intë¡œ ë³€í™˜
 		int date = Integer.parseInt(year.concat(month).concat("01"));
 		try {
-			// DB ¿¬°á
+			// DB ì—°ê²°
 			conn = DBManager.getConnection();
 
-			// Äõ¸®¹® ¼¼ÆÃ
-			String query = "select vr.¸ÅÃâ¼øÀ§, vr.»óÇ°ÄÚµå, vr.»óÇ°ºĞ·ù, vr.»óÇ°¸í, vr.ÆÇ¸Å°¡, vr.¸ÅÀÔ°¡, vr.ÆÇ¸Å¼ö·®, vr.¸ÅÃâÇÕ°è, vr.Á¦Á¶»ç\r\n"
-					+ "from (select row_number() over(order by p.price*v.sc desc) as ¸ÅÃâ¼øÀ§, p.product_code as »óÇ°ÄÚµå, p.minor_level as »óÇ°ºĞ·ù, p.product_name as »óÇ°¸í, p.price as ÆÇ¸Å°¡, p.purchase as ¸ÅÀÔ°¡, v.sc as ÆÇ¸Å¼ö·®,  p.price*v.sc as ¸ÅÃâÇÕ°è, p.company as Á¦Á¶»ç\r\n"
+			// ì¿¼ë¦¬ë¬¸ ì„¸íŒ…
+			String query = "select vr.ë§¤ì¶œìˆœìœ„, vr.ìƒí’ˆì½”ë“œ, vr.ìƒí’ˆë¶„ë¥˜, vr.ìƒí’ˆëª…, vr.íŒë§¤ê°€, vr.ë§¤ì…ê°€, vr.íŒë§¤ìˆ˜ëŸ‰, vr.ë§¤ì¶œí•©ê³„, vr.ì œì¡°ì‚¬\r\n"
+					+ "from (select row_number() over(order by p.price*v.sc desc) as ë§¤ì¶œìˆœìœ„, p.product_code as ìƒí’ˆì½”ë“œ, p.minor_level as ìƒí’ˆë¶„ë¥˜, p.product_name as ìƒí’ˆëª…, p.price as íŒë§¤ê°€, p.purchase as ë§¤ì…ê°€, v.sc as íŒë§¤ìˆ˜ëŸ‰,  p.price*v.sc as ë§¤ì¶œí•©ê³„, p.company as ì œì¡°ì‚¬\r\n"
 					+ "        from products p, (select product_code, sum(sell_count) sc\r\n"
 					+ "                                 from history_detail\r\n"
 					+ "                                 where to_char(sell_date,'yyyymm') = to_char(to_date(?),'yyyymm')\r\n"
 					+ "                                 group by product_code) v\r\n"
 					+ "        where p.product_code = v.product_code\r\n" + "        and p.minor_level = ?) vr\r\n"
-					+ "where ¸ÅÃâ¼øÀ§ < 6";
+					+ "where ë§¤ì¶œìˆœìœ„ < 6";
 			ps = conn.prepareStatement(query);
 			ps.setInt(1, date);
 			ps.setString(2, minor_level);
 
-			// Äõ¸®¹® ½ÇÇà
+			// ì¿¼ë¦¬ë¬¸ ì‹¤í–‰
 			rs = ps.executeQuery();
 
-			// °á°ú ÀúÀå
+			// ê²°ê³¼ ì €ì¥
 			while (rs.next()) {
 				posDto = new PosDto();
 
@@ -134,31 +138,31 @@ public class StatDao {
 			e.printStackTrace();
 		} finally {
 			try {
-				// DB ¿¬°á Á¾·á
+				// DB ì—°ê²° ì¢…ë£Œ
 				DBManager.dbClose(rs, ps, conn);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
 
-		// °á°ú ¸®ÅÏ
+		// ê²°ê³¼ ë¦¬í„´
 		return list;
 	}
 
-	//////////////////////////////// ±â°£º° Åë°è ////////////////////////////////
-	// <¿¬µµº° ¸ÅÃâ³»¿ª select> ¸Ş¼Òµå
-	// : ³â ÀÔ·Â¹Ş¾Æ Á¶È¸
-	
+	//////////////////////////////// ê¸°ê°„ë³„ í†µê³„ ////////////////////////////////
+	// <ì—°ë„ë³„ ë§¤ì¶œë‚´ì—­ select> ë©”ì†Œë“œ
+	// : ë…„ ì…ë ¥ë°›ì•„ ì¡°íšŒ
+
 	public Vector<PosDto> findYearSell(int startYear, int endYear) {
-		// Äõ¸®¹® °á°ú (¿©·¯ Çà) ´ãÀ» PosDto °´Ã¼
+		// ì¿¼ë¦¬ë¬¸ ê²°ê³¼ (ì—¬ëŸ¬ í–‰) ë‹´ì„ PosDto ê°ì²´
 		Vector<PosDto> list = new Vector<PosDto>();
 
 		try {
-			// DB ¿¬°á
+			// DB ì—°ê²°
 			conn = DBManager.getConnection();
 
-			// Äõ¸®¹® ¼¼ÆÃ
-			String query = "select h.hy as ¸ÅÃâ³âµµ, sum(h.htp) as ¸ÅÃâÇÕ°è, sum(h.hb) as ºÎ°¡¼¼, sum(h.hcp) as Çö±İ¸ÅÃâ, sum(h.hcdp) as Ä«µå¸ÅÃâ, count(*) as °í°´¼ö\r\n"
+			// ì¿¼ë¦¬ë¬¸ ì„¸íŒ…
+			String query = "select h.hy as ë§¤ì¶œë…„ë„, sum(h.htp) as ë§¤ì¶œí•©ê³„, sum(h.hb) as ë¶€ê°€ì„¸, sum(h.hcp) as í˜„ê¸ˆë§¤ì¶œ, sum(h.hcdp) as ì¹´ë“œë§¤ì¶œ, count(*) as ê³ ê°ìˆ˜\r\n"
 					+ "from (select total_price htp, to_char(sell_date, 'yyyy') hy, total_price*0.1 hb, cash_price hcp, card_price hcdp\r\n"
 					+ "        from history) h\r\n" + "where hy between ? and ?\r\n" + "group by hy\r\n"
 					+ "order by hy";
@@ -166,10 +170,10 @@ public class StatDao {
 			ps.setInt(1, startYear);
 			ps.setInt(2, endYear);
 
-			// Äõ¸®¹® ½ÇÇà
+			// ì¿¼ë¦¬ë¬¸ ì‹¤í–‰
 			rs = ps.executeQuery();
 
-			// °á°ú ÀúÀå
+			// ê²°ê³¼ ì €ì¥
 			while (rs.next()) {
 				posDto = new PosDto();
 
@@ -187,38 +191,38 @@ public class StatDao {
 			e.printStackTrace();
 		} finally {
 			try {
-				// DB ¿¬°á Á¾·á
+				// DB ì—°ê²° ì¢…ë£Œ
 				DBManager.dbClose(rs, ps, conn);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-		// °á°ú ¸®ÅÏ
+		// ê²°ê³¼ ë¦¬í„´
 		return list;
 	}
 
-	// <¿ùº° ¸ÅÃâ³»¿ª select> ¸Ş¼Òµå
-	// : ³â ÀÔ·Â¹Ş¾Æ Á¶È¸
+	// <ì›”ë³„ ë§¤ì¶œë‚´ì—­ select> ë©”ì†Œë“œ
+	// : ë…„ ì…ë ¥ë°›ì•„ ì¡°íšŒ
 	public Vector<PosDto> findMonthSell(int year) {
-		// Äõ¸®¹® °á°ú (¿©·¯ Çà) ´ãÀ» PosDto °´Ã¼
+		// ì¿¼ë¦¬ë¬¸ ê²°ê³¼ (ì—¬ëŸ¬ í–‰) ë‹´ì„ PosDto ê°ì²´
 		Vector<PosDto> list = new Vector<PosDto>();
 
 		try {
-			// DB ¿¬°á
+			// DB ì—°ê²°
 			conn = DBManager.getConnection();
 
-			// Äõ¸®¹® ¼¼ÆÃ
-			String query = "select h.hy as ¸ÅÃâ³â¿ù, sum(h.htp) as ¸ÅÃâÇÕ°è, sum(h.hb) as ºÎ°¡¼¼, sum(h.hcp) as Çö±İ¸ÅÃâ, sum(h.hcdp) as Ä«µå¸ÅÃâ, count(*) as °í°´¼ö\r\n"
+			// ì¿¼ë¦¬ë¬¸ ì„¸íŒ…
+			String query = "select h.hy as ë§¤ì¶œë…„ì›”, sum(h.htp) as ë§¤ì¶œí•©ê³„, sum(h.hb) as ë¶€ê°€ì„¸, sum(h.hcp) as í˜„ê¸ˆë§¤ì¶œ, sum(h.hcdp) as ì¹´ë“œë§¤ì¶œ, count(*) as ê³ ê°ìˆ˜\r\n"
 					+ "from (select total_price htp, to_char(sell_date, 'yyyymm') hy, total_price*0.1 hb, cash_price hcp, card_price hcdp\r\n"
 					+ "        from history\r\n" + "        where to_char(sell_date,'yyyy')=?) h\r\n"
 					+ "group by hy\r\n" + "order by hy";
 			ps = conn.prepareStatement(query);
 			ps.setInt(1, year);
 
-			// Äõ¸®¹® ½ÇÇà
+			// ì¿¼ë¦¬ë¬¸ ì‹¤í–‰
 			rs = ps.executeQuery();
 
-			// °á°ú ÀúÀå
+			// ê²°ê³¼ ì €ì¥
 			while (rs.next()) {
 				posDto = new PosDto();
 
@@ -236,44 +240,40 @@ public class StatDao {
 			e.printStackTrace();
 		} finally {
 			try {
-				// DB ¿¬°á Á¾·á
+				// DB ì—°ê²° ì¢…ë£Œ
 				DBManager.dbClose(rs, ps, conn);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
 
-		// °á°ú ¸®ÅÏ
+		// ê²°ê³¼ ë¦¬í„´
 		return list;
 	}
 
-	// <ÀÏº° ¸ÅÃâ³»¿ª select> ¸Ş¼Òµå
-	// : ³â, ¿ù, ÀÏ ÀÔ·Â¹Ş¾Æ Á¶È¸
+	// <ì¼ë³„ ë§¤ì¶œë‚´ì—­ select> ë©”ì†Œë“œ
+	// : ë…„, ì›”, ì¼ ì…ë ¥ë°›ì•„ ì¡°íšŒ
 	public PosDto findDaySell(String year, String month, String day) {
-	
-		// StringÀ¸·Î ÀÔ·ÂÇÑ ³¯Â¥¸¦ '³â¿ùÀÏ' ÇÕÃÄ¼­ int·Î º¯È¯
+
+		// Stringìœ¼ë¡œ ì…ë ¥í•œ ë‚ ì§œë¥¼ 'ë…„ì›”ì¼' í•©ì³ì„œ intë¡œ ë³€í™˜
 		int date = Integer.parseInt(year.concat(month).concat(day));
 		try {
-			// DB ¿¬°á
-			conn = DBManager.getConnection();    
-			
-			// Äõ¸®¹® ¼¼ÆÃ
-			String query = "select h.hy as ¸ÅÃâÀÏÀÚ, sum(h.htp) as ¸ÅÃâÇÕ°è, sum(h.hb) as ºÎ°¡¼¼, sum(h.hcp) as Çö±İ¸ÅÃâ, sum(h.hcdp) as Ä«µå¸ÅÃâ, count(*) as °í°´¼ö\r\n" + 
-					"from (select total_price htp, to_char(sell_date, 'yyyymmdd') hy, total_price*0.1 hb, cash_price hcp, card_price hcdp\r\n" + 
-					"        from history\r\n" + 
-					"        where to_char(sell_date,'yyyymmdd')= to_date(?)) h\r\n" + 
-					"group by hy\r\n" + 
-					"order by hy";                              
+			// DB ì—°ê²°
+			conn = DBManager.getConnection();
+			posDto = new PosDto();
+			// ì¿¼ë¦¬ë¬¸ ì„¸íŒ…
+			String query = "select h.hy as ë§¤ì¶œì¼ì, sum(h.htp) as ë§¤ì¶œí•©ê³„, sum(h.hb) as ë¶€ê°€ì„¸, sum(h.hcp) as í˜„ê¸ˆë§¤ì¶œ, sum(h.hcdp) as ì¹´ë“œë§¤ì¶œ, count(*) as ê³ ê°ìˆ˜\r\n"
+					+ "from (select total_price htp, to_char(sell_date, 'yyyymmdd') hy, total_price*0.1 hb, cash_price hcp, card_price hcdp\r\n"
+					+ "        from history\r\n" + "        where to_char(sell_date,'yyyymmdd')= to_date(?)) h\r\n"
+					+ "group by hy\r\n" + "order by hy";
 			ps = conn.prepareStatement(query);
 			ps.setInt(1, date);
-			
-			// Äõ¸®¹® ½ÇÇà
-			rs = ps.executeQuery();                    
-			
-			// °á°ú ÀúÀå
-			while(rs.next()) {	
-				posDto = new PosDto();
-				
+
+			// ì¿¼ë¦¬ë¬¸ ì‹¤í–‰
+			rs = ps.executeQuery();
+
+			// ê²°ê³¼ ì €ì¥
+			while (rs.next()) {
 				posDto.setSellDate(Integer.toString(rs.getInt(1)));
 				posDto.setStatTotalPrice(rs.getInt(2));
 				posDto.setTotalTax(rs.getInt(3));
@@ -281,19 +281,82 @@ public class StatDao {
 				posDto.setCardPrice(rs.getInt(5));
 				posDto.setCustomerCount(rs.getInt(6));
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				// DB ¿¬°á Á¾·á
+				// DB ì—°ê²° ì¢…ë£Œ
 				DBManager.dbClose(rs, ps, conn);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-		
-		// °á°ú ¸®ÅÏ
+
+		// ê²°ê³¼ ë¦¬í„´
 		return posDto;
 	}
+
+	// <ì¡°íšŒí•œ ì¼ìì˜ ì‹œê°„ëŒ€ë³„ ë§¤ì¶œê°’ ë¦¬í„´> ë©”ì†Œë“œ
+	// : ì‹œê°„ëŒ€ë³„ ê·¸ë˜í”„ìš©
+	public Vector<PosDto> findDayTimeSell(String year, String month, String day) {
+
+		// ì¿¼ë¦¬ë¬¸ ê²°ê³¼ (ì—¬ëŸ¬ í–‰) ë‹´ì„ PosDto ê°ì²´
+		Vector<PosDto> list = new Vector<PosDto>();
+
+		// Stringìœ¼ë¡œ ì…ë ¥í•œ ë‚ ì§œë¥¼ 'ë…„ì›”ì¼' í•©ì³ì„œ intë¡œ ë³€í™˜
+		int date = Integer.parseInt(year.concat(month).concat(day));
+		try {
+			// DB ì—°ê²°
+			conn = DBManager.getConnection();
+
+			// ì¿¼ë¦¬ë¬¸ ì„¸íŒ…
+			String query = "select hour.h as íŒë§¤ì‹œê°„ëŒ€, sum(hour.tp) as ë§¤ì¶œí•©ê³„, count(*) as ê³ ê°ìˆ˜\r\n"
+					+ "from (select price*sell_count tp, to_char(sell_date, 'hh24') h\r\n"
+					+ "      from history_detail\r\n" + "      where to_char(sell_date, 'yyyymmdd') = to_date(?)\r\n"
+					+ "      order by h\r\n" + "      ) hour\r\n" + "group by h";
+			ps = conn.prepareStatement(query);
+			ps.setInt(1, date);
+
+			// ì¿¼ë¦¬ë¬¸ ì‹¤í–‰
+			rs = ps.executeQuery();
+
+			// ê²°ê³¼ ì €ì¥
+			while (rs.next()) {
+				posDto = new PosDto();
+
+				posDto.setSellTime(rs.getString(1).concat("ì‹œ"));
+				posDto.setStatTotalPrice(rs.getInt(2));
+				posDto.setCustomerCount(rs.getInt(3));
+								
+				list.add(posDto);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				// DB ì—°ê²° ì¢…ë£Œ
+				DBManager.dbClose(rs, ps, conn);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		// ê²°ê³¼ ë¦¬í„´
+		return list;
+
+	}
+
+	////////////////////////////////////// [static ë©”ì†Œë“œ] /////////////////////////////////////////////
+	
+	// í…Œì´ë¸” í–‰ ëª¨ë‘ ì§€ìš°ê¸° (í™”ë©´ë‹¨ì—ì„œë§Œ)
+	public static void clearRows(int rowSize, DefaultTableModel dtm) {
+		if (rowSize > 0) {
+			for (int i = rowSize - 1; i >= 0; i--) {
+				dtm.removeRow(i);
+			}
+		}
+	}
+
 }

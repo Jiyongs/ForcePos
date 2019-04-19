@@ -1,3 +1,4 @@
+﻿
 package com.kitri.pos.calc;
 
 import java.awt.BorderLayout;
@@ -25,7 +26,7 @@ public class PCalc extends JPanel {
 	public DefaultTableModel model;
 //	Vector<String> cnt;
 //	Vector<String> total;
-
+	String[] header;
 	String[][] data;
 	public JTable cashTable;
 	public JTextField tfCashState;
@@ -34,26 +35,25 @@ public class PCalc extends JPanel {
 
 //	
 
-	JPanel pcalcmain;
-	JPanel pNum;
-	JButton btnCalc_0;
-	JButton btnCalc_00;
-	JButton btnCalc_1;
-	JButton btnCalc_2;
-	JButton btnCalc_3;
-	JButton btnCalc_4;
-	JButton btnCalc_5;
-	JButton btnCalc_6;
-	JButton btnCalc_7;
-	JButton btnCalc_8;
-	JButton btnCalc_9;
-	JButton btnCalc_del;
-	JButton btnCalc_C;
-	JButton btnCalc_Apply;
-	JButton btnCalc_Cancel;
-	JLabel lbCashState;
-	JLabel lbCashCheck;
-	JLabel lbCalcResult;
+	public JPanel pcalcmain;
+	public JPanel pNum;
+	public JButton btnCalc_0;
+	public JButton btnCalc_00;
+	public JButton btnCalc_1;
+	public JButton btnCalc_2;
+	public JButton btnCalc_3;
+	public JButton btnCalc_4;
+	public JButton btnCalc_5;
+	public JButton btnCalc_6;
+	public JButton btnCalc_7;
+	public JButton btnCalc_8;
+	public JButton btnCalc_9;
+	public JButton btnCalc_del;
+	public JButton btnCalc_C;
+	public JButton btnCalc_Apply;
+	public JLabel lbCashState;
+	public JLabel lbCashCheck;
+	public JLabel lbCalcResult;
 	private JScrollPane spTable;
 
 	/**
@@ -64,7 +64,7 @@ public class PCalc extends JPanel {
 		setBackground(new Color(255, 255, 255));
 		setBounds(0, 50, 1144, 535);
 
-		String[] header = new String[] { "권종", "수량", "금액" };
+		header = new String[] { "권종", "수량", "금액" };
 
 		data = new String[][] { { "50000", "0", "0" }, { "10000", "0", "0" }, { "5000", "0", "0" }, { "1000", "0", "0" },
 				{ "500", "0", "0" }, { "100", "0", "0" }, { "50", "0", "0" }, { "10", "0", "0" } };
@@ -186,10 +186,6 @@ public class PCalc extends JPanel {
 		btnCalc_Apply.setBounds(0, 250, 169, 165);
 		pcalc_btns.add(btnCalc_Apply);
 
-		btnCalc_Cancel = new JButton("\uB2EB\uAE30");
-		btnCalc_Cancel.setBounds(0, 425, 169, 80);
-		pcalc_btns.add(btnCalc_Cancel);
-
 		JPanel pcalcState = new JPanel();
 		pcalcState.setBounds(23, 335, 371, 170);
 		pcalcmain.add(pcalcState);
@@ -199,11 +195,11 @@ public class PCalc extends JPanel {
 		pcalcState.add(panel, BorderLayout.WEST);
 		panel.setLayout(new GridLayout(0, 1, 0, 10));
 
-		JLabel lbCashState = new JLabel("\uD604\uC7AC \uBCF4\uC720 \uD604\uAE08");
+		JLabel lbCashState = new JLabel("현금 매출");
 		lbCashState.setHorizontalAlignment(SwingConstants.CENTER);
 		panel.add(lbCashState);
 
-		lbCashCheck = new JLabel("\uC815\uC0B0 \uD604\uAE08");
+		lbCashCheck = new JLabel("보유 현금");
 		lbCashCheck.setHorizontalAlignment(SwingConstants.CENTER);
 		panel.add(lbCashCheck);
 

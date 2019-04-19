@@ -1,4 +1,4 @@
-package com.kitri.pos.calc;
+﻿package com.kitri.pos.calc;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,7 +8,9 @@ import java.sql.Statement;
 
 import javax.swing.JOptionPane;
 
-import com.kitri.pos.sales.PosDto;
+import com.kitri.pos.*;
+import com.kitri.pos.account.*;
+import com.kitri.pos.db.*;
 
 public class CalcDao {
 	PCalc pCalc = new PCalc();
@@ -17,7 +19,7 @@ public class CalcDao {
 /////////////////////////////////////////////////////////////////
 
 	// 쿼리문 결과 (1행) 담을 Dto 객체
-	com.kitri.pos.calc.PosDto posDto = new com.kitri.pos.calc.PosDto();
+	PosDto posDto = new PosDto();
 
 
 	
@@ -77,19 +79,21 @@ public class CalcDao {
 		conn = DBManager.getConnection();
 		try {
 		
-			String query = "insert into money(count_date ,user_code ,coms_calc ,current_money ,total_calc)"
-					+ " values(to_date(sysdate,'yyyy.mm.dd hh.mi.ss'),?,?,?,?)";
+			String query = "insert into money(count_code, count_date ,user_code ,coms_calc ,current_money ,total_calc)"
+					+ " values(money_calc_code_seq.nextval, to_date(sysdate,'yyyy.mm.dd hh.mi.ss'),?,?,?,?)";
 		
 			ps = conn.prepareStatement(query);
 
-			ps.setInt(1,posDto.getUserCode());
+			
+			ps.setInt(1,ForcePos.usercodeDto.getUserCode());
 			ps.setInt(2,posDto.getComsCalc());
 			ps.setInt(3,posDto.getCurrentMoney());
 			ps.setInt(4,posDto.getTotalCalc());
 			
 
 			int rows = ps.executeUpdate();
-			System.out.println("변경된 row  : " + rows);
+		
+			
 			if(rows == 0)
 				JOptionPane.showMessageDialog(pCalc, "정산처리가 실패했습니다. 다시 시도하십시오", "정산오류", JOptionPane.ERROR_MESSAGE);
 				return;
