@@ -11,5 +11,5 @@
 - 외부 라이브러리 : jdbc(ojdbc8.jar) / jfreechart(jcommon-1.0.23.jar, jfreechart-1.0.19.jar)
 
 ## 3. Apps View
-![image](https://user-images.githubusercontent.com/28644251/63532132-f3307d00-c544-11e9-94b9-e5285d92d2be.png)
-![image](https://user-images.githubusercontent.com/28644251/63532193-13f8d280-c545-11e9-81dc-c71d824b8d8b.png)
+![image](https://user-images.githubusercontent.com/28644251/63532799-70a8bd00-c546-11e9-8e7d-9721e289c868.png)
+![image](https://user-images.githubusercontent.com/28644251/63532848-90d87c00-c546-11e9-8b05-2986390a045b.png)
